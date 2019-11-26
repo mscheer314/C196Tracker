@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">C196Tracker</string>
+    <string name="terms_title">terms</string>
+    <string name="courses_title">courses</string>
+    <string name="notes_title">notes</string>
+    <string name="add_term">add term</string>
+    <string name="add_course">add course</string>
+    <string name="term_name">term name</string>
+    <string name="term_start">term start</string>
+    <string name="term_end">term end</string>
+    <string name="save">save</string>
+    <string name="select_date">select date</string>
+</resources>
