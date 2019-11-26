@@ -10,4 +10,7 @@
     <string name="term_end">term end</string>
     <string name="save">save</string>
     <string name="select_date">select date</string>
+    <string name="course_name">course name</string>
+    <string name="course_start">course start</string>
+    <string name="course_end">course end</string>
 </resources>
