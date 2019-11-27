@@ -1,4 +1,4 @@
-package com.example.android.c196tracker;
+package com.example.android.c196tracker.UI;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.Calendar;

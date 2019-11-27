@@ -6,15 +6,11 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "notes")
 
 public class NoteEntity {
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     private int noteId;
-
-    private String noteName;
     private String noteContent;
 
-    public NoteEntity(int noteId, String noteName, String noteContent) {
-        this.noteId = noteId;
-        this.noteName = noteName;
+    public NoteEntity(String noteContent) {
         this.noteContent = noteContent;
     }
 
@@ -22,7 +18,6 @@ public class NoteEntity {
     public String toString() {
         return "NoteEntity{" +
                 "noteId=" + noteId +
-                ", noteName='" + noteName + '\'' +
                 ", noteContent'" + noteContent + '\'' +
                 '}';
     }
@@ -33,14 +28,6 @@ public class NoteEntity {
 
     public void setNoteId(int noteId) {
         this.noteId = noteId;
-    }
-
-    public String getNoteName() {
-        return noteName;
-    }
-
-    public void setNoteName(String noteName) {
-        this.noteName = noteName;
     }
 
     public String getNoteContent() {

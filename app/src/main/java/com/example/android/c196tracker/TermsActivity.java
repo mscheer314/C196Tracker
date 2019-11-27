@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.UI.AddTermDialog;
 import com.example.android.c196tracker.UI.TermAdapter;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
@@ -41,7 +42,7 @@ public class TermsActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerivew_terms);
+        recyclerView = findViewById(R.id.recyclerview_terms);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);

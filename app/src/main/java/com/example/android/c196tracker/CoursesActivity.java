@@ -1,12 +1,8 @@
 package com.example.android.c196tracker;
 
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupWindow;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
+import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
