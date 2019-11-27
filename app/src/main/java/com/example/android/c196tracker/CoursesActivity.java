@@ -27,15 +27,22 @@ public class CoursesActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private CourseViewModel mCourseViewModel;
-    private LayoutInflater inflater;
-    private PopupWindow popUpWindow;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
 
+        setRecyclerView();
+
+        addCourseButton = findViewById(R.id.add_course_button);
+        addCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openDialog(); }
+        });
+    }
+
+    public void setRecyclerView() {
         recyclerView = findViewById(R.id.recyclerview_courses);
         recyclerView.setHasFixedSize(true);
 
@@ -52,19 +59,10 @@ public class CoursesActivity extends AppCompatActivity {
                 mAdapter.setCourses(courses);
             }
         });
+    }
 
-        addCourseButton = findViewById(R.id.add_course_button);
-        addCourseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO make this load a pop up menu from which you can add a new course
-                inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup) inflater.inflate(R.layout.dialog_new_term, null);
-
-                popUpWindow = new PopupWindow(
-                        container, 900, 900, true);
-                popUpWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
-            }
-        });
+    public void openDialog() {
+        AddCourseDialog addCourseDialog = new AddCourseDialog();
+        addCourseDialog.show(getSupportFragmentManager(),"add_course_dialog");
     }
 }

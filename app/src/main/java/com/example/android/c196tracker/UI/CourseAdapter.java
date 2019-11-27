@@ -1,6 +1,7 @@
 package com.example.android.c196tracker.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,26 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.R;
 
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+
+    class CourseViewHolder extends RecyclerView.ViewHolder {
+        private final TextView courseItemView;
+        private final TextView courseItemView2;
+        private final TextView courseItemView3;
+
+        private CourseViewHolder(View itemView) {
+            super(itemView);
+            courseItemView = itemView.findViewById(R.id.course_name);
+            courseItemView2 = itemView.findViewById(R.id.course_start);
+            courseItemView3 = itemView.findViewById(R.id.course_end);
+        }
+    }
 
     private final LayoutInflater mInflater;
     private final Context context;
@@ -42,9 +57,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             holder.courseItemView2.setText("nothing");
             holder.courseItemView3.setText("nothing");
         }
-        holder.courseItemView.setOnClickListener((v) -> {
-            //TODO create CourseDetails class
-
+        holder.courseItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View v) {
+                Intent intent = new Intent(context, CourseDetails.class);
+            }
         });
     }
 
@@ -58,18 +75,5 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (mCourses != null)
             return mCourses.size();
         else return 0;
-    }
-
-    class CourseViewHolder extends RecyclerView.ViewHolder {
-        private final TextView courseItemView;
-        private final TextView courseItemView2;
-        private final TextView courseItemView3;
-
-        private CourseViewHolder(View itemView) {
-            super(itemView);
-            courseItemView = itemView.findViewById(R.id.course_name);
-            courseItemView2 = itemView.findViewById(R.id.course_start);
-            courseItemView3 = itemView.findViewById(R.id.course_end);
-        }
     }
 }
