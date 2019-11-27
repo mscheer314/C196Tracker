@@ -69,8 +69,8 @@ public class AddCourseDialog extends AppCompatDialogFragment {
                             //setResult(RESULT_CANCELED, replyIntent);
                         } else {
                             String courseName = mCourseName.getText().toString();
-                            String courseStart = mCourseStart.toString();
-                            String courseEnd = mCourseEnd.toString();
+                            String courseStart = (String) mCourseStart.getText();
+                            String courseEnd = (String) mCourseEnd.getText();
                             // TODO get the termId from the UI element
 
                             replyIntent.putExtra("courseName", courseName);

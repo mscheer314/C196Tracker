@@ -24,6 +24,7 @@ import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTermDialog extends AppCompatDialogFragment {
     private static final String TAG = "AddTermDialog";
@@ -61,8 +62,8 @@ public class AddTermDialog extends AppCompatDialogFragment {
                             //setResult(RESULT_CANCELED, replyIntent);
                         } else {
                             String termName = mTermName.getText().toString();
-                            String termStart = mTermStart.toString();
-                            String termEnd = mTermEnd.toString();
+                            String termStart = (String) mTermStart.getText();
+                            String termEnd = (String) mTermEnd.getText();
 
                             replyIntent.putExtra("termName", termName);
                             replyIntent.putExtra("termStart", termStart);
