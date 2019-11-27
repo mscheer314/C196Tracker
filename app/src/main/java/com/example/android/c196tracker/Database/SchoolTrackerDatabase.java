@@ -16,13 +16,11 @@ import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
-@Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class}, version = 1)
+@Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class}, version = 1, exportSchema = false)
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {
     public abstract TermDAO termDAO();
-
     public abstract CourseDAO courseDAO();
-
     public abstract NoteDAO noteDAO();
 
     private static volatile SchoolTrackerDatabase INSTANCE;

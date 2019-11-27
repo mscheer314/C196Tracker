@@ -5,15 +5,14 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "courses")
 public class CourseEntity {
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     private int courseId;
 
     private String courseName;
     private String courseStart;
     private String courseEnd;
 
-    public CourseEntity(int courseId, String courseName, String courseStart, String courseEnd) {
-        this.courseId = courseId;
+    public CourseEntity(String courseName, String courseStart, String courseEnd) {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
