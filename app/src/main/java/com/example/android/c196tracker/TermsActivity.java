@@ -8,11 +8,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.UI.AddTermDialog;
+import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.UI.TermAdapter;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
@@ -50,6 +52,9 @@ public class TermsActivity extends AppCompatActivity {
 
         final TermAdapter mAdapter = new TermAdapter(this);
         recyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
         mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {

@@ -12,10 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
+import com.example.android.c196tracker.TermsActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
+
+    private int mRecentlyDeletedItemPosition;
+    private TermEntity mRecentlyDeletedItem;
+    private final LayoutInflater mInflater;
+    private final Context context;
+    private List<TermEntity> mTerms;
+    private TermsActivity mActivity;
 
     class TermViewHolder extends RecyclerView.ViewHolder {
         private final TextView termItemView;
@@ -29,10 +38,6 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             termItemView3 = itemView.findViewById(R.id.term_end);
         }
     }
-
-    private final LayoutInflater mInflater;
-    private final Context context;
-    private List<TermEntity> mTerms;
 
     public TermAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -64,6 +69,27 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
                 context.startActivity(intent);
             }
         });
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItem = mTerms.get(position);
+        mRecentlyDeletedItemPosition = position;
+        mTerms.remove(position);
+        notifyItemRemoved(position);
+        showUndoSnackBar();
+    }
+
+    private void showUndoSnackBar() {
+        // TODO  figure out this line mActivity returns null
+        View view = mActivity.findViewById(R.id.recyclerview_terms);
+        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        mTerms.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
+        notifyItemInserted(mRecentlyDeletedItemPosition);
     }
 
     public void setTerms(List<TermEntity> terms) {

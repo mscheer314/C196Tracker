@@ -14,4 +14,6 @@
     <string name="course_end">course end</string>
     <string name="note_content">note content</string>
     <string name="add_note">add note</string>
+    <string name="snack_bar_text">snack bar text</string>
+    <string name="snack_bar_undo">snack bar undo</string>
 </resources>

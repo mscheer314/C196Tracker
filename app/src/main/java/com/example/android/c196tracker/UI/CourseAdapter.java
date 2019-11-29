@@ -10,12 +10,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.CourseDetails;
+import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
+import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+
+    private final LayoutInflater mInflater;
+    private final Context context;
+    private List<CourseEntity> mCourses;
+    private CourseEntity mRecentlyDeletedItem;
+    private  int mRecentlyDeletedItemPosition;
+    private CoursesActivity mActivity;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseItemView;
@@ -29,10 +39,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             courseItemView3 = itemView.findViewById(R.id.course_end);
         }
     }
-
-    private final LayoutInflater mInflater;
-    private final Context context;
-    private List<CourseEntity> mCourses;
 
     public CourseAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -63,6 +69,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 Intent intent = new Intent(context, CourseDetails.class);
             }
         });
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItem = mCourses.get(position);
+        mRecentlyDeletedItemPosition = position;
+        mCourses.remove(position);
+        notifyItemRemoved(position);
+        showUndoSnackBar();
+    }
+
+    private void showUndoSnackBar() {
+        View view = mActivity.findViewById(R.id.recyclerview_courses);
+        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelte());
+    }
+
+    private void undoDelte() {
+        mCourses.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
+        notifyItemInserted(mRecentlyDeletedItemPosition);
     }
 
     public void setCourses(List<CourseEntity> courses) {
