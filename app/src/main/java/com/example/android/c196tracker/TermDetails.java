@@ -1,8 +1,10 @@
 package com.example.android.c196tracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -17,9 +19,11 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 public class TermDetails extends AppCompatActivity {
 
+    String termName;
     private Button addCourseButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private TextView termTitle;
     private TermViewModel mTermViewModel;
     private CourseViewModel mCourseViewModel;
 
@@ -29,6 +33,7 @@ public class TermDetails extends AppCompatActivity {
         setContentView(R.layout.activity_term_details);
 
         setRecyclerView();
+        setTermDetails();
 
         addCourseButton = findViewById(R.id.term_details_course_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -54,5 +59,14 @@ public class TermDetails extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(courseAdapter));
 
+    }
+
+    private void setTermDetails() {
+        termTitle = findViewById(R.id.term_details_title);
+
+        Intent intent = getIntent();
+        termName = intent.getStringExtra("termName");
+
+        termTitle.setText(termName);
     }
 }

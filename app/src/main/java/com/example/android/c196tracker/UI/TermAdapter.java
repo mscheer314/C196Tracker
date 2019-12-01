@@ -65,7 +65,9 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         holder.termItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String termName = holder.termItemView.getText().toString();
                 Intent intent = new Intent(context, TermDetails.class);
+                intent.putExtra("termName", termName);
                 context.startActivity(intent);
             }
         });
