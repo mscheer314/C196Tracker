@@ -71,4 +71,6 @@ public class CourseEntity {
     }
 
     public int getTermId() { return termId; }
+
+    public void setTermId(int termId) { this.termId = termId; }
 }

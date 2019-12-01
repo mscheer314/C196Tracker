@@ -52,7 +52,7 @@ public class TermDetails extends AppCompatActivity {
         addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
     }
 
-    public void setRecyclerView() {
+    private void setRecyclerView() {
         recyclerView = findViewById(R.id.term_details_course_recyclerview);
         recyclerView.setHasFixedSize(true);
 
@@ -63,7 +63,6 @@ public class TermDetails extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(courseAdapter));
-
     }
 
     private void setTermDetails() {
