@@ -31,7 +31,7 @@ public class NotesActivity extends AppCompatActivity {
 
         setRecyclerView();
 
-        addNoteButton = findViewById(R.id.add_note_button);
+        addNoteButton = findViewById(R.id.notes_add_button);
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {openDialog();}
@@ -39,7 +39,7 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerview_notes);
+        recyclerView = findViewById(R.id.notes_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);

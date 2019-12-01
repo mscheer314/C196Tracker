@@ -32,7 +32,7 @@ public class CoursesActivity extends AppCompatActivity {
 
         setRecyclerView();
 
-        addCourseButton = findViewById(R.id.add_course_button);
+        addCourseButton = findViewById(R.id.courses_add_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { openDialog(); }
@@ -40,7 +40,7 @@ public class CoursesActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerview_courses);
+        recyclerView = findViewById(R.id.courses_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);

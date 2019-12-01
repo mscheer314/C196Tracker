@@ -34,7 +34,7 @@ public class TermsActivity extends AppCompatActivity {
 
         setRecyclerView();
 
-        addTermButton = findViewById(R.id.add_term_button);
+        addTermButton = findViewById(R.id.term_add_button);
         addTermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +44,7 @@ public class TermsActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerview_terms);
+        recyclerView = findViewById(R.id.terms_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);
