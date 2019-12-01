@@ -11,38 +11,46 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.android.c196tracker.Database.SchoolTrackerDatabase;
-import com.example.android.c196tracker.Database.SchoolTrackerRepository;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
-import com.example.android.c196tracker.UI.TermAdapter;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddCourseDialog extends AppCompatDialogFragment {
+import butterknife.OnClick;
+
+public class AddCourseDialog extends AppCompatDialogFragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddCourseDialog";
-    //  TODO UI element for getting the termId
     private EditText mCourseName;
     private TextView mCourseStart;
     private TextView mCourseEnd;
+    private String mTermName;
     private DatePickerDialog.OnDateSetListener mStartSetListener;
     private DatePickerDialog.OnDateSetListener mEndSetListener;
     private CourseViewModel mCourseViewModel;
     private Spinner mTermSpinner;
+    private TermViewModel mTermViewModel;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -71,14 +79,14 @@ public class AddCourseDialog extends AppCompatDialogFragment {
                             String courseName = mCourseName.getText().toString();
                             String courseStart = (String) mCourseStart.getText();
                             String courseEnd = (String) mCourseEnd.getText();
-                            // TODO get the termId from the UI element
 
                             replyIntent.putExtra("courseName", courseName);
                             replyIntent.putExtra("courseStart", courseStart);
                             replyIntent.putExtra("courseEnd", courseEnd);
 
-                                 CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd);
-                                   mCourseViewModel.insert(course);
+                            // TODO figure out how to get the termId
+                            CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, termId);
+                            mCourseViewModel.insert(course);
                         }
                     }
                 });
@@ -145,10 +153,33 @@ public class AddCourseDialog extends AppCompatDialogFragment {
     }
 
     private void loadSpinnerData() {
-       /* List<TermEntity> terms = SchoolTrackerRepository rep = ne
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-               // (getContext(), android.R.layout.simple_spinner_item, terms);
+        ArrayList<String> termsList = new ArrayList<>();
+        ArrayList<Integer> termIds = new ArrayList<>();
+        mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
+        mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<TermEntity> terms) {
+                for (TermEntity term : terms) {
+                    termsList.add(term.getTermName());
+                    termIds.add(term.getTermId());
+                }
+            }
+        });
 
-        */
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, termsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mTermSpinner.setAdapter(adapter);
+        mTermSpinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        mTermName = text;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

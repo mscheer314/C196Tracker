@@ -34,7 +34,7 @@ public class TermsActivity extends AppCompatActivity {
 
         setRecyclerView();
 
-        addTermButton = findViewById(R.id.term_add_button);
+        addTermButton = findViewById(R.id.terms_add_button);
         addTermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

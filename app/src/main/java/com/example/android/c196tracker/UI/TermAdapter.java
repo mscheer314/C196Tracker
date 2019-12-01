@@ -34,8 +34,8 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         private TermViewHolder(View itemView) {
             super(itemView);
             termItemView = itemView.findViewById(R.id.term_name);
-            termItemView2 = itemView.findViewById(R.id.term_start);
-            termItemView3 = itemView.findViewById(R.id.term_end);
+            termItemView2 = itemView.findViewById(R.id.term_details_start);
+            termItemView3 = itemView.findViewById(R.id.term_details_end);
         }
     }
 
@@ -81,7 +81,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     private void showUndoSnackBar() {
         // TODO  figure out this line mActivity returns null
-        View view = mActivity.findViewById(R.id.recyclerview_terms);
+        View view = mActivity.findViewById(R.id.terms_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
         snackbar.show();

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
-import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -80,7 +79,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     private void showUndoSnackBar() {
-        View view = mActivity.findViewById(R.id.recyclerview_courses);
+        View view = mActivity.findViewById(R.id.courses_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelte());
     }
