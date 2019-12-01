@@ -16,4 +16,5 @@
     <string name="add_note">add note</string>
     <string name="snack_bar_text">snack bar text</string>
     <string name="snack_bar_undo">snack bar undo</string>
+    <string name="spinner_term_prompt">Please select a term.</string>
 </resources>

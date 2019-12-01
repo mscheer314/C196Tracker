@@ -1,21 +1,30 @@
 package com.example.android.c196tracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "courses")
+@Entity(tableName = "courses", foreignKeys = @ForeignKey(entity = TermEntity.class,
+        parentColumns = "termId",
+        childColumns = "termId"),
+        indices = {@Index("termId")})
+
 public class CourseEntity {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int courseId;
 
     private String courseName;
     private String courseStart;
     private String courseEnd;
 
-    public CourseEntity(String courseName, String courseStart, String courseEnd) {
+    private int termId;
+
+    public CourseEntity(String courseName, String courseStart, String courseEnd, int termId) {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
+        this.termId = termId;
     }
 
     @Override
@@ -60,4 +69,6 @@ public class CourseEntity {
     public void setCourseEnd(String courseEnd) {
         this.courseEnd = courseEnd;
     }
+
+    public int getTermId() { return termId; }
 }
