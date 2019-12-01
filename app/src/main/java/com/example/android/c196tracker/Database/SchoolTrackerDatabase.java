@@ -9,19 +9,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.android.c196tracker.DAO.AssessmentDAO;
 import com.example.android.c196tracker.DAO.CourseDAO;
 import com.example.android.c196tracker.DAO.NoteDAO;
 import com.example.android.c196tracker.DAO.TermDAO;
+import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
-@Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class, AssessmentEntity.class}, version = 1, exportSchema = false)
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {
     public abstract TermDAO termDAO();
     public abstract CourseDAO courseDAO();
     public abstract NoteDAO noteDAO();
+    public abstract AssessmentDAO assessmentDAO();
 
     private static volatile SchoolTrackerDatabase INSTANCE;
 
@@ -53,11 +56,13 @@ public abstract class SchoolTrackerDatabase extends RoomDatabase {
         private final TermDAO mTermDao;
         private final CourseDAO mCourseDao;
         private final NoteDAO mNoteDao;
+        private final AssessmentDAO mAssessmentDao;
 
         PopulateDbAsync(SchoolTrackerDatabase db) {
             mTermDao = db.termDAO();
             mCourseDao = db.courseDAO();
             mNoteDao = db.noteDAO();
+            mAssessmentDao = db.assessmentDAO();
         }
 
         @Override

@@ -9,6 +9,7 @@ public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
     private TermAdapter termAdapter;
     private CourseAdapter courseAdapter;
     private NoteAdapter noteAdapter;
+    private AssessmentAdapter assessmentAdapter;
 
     public SwipeToDeleteCallBack(TermAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
@@ -23,6 +24,11 @@ public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
     public SwipeToDeleteCallBack(NoteAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         noteAdapter = adapter;
+    }
+
+    public SwipeToDeleteCallBack(AssessmentAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        assessmentAdapter = adapter;
     }
 
     @Override
@@ -41,6 +47,10 @@ public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
         }
         if (noteAdapter != null) {
             noteAdapter.deleteItem(position);
+        }
+
+        if (assessmentAdapter != null) {
+            assessmentAdapter.deleteItem(position);
         }
     }
 }

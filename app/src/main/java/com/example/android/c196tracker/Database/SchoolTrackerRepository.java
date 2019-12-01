@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.android.c196tracker.DAO.AssessmentDAO;
 import com.example.android.c196tracker.DAO.CourseDAO;
 import com.example.android.c196tracker.DAO.NoteDAO;
 import com.example.android.c196tracker.DAO.TermDAO;
+import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
@@ -18,11 +20,17 @@ public class SchoolTrackerRepository {
     private TermDAO mTermDAO;
     private CourseDAO mCourseDAO;
     private NoteDAO mNoteDAO;
+    private AssessmentDAO mAssessmentDAO;
+
     private LiveData<List<TermEntity>> mAllTerms;
     private LiveData<List<CourseEntity>> mAllCourses;
     private LiveData<List<NoteEntity>> mAllNotes;
+    private LiveData<List<AssessmentEntity>> mAllAssessments;
+
     private LiveData<List<CourseEntity>> mAssociatedCourses;
     private LiveData<List<NoteEntity>> mAssociatedNotes;
+    private LiveData<List<AssessmentEntity>> mAssociatedAssessments;
+
     private int courseId;
     private int noteId;
 
@@ -31,9 +39,13 @@ public class SchoolTrackerRepository {
         mTermDAO = db.termDAO();
         mCourseDAO = db.courseDAO();
         mNoteDAO = db.noteDAO();
+        mAssessmentDAO = db.assessmentDAO();
+
         mAllTerms = mTermDAO.getAllTerms();
         mAllCourses = mCourseDAO.getAllCourses();
         mAllNotes = mNoteDAO.getAllNotes();
+        mAllAssessments = mAssessmentDAO.getAllAssessments();
+
     }
 
     public LiveData<List<TermEntity>> getAllTerms() {
@@ -48,9 +60,14 @@ public class SchoolTrackerRepository {
         return mAllNotes;
     }
 
+    public LiveData<List<AssessmentEntity>> getmAllAssessments() {
+        return mAllAssessments;
+    }
+
     public LiveData<List<CourseEntity>> getmAssociatedCourses(int termId) {
         return mAssociatedCourses;
     }
+
 
     public LiveData<List<NoteEntity>> getmAssociatedNotes(int courseId) {
         return mAssociatedNotes;
@@ -106,6 +123,24 @@ public class SchoolTrackerRepository {
         @Override
         protected Void doInBackground(final NoteEntity... params) {
             mAsyncNoteDAO.insert(params[0]);
+            return null;
+        }
+    }
+
+    public void insert(AssessmentEntity assessmentEntity) {
+        new insertAsyncTask4(mAssessmentDAO).execute(assessmentEntity);
+    }
+
+    private static class insertAsyncTask4 extends AsyncTask<AssessmentEntity, Void, Void> {
+        private AssessmentDAO mAsyncAssessmentDAO;
+
+        insertAsyncTask4(AssessmentDAO dao) {
+            mAsyncAssessmentDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final AssessmentEntity... params) {
+            mAsyncAssessmentDAO.insert(params[0]);
             return null;
         }
     }
