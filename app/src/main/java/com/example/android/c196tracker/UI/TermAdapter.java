@@ -66,8 +66,13 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             @Override
             public void onClick(View v) {
                 String termName = holder.termItemView.getText().toString();
+                String termStart = holder.termItemView2.getText().toString();
+                String termEnd = holder.termItemView3.getText().toString();
                 Intent intent = new Intent(context, TermDetails.class);
                 intent.putExtra("termName", termName);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
+
                 context.startActivity(intent);
             }
         });

@@ -19,11 +19,16 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 public class TermDetails extends AppCompatActivity {
 
-    String termName;
+    private String termName;
+    private String termStartString;
+    private String termEndString;
+
     private Button addCourseButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TextView termTitle;
+    private TextView termStart;
+    private TextView termEnd;
     private TermViewModel mTermViewModel;
     private CourseViewModel mCourseViewModel;
 
@@ -63,10 +68,16 @@ public class TermDetails extends AppCompatActivity {
 
     private void setTermDetails() {
         termTitle = findViewById(R.id.term_details_title);
+        termStart = findViewById(R.id.term_details_start);
+        termEnd = findViewById(R.id.term_details_end);
 
         Intent intent = getIntent();
         termName = intent.getStringExtra("termName");
+        termStartString = intent.getStringExtra("termStart");
+        termEndString = intent.getStringExtra("termEnd");
 
         termTitle.setText(termName);
+        termStart.setText(termStartString);
+        termEnd.setText(termEndString);
     }
 }
