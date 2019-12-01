@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.NoteEntity;
-import com.example.android.c196tracker.NoteDetails;
 import com.example.android.c196tracker.NotesActivity;
 import com.example.android.c196tracker.R;
 import com.google.android.material.snackbar.Snackbar;
