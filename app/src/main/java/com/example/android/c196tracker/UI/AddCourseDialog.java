@@ -13,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,8 +29,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.InputChecker;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
@@ -45,51 +49,74 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     private EditText mCourseName;
     private TextView mCourseStart;
     private TextView mCourseEnd;
-    private String mTermName;
     private DatePickerDialog.OnDateSetListener mStartSetListener;
     private DatePickerDialog.OnDateSetListener mEndSetListener;
     private CourseViewModel mCourseViewModel;
     private Spinner mTermSpinner;
     private TermViewModel mTermViewModel;
+    ArrayList<String> termsList;
+    ArrayList<Integer> termIdList;
+    private int spinnerIndex;
+    private int termId;
+    private String errorMessage;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_course, null);
         mCourseName = view.findViewById(R.id.course_name_editText);
         mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
 
-        builder.setView(view)
-                .setTitle("Add Course")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(view)
+                .setTitle(R.string.add_course)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent replyIntent = new Intent();
-
-                        if (TextUtils.isEmpty(mCourseName.getText())) {
-                            //setResult(RESULT_CANCELED, replyIntent);
+                    public void onClick(View v) {
+                        errorMessage = InputChecker.checkNewItemInput(false,
+                                mCourseName.getText().toString(),
+                                mCourseStart.getText().toString(),
+                                mCourseEnd.getText().toString());
+                        if (errorMessage.length() > 0) {
+                            showToast(errorMessage);
                         } else {
+                            Intent replyIntent = new Intent();
                             String courseName = mCourseName.getText().toString();
-                            String courseStart = (String) mCourseStart.getText();
-                            String courseEnd = (String) mCourseEnd.getText();
+                            String courseStart = mCourseStart.getText().toString();
+                            String courseEnd = mCourseEnd.getText().toString();
 
                             replyIntent.putExtra("courseName", courseName);
                             replyIntent.putExtra("courseStart", courseStart);
                             replyIntent.putExtra("courseEnd", courseEnd);
-
-                            // TODO figure out how to get the termId
+                            // replace last int with termId
                             CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, termId);
                             mCourseViewModel.insert(course);
+
+                            dialog.dismiss();
                         }
                     }
                 });
+            }
+        });
+        setupDateSelectButtons(view);
+        mTermSpinner = view.findViewById(R.id.term_spinner);
+        mTermSpinner.setOnItemSelectedListener(this);
+        loadSpinnerData();
+        return dialog;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupDateSelectButtons(View view) {
         mCourseStart = view.findViewById(R.id.course_start_datepicker);
         mCourseEnd = view.findViewById(R.id.course_end_datepicker);
 
@@ -145,37 +172,33 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                 mCourseEnd.setText(date);
             }
         };
-
-        mTermSpinner = view.findViewById(R.id.term_spinner);
-        loadSpinnerData();
-
-        return builder.create();
     }
 
+    // TODO figure out why the spinner data isn't getting into termsList and termIdList
     private void loadSpinnerData() {
-        ArrayList<String> termsList = new ArrayList<>();
-        ArrayList<Integer> termIds = new ArrayList<>();
+        termsList = new ArrayList<>();
+        termIdList = new ArrayList<>();
         mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
         mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
             @Override
             public void onChanged(@Nullable final List<TermEntity> terms) {
                 for (TermEntity term : terms) {
                     termsList.add(term.getTermName());
-                    termIds.add(term.getTermId());
+                    termIdList.add(term.getTermId());
                 }
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, termsList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, termsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTermSpinner.setAdapter(adapter);
-        mTermSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
-        mTermName = text;
+        spinnerIndex = parent.getSelectedItemPosition();
+        termId = termIdList.get(spinnerIndex);
+
     }
 
     @Override

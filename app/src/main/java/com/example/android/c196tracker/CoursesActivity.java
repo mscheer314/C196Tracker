@@ -8,12 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
+import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
@@ -48,6 +50,9 @@ public class CoursesActivity extends AppCompatActivity {
 
         final CourseAdapter mAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
         mCourseViewModel.getmAllCourses().observe(this, new Observer<List<CourseEntity>>() {

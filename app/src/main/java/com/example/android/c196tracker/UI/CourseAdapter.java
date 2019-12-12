@@ -19,11 +19,11 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
+    private CourseEntity mRecentlyDeletedItem;
+    private int mRecentlyDeletedItemPosition;
     private final LayoutInflater mInflater;
     private final Context context;
     private List<CourseEntity> mCourses;
-    private CourseEntity mRecentlyDeletedItem;
-    private  int mRecentlyDeletedItemPosition;
     private CoursesActivity mActivity;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
@@ -64,8 +64,18 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
         holder.courseItemView.setOnClickListener(new View.OnClickListener() {
             @Override
-                public void onClick(View v) {
+            public void onClick(View v) {
+                String courseName = holder.courseItemView.getText().toString();
+                String courseStart = holder.courseItemView2.getText().toString();
+                String courseEnd = holder.courseItemView3.getText().toString();
+
                 Intent intent = new Intent(context, CourseDetails.class);
+
+                intent.putExtra("courseName", courseName);
+                intent.putExtra("courseStart", courseStart);
+                intent.putExtra("courseEnd", courseEnd);
+
+                context.startActivity(intent);
             }
         });
     }
@@ -81,10 +91,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private void showUndoSnackBar() {
         View view = mActivity.findViewById(R.id.courses_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelte());
+        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
     }
 
-    private void undoDelte() {
+    private void undoDelete() {
         mCourses.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
         notifyItemInserted(mRecentlyDeletedItemPosition);
     }

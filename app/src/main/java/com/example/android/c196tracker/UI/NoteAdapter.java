@@ -1,7 +1,6 @@
 package com.example.android.c196tracker.UI;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,13 +55,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.noteItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, NoteDetails.class);
-                context.startActivity(intent);
+                //Intent intent = new Intent(context, NoteDetails.class);
+                //context.startActivity(intent);
             }
         });
     }
 
-    public void deleteItem(int position) {
+    protected void deleteItem(int position) {
         mRecentlyDeletedItem = mNotes.get(position);
         mRecentlyDeletedItemPosition = position;
         mNotes.remove(position);

@@ -62,7 +62,9 @@ public class TermDetails extends AppCompatActivity {
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(courseAdapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new SwipeToDeleteCallBack(courseAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void setTermDetails() {

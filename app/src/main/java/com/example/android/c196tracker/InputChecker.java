@@ -8,11 +8,12 @@ public class InputChecker {
 
     public static String checkNewItemInput(boolean isTerm, String name, String start, String end) {
         String errorMessage = "";
-        if (name.length() == 0 && isTerm) {
-            errorMessage += "Please enter a term name.\n";
-        }
-        if (name == null && !isTerm) {
-            errorMessage += "Please enter a course name.\n";
+        if (name.length() == 0) {
+            if (isTerm) {
+                errorMessage += "Please enter a term name.\n";
+            } else {
+                errorMessage += "Please enter a course name.\n";
+            }
         }
         if (start.equals("select date")) {
             errorMessage += "Please select a start date.\n";

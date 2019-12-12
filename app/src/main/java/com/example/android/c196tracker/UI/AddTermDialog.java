@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.InputChecker;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
@@ -39,8 +40,6 @@ public class AddTermDialog extends AppCompatDialogFragment {
     private DatePickerDialog.OnDateSetListener mEndSetListener;
     private TermViewModel mTermViewModel;
     private String errorMessage;
-    private String startDateString;
-    private String endDateString;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -62,7 +61,10 @@ public class AddTermDialog extends AppCompatDialogFragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        checkInput();
+                        errorMessage = InputChecker.checkNewItemInput(true,
+                                mTermName.getText().toString(),
+                                mTermStart.getText().toString(),
+                                mTermEnd.getText().toString());
                         if (errorMessage.length() > 0) {
                             showToast(errorMessage);
                         } else {
@@ -86,25 +88,6 @@ public class AddTermDialog extends AppCompatDialogFragment {
         });
         setupDateSelectButtons(view);
         return dialog;
-    }
-
-    private String checkInput() {
-        errorMessage = "";
-        if (TextUtils.isEmpty(mTermName.getText())) {
-            errorMessage += "Please enter a term name.\n";
-        }
-        if (mTermStart.getText().toString().equals("select date")) {
-            errorMessage += "Please select a start date.\n";
-            Log.d("AddTermDialog.java", "Term start date wasn't selected.");
-        }
-        if (mTermEnd.getText().toString().equals("select date")) {
-            errorMessage += "Please select an end date.\n";
-            Log.d("AddTermDialog.java", "Term end date wasn't selected.");
-        }
-        if (!isValidCompareStartAndEndDates(startDateString, endDateString)) {
-            errorMessage += "The start date must be before the end date.";
-        }
-        return errorMessage;
     }
 
     private void showToast(String message) {
@@ -139,7 +122,6 @@ public class AddTermDialog extends AppCompatDialogFragment {
                 Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
                 String date = month + "/" + dayOfMonth + "/" + year;
                 mTermStart.setText(date);
-                startDateString = date;
             }
         };
 
@@ -167,21 +149,7 @@ public class AddTermDialog extends AppCompatDialogFragment {
                 Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
                 String date = month + "/" + dayOfMonth + "/" + year;
                 mTermEnd.setText(date);
-                endDateString = date;
             }
         };
-    }
-
-    private boolean isValidCompareStartAndEndDates(String startDateString, String endDateString) {
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-            Date startDate = simpleDateFormat.parse(startDateString);
-            Date endDate = simpleDateFormat.parse(endDateString);
-
-            return startDate.compareTo(endDate) < 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }
