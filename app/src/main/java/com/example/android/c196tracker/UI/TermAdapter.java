@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.Database.SchoolTrackerRepository;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
@@ -24,7 +25,9 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     private final LayoutInflater mInflater;
     private final Context context;
     private List<TermEntity> mTerms;
+    private int termId;
     private TermsActivity mActivity;
+    private SchoolTrackerRepository repository;
 
     class TermViewHolder extends RecyclerView.ViewHolder {
         private final TextView termItemView;
@@ -54,6 +57,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public void onBindViewHolder(TermViewHolder holder, int position) {
         if (mTerms != null) {
             TermEntity current = mTerms.get(position);
+            termId = current.getTermId();
             holder.termItemView.setText(current.getTermName());
             holder.termItemView2.setText(current.getTermStart());
             holder.termItemView3.setText(current.getTermEnd());
@@ -69,6 +73,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
                 String termStart = holder.termItemView2.getText().toString();
                 String termEnd = holder.termItemView3.getText().toString();
                 Intent intent = new Intent(context, TermDetails.class);
+                intent.putExtra("termId", termId);
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
                 intent.putExtra("termEnd", termEnd);

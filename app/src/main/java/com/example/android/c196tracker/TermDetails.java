@@ -7,15 +7,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
+
+import java.util.List;
 
 public class TermDetails extends AppCompatActivity {
 
@@ -31,14 +36,15 @@ public class TermDetails extends AppCompatActivity {
     private TextView termEnd;
     private TermViewModel mTermViewModel;
     private CourseViewModel mCourseViewModel;
+    private int termId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_details);
 
-        setRecyclerView();
         setTermDetails();
+        setRecyclerView();
 
         addCourseButton = findViewById(R.id.term_details_course_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +71,14 @@ public class TermDetails extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new SwipeToDeleteCallBack(courseAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+        mCourseViewModel.getmAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
+            @Override
+            public void onChanged(List<CourseEntity> courseEntities) {
+                courseAdapter.setCourses(courseEntities);
+            }
+        });
     }
 
     private void setTermDetails() {
@@ -76,7 +90,7 @@ public class TermDetails extends AppCompatActivity {
         termName = intent.getStringExtra("termName");
         termStartString = intent.getStringExtra("termStart");
         termEndString = intent.getStringExtra("termEnd");
-
+        termId = intent.getIntExtra("termId", 0);
         termTitle.setText(termName);
         termStart.setText(termStartString);
         termEnd.setText(termEndString);

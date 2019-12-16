@@ -27,7 +27,6 @@ public class SchoolTrackerRepository {
     private LiveData<List<NoteEntity>> mAllNotes;
     private LiveData<List<AssessmentEntity>> mAllAssessments;
 
-    private LiveData<List<CourseEntity>> mAssociatedCourses;
     private LiveData<List<NoteEntity>> mAssociatedNotes;
     private LiveData<List<AssessmentEntity>> mAssociatedAssessments;
 
@@ -45,7 +44,6 @@ public class SchoolTrackerRepository {
         mAllCourses = mCourseDAO.getAllCourses();
         mAllNotes = mNoteDAO.getAllNotes();
         mAllAssessments = mAssessmentDAO.getAllAssessments();
-
     }
 
     public LiveData<List<TermEntity>> getAllTerms() {
@@ -65,7 +63,7 @@ public class SchoolTrackerRepository {
     }
 
     public LiveData<List<CourseEntity>> getmAssociatedCourses(int termId) {
-        return mAssociatedCourses;
+        return mCourseDAO.getAllAssociatedCourses(termId);
     }
 
 

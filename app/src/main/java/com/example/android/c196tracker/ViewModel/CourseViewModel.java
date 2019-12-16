@@ -27,11 +27,14 @@ public class CourseViewModel extends AndroidViewModel {
     public CourseViewModel(Application application, int termId) {
         super(application);
         mRepository = new SchoolTrackerRepository(application);
-        mAssociatedCourses = mRepository.getmAssociatedCourses(termId);
     }
 
     public LiveData<List<CourseEntity>> getmAllCourses() {
         return mAllCourses;
+    }
+
+    public LiveData<List<CourseEntity>> getmAssociatedCourses(int termId) {
+        return mRepository.getmAssociatedCourses(termId);
     }
 
     public void insert(CourseEntity courseEntity) {
