@@ -178,6 +178,7 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     private void loadSpinnerData() {
         termsList = new ArrayList<>();
         termIdList = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, termsList);
         mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
         mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
             @Override
@@ -186,10 +187,9 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                     termsList.add(term.getTermName());
                     termIdList.add(term.getTermId());
                 }
+                adapter.notifyDataSetChanged();
             }
         });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, termsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTermSpinner.setAdapter(adapter);
     }
