@@ -17,10 +17,12 @@ public class CourseEntity {
     private String courseName;
     private String courseStart;
     private String courseEnd;
+    private String courseStatus;
 
     private int termId;
 
-    public CourseEntity(String courseName, String courseStart, String courseEnd, int termId) {
+    public CourseEntity(String courseName, String courseStart, String courseEnd,
+                        String courseStatus, int termId) {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
@@ -34,6 +36,8 @@ public class CourseEntity {
                 ", courseName='" + courseName + '\'' +
                 ", courseStart='" + courseStart + '\'' +
                 ", courseEnd='" + courseEnd + '\'' +
+                ", courseStatus='" + courseStatus + '\'' +
+                ", termId='" + termId + '\'' +
                 '}';
 
     }
@@ -73,4 +77,8 @@ public class CourseEntity {
     public int getTermId() { return termId; }
 
     public void setTermId(int termId) { this.termId = termId; }
+
+    public String getCourseStatus() { return courseStatus; }
+
+    public void setCourseStatus(String courseStatus) { this.courseStatus = courseStatus; }
 }
