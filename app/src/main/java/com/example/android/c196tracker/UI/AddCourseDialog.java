@@ -7,29 +7,24 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.InputChecker;
@@ -37,15 +32,14 @@ import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import butterknife.OnClick;
-
 public class AddCourseDialog extends AppCompatDialogFragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddCourseDialog";
+    ArrayList<String> termsList;
+    ArrayList<Integer> termIdList;
     private EditText mCourseName;
     private TextView mCourseStart;
     private TextView mCourseEnd;
@@ -54,8 +48,6 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     private CourseViewModel mCourseViewModel;
     private Spinner mTermSpinner;
     private TermViewModel mTermViewModel;
-    ArrayList<String> termsList;
-    ArrayList<Integer> termIdList;
     private int spinnerIndex;
     private int termId;
     private String errorMessage;
@@ -76,7 +68,7 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                Button button = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -95,8 +87,9 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                             replyIntent.putExtra("courseName", courseName);
                             replyIntent.putExtra("courseStart", courseStart);
                             replyIntent.putExtra("courseEnd", courseEnd);
-                            // replace last int with termId
-                            CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, termId);
+                            // TODO replace course mentor to the constructor call
+                            CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd,
+                                    "mentor name", termId);
                             mCourseViewModel.insert(course);
 
                             dialog.dismiss();

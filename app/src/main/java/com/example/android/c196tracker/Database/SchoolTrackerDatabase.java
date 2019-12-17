@@ -21,12 +21,14 @@ import com.example.android.c196tracker.Entities.TermEntity;
 @Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class, AssessmentEntity.class}, version = 1, exportSchema = false)
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {
-    public abstract TermDAO termDAO();
-    public abstract CourseDAO courseDAO();
-    public abstract NoteDAO noteDAO();
-    public abstract AssessmentDAO assessmentDAO();
-
     private static volatile SchoolTrackerDatabase INSTANCE;
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+            new PopulateDbAsync(INSTANCE).execute();
+        }
+    };
 
     static SchoolTrackerDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -43,14 +45,13 @@ public abstract class SchoolTrackerDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-            new PopulateDbAsync(INSTANCE).execute();
-        }
-    };
+    public abstract TermDAO termDAO();
 
+    public abstract CourseDAO courseDAO();
+
+    public abstract NoteDAO noteDAO();
+
+    public abstract AssessmentDAO assessmentDAO();
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final TermDAO mTermDao;

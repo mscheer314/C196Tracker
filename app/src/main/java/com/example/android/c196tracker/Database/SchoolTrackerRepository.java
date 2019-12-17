@@ -75,6 +75,18 @@ public class SchoolTrackerRepository {
         new insertAsyncTask1(mTermDAO).execute(termEntity);
     }
 
+    public void insert(CourseEntity courseEntity) {
+        new insertAsyncTask2(mCourseDAO).execute(courseEntity);
+    }
+
+    public void insert(NoteEntity noteEntity) {
+        new insertAsyncTask3(mNoteDAO).execute(noteEntity);
+    }
+
+    public void insert(AssessmentEntity assessmentEntity) {
+        new insertAsyncTask4(mAssessmentDAO).execute(assessmentEntity);
+    }
+
     private static class insertAsyncTask1 extends AsyncTask<TermEntity, Void, Void> {
         private TermDAO mAsyncTaskDAO;
 
@@ -87,10 +99,6 @@ public class SchoolTrackerRepository {
             mAsyncTaskDAO.insert(params[0]);
             return null;
         }
-    }
-
-    public void insert(CourseEntity courseEntity) {
-        new insertAsyncTask2(mCourseDAO).execute(courseEntity);
     }
 
     private static class insertAsyncTask2 extends AsyncTask<CourseEntity, Void, Void> {
@@ -107,10 +115,6 @@ public class SchoolTrackerRepository {
         }
     }
 
-    public void insert(NoteEntity noteEntity) {
-        new insertAsyncTask3(mNoteDAO).execute(noteEntity);
-    }
-
     private static class insertAsyncTask3 extends AsyncTask<NoteEntity, Void, Void> {
         private NoteDAO mAsyncNoteDAO;
 
@@ -123,10 +127,6 @@ public class SchoolTrackerRepository {
             mAsyncNoteDAO.insert(params[0]);
             return null;
         }
-    }
-
-    public void insert(AssessmentEntity assessmentEntity) {
-        new insertAsyncTask4(mAssessmentDAO).execute(assessmentEntity);
     }
 
     private static class insertAsyncTask4 extends AsyncTask<AssessmentEntity, Void, Void> {
