@@ -26,6 +26,7 @@ public class CourseEntity {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
+        this.courseStatus = courseStatus;
         this.termId = termId;
     }
 
