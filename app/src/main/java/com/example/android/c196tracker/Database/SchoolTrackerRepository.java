@@ -7,138 +7,158 @@ import androidx.lifecycle.LiveData;
 
 import com.example.android.c196tracker.DAO.AssessmentDAO;
 import com.example.android.c196tracker.DAO.CourseDAO;
+import com.example.android.c196tracker.DAO.CourseMentorDAO;
 import com.example.android.c196tracker.DAO.NoteDAO;
 import com.example.android.c196tracker.DAO.TermDAO;
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.Entities.CourseEntity;
+import com.example.android.c196tracker.Entities.CourseMentorEntity;
 import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
 import java.util.List;
 
 public class SchoolTrackerRepository {
-    private TermDAO mTermDAO;
-    private CourseDAO mCourseDAO;
-    private NoteDAO mNoteDAO;
-    private AssessmentDAO mAssessmentDAO;
+    private TermDAO termDAO;
+    private CourseDAO courseDAO;
+    private NoteDAO noteDAO;
+    private AssessmentDAO assessmentDAO;
+    private CourseMentorDAO courseMentorDAO;
 
-    private LiveData<List<TermEntity>> mAllTerms;
-    private LiveData<List<CourseEntity>> mAllCourses;
-    private LiveData<List<NoteEntity>> mAllNotes;
-    private LiveData<List<AssessmentEntity>> mAllAssessments;
+    private LiveData<List<TermEntity>> allTerms;
+    private LiveData<List<CourseEntity>> allCourses;
+    private LiveData<List<CourseMentorEntity>> mAllCourseMentors;
+    private LiveData<List<NoteEntity>> allNotes;
+    private LiveData<List<AssessmentEntity>> allAssessments;
 
-    private LiveData<List<NoteEntity>> mAssociatedNotes;
-    private LiveData<List<AssessmentEntity>> mAssociatedAssessments;
+    private LiveData<List<CourseMentorEntity>> associatedCourseMentor;
+    private LiveData<List<NoteEntity>> associatedNotes;
+    private LiveData<List<AssessmentEntity>> associatedAssessments;
 
     private int courseId;
     private int noteId;
 
     public SchoolTrackerRepository(Application application) {
         SchoolTrackerDatabase db = SchoolTrackerDatabase.getDatabase(application);
-        mTermDAO = db.termDAO();
-        mCourseDAO = db.courseDAO();
-        mNoteDAO = db.noteDAO();
-        mAssessmentDAO = db.assessmentDAO();
+        termDAO = db.termDAO();
+        courseDAO = db.courseDAO();
+        noteDAO = db.noteDAO();
+        assessmentDAO = db.assessmentDAO();
+        courseMentorDAO = db.courseMentorDAO();
 
-        mAllTerms = mTermDAO.getAllTerms();
-        mAllCourses = mCourseDAO.getAllCourses();
-        mAllNotes = mNoteDAO.getAllNotes();
-        mAllAssessments = mAssessmentDAO.getAllAssessments();
+        allTerms = termDAO.getAllTerms();
+        allCourses = courseDAO.getAllCourses();
+        mAllCourseMentors = courseMentorDAO.getAllCourseMentors();
+        allNotes = noteDAO.getAllNotes();
+        allAssessments = assessmentDAO.getAllAssessments();
     }
 
     public LiveData<List<TermEntity>> getAllTerms() {
-        return mAllTerms;
+        return allTerms;
     }
 
-    public LiveData<List<CourseEntity>> getAllCourses() {
-        return mAllCourses;
+    public LiveData<List<CourseEntity>> getAllCourses() { return allCourses; }
+
+    public LiveData<List<NoteEntity>> getAllNotes() {
+        return allNotes;
     }
 
-    public LiveData<List<NoteEntity>> getmAllNotes() {
-        return mAllNotes;
+    public LiveData<List<AssessmentEntity>> getAllAssessments() {
+        return allAssessments;
     }
 
-    public LiveData<List<AssessmentEntity>> getmAllAssessments() {
-        return mAllAssessments;
+    public LiveData<List<CourseEntity>> getAssociatedCourses(int termId) {
+        return courseDAO.getAllAssociatedCourses(termId);
     }
 
-    public LiveData<List<CourseEntity>> getmAssociatedCourses(int termId) {
-        return mCourseDAO.getAllAssociatedCourses(termId);
-    }
-
-
-    public LiveData<List<NoteEntity>> getmAssociatedNotes(int courseId) {
-        return mAssociatedNotes;
+    public LiveData<List<NoteEntity>> getAssociatedNotes(int courseId) {
+        return associatedNotes;
     }
 
     public void insert(TermEntity termEntity) {
-        new insertAsyncTask1(mTermDAO).execute(termEntity);
+        new insertAsyncTask1(termDAO).execute(termEntity);
     }
 
     public void insert(CourseEntity courseEntity) {
-        new insertAsyncTask2(mCourseDAO).execute(courseEntity);
+        new insertAsyncTask2(courseDAO).execute(courseEntity);
     }
 
     public void insert(NoteEntity noteEntity) {
-        new insertAsyncTask3(mNoteDAO).execute(noteEntity);
+        new insertAsyncTask3(noteDAO).execute(noteEntity);
     }
 
     public void insert(AssessmentEntity assessmentEntity) {
-        new insertAsyncTask4(mAssessmentDAO).execute(assessmentEntity);
+        new insertAsyncTask4(assessmentDAO).execute(assessmentEntity);
+    }
+
+    public void insert(CourseMentorEntity courseMentorEntity) {
+        new insertAsyncTask5(courseMentorDAO).execute(courseMentorEntity);
     }
 
     private static class insertAsyncTask1 extends AsyncTask<TermEntity, Void, Void> {
-        private TermDAO mAsyncTaskDAO;
+        private TermDAO asyncTaskDAO;
 
         insertAsyncTask1(TermDAO dao) {
-            mAsyncTaskDAO = dao;
+            asyncTaskDAO = dao;
         }
 
         @Override
         protected Void doInBackground(final TermEntity... params) {
-            mAsyncTaskDAO.insert(params[0]);
+            asyncTaskDAO.insert(params[0]);
             return null;
         }
     }
 
     private static class insertAsyncTask2 extends AsyncTask<CourseEntity, Void, Void> {
-        private CourseDAO mAsyncCourseDAO;
+        private CourseDAO asyncCourseDAO;
 
         insertAsyncTask2(CourseDAO dao) {
-            mAsyncCourseDAO = dao;
+            asyncCourseDAO = dao;
         }
 
         @Override
         protected Void doInBackground(final CourseEntity... params) {
-            mAsyncCourseDAO.insert(params[0]);
+            asyncCourseDAO.insert(params[0]);
             return null;
         }
     }
 
     private static class insertAsyncTask3 extends AsyncTask<NoteEntity, Void, Void> {
-        private NoteDAO mAsyncNoteDAO;
+        private NoteDAO asyncNoteDAO;
 
         insertAsyncTask3(NoteDAO dao) {
-            mAsyncNoteDAO = dao;
+            asyncNoteDAO = dao;
         }
 
         @Override
         protected Void doInBackground(final NoteEntity... params) {
-            mAsyncNoteDAO.insert(params[0]);
+            asyncNoteDAO.insert(params[0]);
             return null;
         }
     }
 
     private static class insertAsyncTask4 extends AsyncTask<AssessmentEntity, Void, Void> {
-        private AssessmentDAO mAsyncAssessmentDAO;
+        private AssessmentDAO asyncAssessmentDAO;
 
         insertAsyncTask4(AssessmentDAO dao) {
-            mAsyncAssessmentDAO = dao;
+            asyncAssessmentDAO = dao;
         }
 
         @Override
         protected Void doInBackground(final AssessmentEntity... params) {
-            mAsyncAssessmentDAO.insert(params[0]);
+            asyncAssessmentDAO.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class insertAsyncTask5 extends AsyncTask<CourseMentorEntity, Void, Void> {
+        private CourseMentorDAO asyncCourseMentorDAO;
+
+        insertAsyncTask5(CourseMentorDAO dao) { asyncCourseMentorDAO = dao; }
+
+        @Override
+        protected Void doInBackground(final CourseMentorEntity... params) {
+            asyncCourseMentorDAO.insert(params[0]);
             return null;
         }
     }
