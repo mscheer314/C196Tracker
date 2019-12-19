@@ -26,9 +26,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
+import com.example.android.c196tracker.Entities.CourseMentorEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.InputChecker;
 import com.example.android.c196tracker.R;
+import com.example.android.c196tracker.ViewModel.CourseMentorViewModel;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
@@ -40,14 +42,17 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     private static final String TAG = "AddCourseDialog";
     ArrayList<String> termsList;
     ArrayList<Integer> termIdList;
-    private EditText mCourseName;
-    private TextView mCourseStart;
-    private TextView mCourseEnd;
-    private DatePickerDialog.OnDateSetListener mStartSetListener;
-    private DatePickerDialog.OnDateSetListener mEndSetListener;
-    private CourseViewModel mCourseViewModel;
-    private Spinner mTermSpinner;
-    private TermViewModel mTermViewModel;
+    ArrayList<String> courseMentorList;
+    private EditText courseName;
+    private TextView courseStart;
+    private TextView courseEnd;
+    private DatePickerDialog.OnDateSetListener startSetListener;
+    private DatePickerDialog.OnDateSetListener endSetListener;
+    private CourseViewModel courseViewModel;
+    private CourseMentorViewModel courseMentorViewModel;
+    private Spinner termSpinner;
+    private Spinner courseMentorSpinner;
+    private TermViewModel termViewModel;
     private int spinnerIndex;
     private int termId;
     private String errorMessage;
@@ -56,8 +61,8 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_course, null);
-        mCourseName = view.findViewById(R.id.course_name_editText);
-        mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+        courseName = view.findViewById(R.id.course_name_editText);
+        courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
 
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
@@ -73,16 +78,16 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                     @Override
                     public void onClick(View v) {
                         errorMessage = InputChecker.checkNewItemInput(false,
-                                mCourseName.getText().toString(),
-                                mCourseStart.getText().toString(),
-                                mCourseEnd.getText().toString());
+                                courseName.getText().toString(),
+                                courseStart.getText().toString(),
+                                courseEnd.getText().toString());
                         if (errorMessage.length() > 0) {
                             showToast(errorMessage);
                         } else {
                             Intent replyIntent = new Intent();
-                            String courseName = mCourseName.getText().toString();
-                            String courseStart = mCourseStart.getText().toString();
-                            String courseEnd = mCourseEnd.getText().toString();
+                            String courseName = AddCourseDialog.this.courseName.getText().toString();
+                            String courseStart = AddCourseDialog.this.courseStart.getText().toString();
+                            String courseEnd = AddCourseDialog.this.courseEnd.getText().toString();
 
                             replyIntent.putExtra("courseName", courseName);
                             replyIntent.putExtra("courseStart", courseStart);
@@ -90,7 +95,7 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                             // TODO replace course mentor to the constructor call
                             CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd,
                                     "mentor name", termId);
-                            mCourseViewModel.insert(course);
+                            courseViewModel.insert(course);
 
                             dialog.dismiss();
                         }
@@ -99,9 +104,12 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
             }
         });
         setupDateSelectButtons(view);
-        mTermSpinner = view.findViewById(R.id.term_spinner);
-        mTermSpinner.setOnItemSelectedListener(this);
-        loadSpinnerData();
+        termSpinner = view.findViewById(R.id.term_spinner);
+        termSpinner.setOnItemSelectedListener(this);
+        loadTermSpinnerData();
+        courseMentorSpinner = view.findViewById(R.id.course_mentor_spinner);
+        courseMentorSpinner.setOnItemSelectedListener(this);
+        loadCourseMentorSpinnerData();
         return dialog;
     }
 
@@ -110,10 +118,10 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     }
 
     private void setupDateSelectButtons(View view) {
-        mCourseStart = view.findViewById(R.id.course_start_datepicker);
-        mCourseEnd = view.findViewById(R.id.course_end_datepicker);
+        courseStart = view.findViewById(R.id.course_start_datepicker);
+        courseEnd = view.findViewById(R.id.course_end_datepicker);
 
-        mCourseStart.setOnClickListener(new View.OnClickListener() {
+        courseStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -123,23 +131,23 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
 
                 DatePickerDialog dialog = new DatePickerDialog(getContext(),
                         android.R.style.Theme_DeviceDefault_Dialog,
-                        mStartSetListener,
+                        startSetListener,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.GRAY));
                 dialog.show();
             }
         });
 
-        mStartSetListener = new DatePickerDialog.OnDateSetListener() {
+        startSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
                 String date = month + "/" + dayOfMonth + "/" + year;
-                mCourseStart.setText(date);
+                courseStart.setText(date);
             }
         };
-        mCourseEnd.setOnClickListener(new View.OnClickListener() {
+        courseEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -149,31 +157,30 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
 
                 DatePickerDialog dialog = new DatePickerDialog(getContext(),
                         android.R.style.Theme_DeviceDefault_Dialog,
-                        mEndSetListener,
+                        endSetListener,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.GRAY));
                 dialog.show();
             }
         });
 
-        mEndSetListener = new DatePickerDialog.OnDateSetListener() {
+        endSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
                 String date = month + "/" + dayOfMonth + "/" + year;
-                mCourseEnd.setText(date);
+                courseEnd.setText(date);
             }
         };
     }
 
-    // TODO figure out why the spinner data isn't getting into termsList and termIdList
-    private void loadSpinnerData() {
+    private void loadTermSpinnerData() {
         termsList = new ArrayList<>();
         termIdList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, termsList);
-        mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
-        mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
+        termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
+        termViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
             @Override
             public void onChanged(@Nullable final List<TermEntity> terms) {
                 for (TermEntity term : terms) {
@@ -183,8 +190,25 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
                 adapter.notifyDataSetChanged();
             }
         });
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mTermSpinner.setAdapter(adapter);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        termSpinner.setAdapter(adapter);
+    }
+
+    // TODO CHECK THAT THIS COURSE MENTOR SPINNER WORKS
+    private void loadCourseMentorSpinnerData() {
+        courseMentorList = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, courseMentorList);
+        courseMentorViewModel = new ViewModelProvider(this).get(CourseMentorViewModel.class);
+        courseMentorViewModel.getAllCourseMentors().observe(this, new Observer<List<CourseMentorEntity>>() {
+            @Override
+            public void onChanged(List<CourseMentorEntity> courseMentors) {
+                for (CourseMentorEntity courseMentor : courseMentors) {
+                    courseMentorList.add(courseMentor.getCourseMentorName());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        courseMentorSpinner.setAdapter(adapter);
     }
 
     @Override

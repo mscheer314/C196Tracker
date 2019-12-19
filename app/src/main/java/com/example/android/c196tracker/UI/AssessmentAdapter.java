@@ -17,12 +17,12 @@ import java.util.List;
 
 public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.AssessmentViewHolder> {
 
-    private int mRecentlyDeletedItemPosition;
-    private AssessmentEntity mRecentlyDeletedItem;
-    private final LayoutInflater mInflater;
+    private final LayoutInflater inflater;
+    private int recentlyDeletedItemPosition;
+    private AssessmentEntity recentlyDeletedItem;
     private final Context context;
-    private List<AssessmentEntity> mAssessments;
-    private AssessmentActivity mActivity;
+    private List<AssessmentEntity> assessments;
+    private AssessmentActivity activity;
 
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
         private final TextView assessmentItemView;
@@ -34,20 +34,20 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     }
 
     public AssessmentAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.context = context;
     }
 
     @Override
     public AssessmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.assessment_list_item, parent, false);
+        View itemView = inflater.inflate(R.layout.assessment_list_item, parent, false);
         return new AssessmentViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int postion) {
-        if (mAssessments != null) {
-            AssessmentEntity current = mAssessments.get(postion);
+        if (assessments != null) {
+            AssessmentEntity current = assessments.get(postion);
             holder.assessmentItemView.setText(current.getAssessmentName());
         } else {
             holder.assessmentItemView.setText("nothing");
@@ -61,36 +61,36 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         });
     }
 
+    @Override
+    public int getItemCount() {
+        if (assessments != null)
+            return assessments.size();
+        else return 0;
+    }
+
     protected void deleteItem(int position) {
-        mRecentlyDeletedItem = mAssessments.get(position);
-        mRecentlyDeletedItemPosition = position;
-        mAssessments.remove(position);
+        recentlyDeletedItem = assessments.get(position);
+        recentlyDeletedItemPosition = position;
+        assessments.remove(position);
         notifyItemRemoved(position);
         showUndoSnackBar();
     }
 
     private void showUndoSnackBar() {
-        // TODO figure out this line. mActivity returns null
-        View view = mActivity.findViewById(R.id.assessments_recyclerview);
+        // TODO figure out this line. activity returns null
+        View view = activity.findViewById(R.id.assessments_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
     }
 
     private void undoDelete() {
-        mAssessments.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        assessments.add(recentlyDeletedItemPosition, recentlyDeletedItem);
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
-    public void setmAssessments(List<AssessmentEntity> assessments) {
-        mAssessments = assessments;
+    public void setAssessments(List<AssessmentEntity> assessments) {
+        this.assessments = assessments;
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mAssessments != null)
-            return mAssessments.size();
-        else return 0;
     }
 }
 

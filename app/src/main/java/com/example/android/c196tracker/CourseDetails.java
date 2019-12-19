@@ -34,7 +34,7 @@ public class CourseDetails extends AppCompatActivity {
     private TextView courseInstructorName;
     private TextView courseInstructorPhone;
     private TextView courseInstructorEmail;
-    private CourseViewModel mCourseViewModel;
+    private CourseViewModel courseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

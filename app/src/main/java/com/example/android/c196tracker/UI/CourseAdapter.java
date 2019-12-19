@@ -19,12 +19,12 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
-    private CourseEntity mRecentlyDeletedItem;
-    private int mRecentlyDeletedItemPosition;
-    private final LayoutInflater mInflater;
+    private final LayoutInflater inflater;
+    private CourseEntity recentlyDeletedItem;
+    private int recentlyDeletedItemPosition;
     private final Context context;
-    private List<CourseEntity> mCourses;
-    private CoursesActivity mActivity;
+    private List<CourseEntity> courses;
+    private CoursesActivity activity;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseItemView;
@@ -40,20 +40,20 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     public CourseAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.context = context;
     }
 
     @Override
     public CourseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.courses_list_item, parent, false);
+        View itemView = inflater.inflate(R.layout.courses_list_item, parent, false);
         return new CourseViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(CourseViewHolder holder, int position) {
-        if (mCourses != null) {
-            CourseEntity current = mCourses.get(position);
+        if (courses != null) {
+            CourseEntity current = courses.get(position);
             holder.courseItemView.setText(current.getCourseName());
             holder.courseItemView2.setText(current.getCourseStart());
             holder.courseItemView3.setText(current.getCourseEnd());
@@ -80,34 +80,34 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         });
     }
 
+    @Override
+    public int getItemCount() {
+        if (courses != null)
+            return courses.size();
+        else return 0;
+    }
+
     public void deleteItem(int position) {
-        mRecentlyDeletedItem = mCourses.get(position);
-        mRecentlyDeletedItemPosition = position;
-        mCourses.remove(position);
+        recentlyDeletedItem = courses.get(position);
+        recentlyDeletedItemPosition = position;
+        courses.remove(position);
         notifyItemRemoved(position);
         showUndoSnackBar();
     }
 
     private void showUndoSnackBar() {
-        View view = mActivity.findViewById(R.id.courses_recyclerview);
+        View view = activity.findViewById(R.id.courses_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
     }
 
     private void undoDelete() {
-        mCourses.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        courses.add(recentlyDeletedItemPosition, recentlyDeletedItem);
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
     public void setCourses(List<CourseEntity> courses) {
-        mCourses = courses;
+        this.courses = courses;
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mCourses != null)
-            return mCourses.size();
-        else return 0;
     }
 }

@@ -12,24 +12,24 @@ import com.example.android.c196tracker.Entities.TermEntity;
 import java.util.List;
 
 public class TermViewModel extends AndroidViewModel {
-    private SchoolTrackerRepository mRepository;
-    private LiveData<List<TermEntity>> mAllTerms;
+    private SchoolTrackerRepository repository;
+    private LiveData<List<TermEntity>> allTerms;
 
     public TermViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new SchoolTrackerRepository(application);
-        mAllTerms = mRepository.getAllTerms();
+        repository = new SchoolTrackerRepository(application);
+        allTerms = repository.getAllTerms();
     }
 
     public LiveData<List<TermEntity>> getAllTerms() {
-        return mAllTerms;
+        return allTerms;
     }
 
     public void insert(TermEntity termEntity) {
-        mRepository.insert(termEntity);
+        repository.insert(termEntity);
     }
 
     public int lastId() {
-        return mAllTerms.getValue().size();
+        return allTerms.getValue().size();
     }
 }

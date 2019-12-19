@@ -25,7 +25,7 @@ public class TermsActivity extends AppCompatActivity {
     private Button addTermButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private TermViewModel mTermViewModel;
+    private TermViewModel termViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,8 @@ public class TermsActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        mTermViewModel = new ViewModelProvider(this).get(TermViewModel.class);
-        mTermViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
+        termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
+        termViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
             @Override
             public void onChanged(@Nullable final List<TermEntity> terms) {
                 mAdapter.setTerms(terms);

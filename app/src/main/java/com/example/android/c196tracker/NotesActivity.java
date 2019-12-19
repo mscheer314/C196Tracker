@@ -22,7 +22,7 @@ public class NotesActivity extends AppCompatActivity {
     private Button addNoteButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private NoteViewModel mNoteViewModel;
+    private NoteViewModel noteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,8 @@ public class NotesActivity extends AppCompatActivity {
         final NoteAdapter mAdapter = new NoteAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
-        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        mNoteViewModel.getmAllNotes().observe(this, new Observer<List<NoteEntity>>() {
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        noteViewModel.getAllNotes().observe(this, new Observer<List<NoteEntity>>() {
             @Override
             public void onChanged(List<NoteEntity> notes) {
                 mAdapter.setNotes(notes);

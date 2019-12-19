@@ -34,8 +34,8 @@ public class TermDetails extends AppCompatActivity {
     private TextView termTitle;
     private TextView termStart;
     private TextView termEnd;
-    private TermViewModel mTermViewModel;
-    private CourseViewModel mCourseViewModel;
+    private TermViewModel termViewModel;
+    private CourseViewModel courseViewModel;
     private int termId;
 
     @Override
@@ -72,8 +72,8 @@ public class TermDetails extends AppCompatActivity {
                 new SwipeToDeleteCallBack(courseAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
-        mCourseViewModel.getmAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
+        courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+        courseViewModel.getAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
             @Override
             public void onChanged(List<CourseEntity> courseEntities) {
                 courseAdapter.setCourses(courseEntities);

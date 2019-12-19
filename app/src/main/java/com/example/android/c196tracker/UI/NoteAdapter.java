@@ -17,12 +17,12 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
-    private int mRecentlyDeletedItemPosition;
-    private NoteEntity mRecentlyDeletedItem;
-    private final LayoutInflater mInflater;
+    private final LayoutInflater inflater;
+    private int recentlyDeletedItemPosition;
+    private NoteEntity recentlyDeletedItem;
     private final Context context;
-    private List<NoteEntity> mNotes;
-    private NotesActivity mActivity;
+    private List<NoteEntity> notes;
+    private NotesActivity activity;
 
     class NoteViewHolder extends RecyclerView.ViewHolder {
         private final TextView noteItemView;
@@ -34,20 +34,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     public NoteAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.context = context;
     }
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.note_list_item, parent, false);
+        View itemView = inflater.inflate(R.layout.note_list_item, parent, false);
         return new NoteViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(NoteAdapter.NoteViewHolder holder, int position) {
-        if (mNotes != null) {
-            NoteEntity current = mNotes.get(position);
+        if (notes != null) {
+            NoteEntity current = notes.get(position);
             holder.noteItemView.setText(current.getNoteContent());
         } else {
             holder.noteItemView.setText("nothing");
@@ -61,36 +61,36 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         });
     }
 
+    @Override
+    public int getItemCount() {
+        if (notes != null)
+            return notes.size();
+        else return 0;
+    }
+
     protected void deleteItem(int position) {
-        mRecentlyDeletedItem = mNotes.get(position);
-        mRecentlyDeletedItemPosition = position;
-        mNotes.remove(position);
+        recentlyDeletedItem = notes.get(position);
+        recentlyDeletedItemPosition = position;
+        notes.remove(position);
         notifyItemRemoved(position);
         showUndoSnackBar();
     }
 
     private void showUndoSnackBar() {
-        // TODO figure out this line. mActivity returns null
-        View view = mActivity.findViewById(R.id.notes_recyclerview);
+        // TODO figure out this line. activity returns null
+        View view = activity.findViewById(R.id.notes_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
         snackbar.show();
     }
 
     private void undoDelete() {
-        mNotes.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        notes.add(recentlyDeletedItemPosition, recentlyDeletedItem);
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
     public void setNotes(List<NoteEntity> notes) {
-        mNotes = notes;
+        this.notes = notes;
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mNotes != null)
-            return mNotes.size();
-        else return 0;
     }
 }

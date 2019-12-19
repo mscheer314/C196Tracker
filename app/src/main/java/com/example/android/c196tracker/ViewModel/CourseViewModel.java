@@ -12,32 +12,27 @@ import java.util.List;
 
 public class CourseViewModel extends AndroidViewModel {
     int termId;
-    private SchoolTrackerRepository mRepository;
-    private LiveData<List<CourseEntity>> mAllCourses;
-    private LiveData<List<CourseEntity>> mAssociatedCourses;
+    private SchoolTrackerRepository repository;
+    private LiveData<List<CourseEntity>> allCourses;
+    private LiveData<List<CourseEntity>> associatedCourses;
 
     public CourseViewModel(Application application) {
         super(application);
-        mRepository = new SchoolTrackerRepository(application);
+        repository = new SchoolTrackerRepository(application);
 
-        mAllCourses = mRepository.getAllCourses();
-        mAssociatedCourses = mRepository.getmAssociatedCourses(termId);
+        allCourses = repository.getAllCourses();
+        associatedCourses = repository.getAssociatedCourses(termId);
     }
 
-    public CourseViewModel(Application application, int termId) {
-        super(application);
-        mRepository = new SchoolTrackerRepository(application);
+    public LiveData<List<CourseEntity>> getAllCourses() {
+        return allCourses;
     }
 
-    public LiveData<List<CourseEntity>> getmAllCourses() {
-        return mAllCourses;
-    }
-
-    public LiveData<List<CourseEntity>> getmAssociatedCourses(int termId) {
-        return mRepository.getmAssociatedCourses(termId);
+    public LiveData<List<CourseEntity>> getAssociatedCourses(int termId) {
+        return repository.getAssociatedCourses(termId);
     }
 
     public void insert(CourseEntity courseEntity) {
-        mRepository.insert(courseEntity);
+        repository.insert(courseEntity);
     }
 }

@@ -20,13 +20,13 @@ import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
 
-    private int mRecentlyDeletedItemPosition;
-    private TermEntity mRecentlyDeletedItem;
-    private final LayoutInflater mInflater;
+    private final LayoutInflater inflater;
+    private int recentlyDeletedItemPosition;
+    private TermEntity recentlyDeletedItem;
     private final Context context;
-    private List<TermEntity> mTerms;
+    private List<TermEntity> terms;
     private int termId;
-    private TermsActivity mActivity;
+    private TermsActivity activity;
     private SchoolTrackerRepository repository;
 
     class TermViewHolder extends RecyclerView.ViewHolder {
@@ -43,20 +43,20 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     public TermAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.context = context;
     }
 
     @Override
     public TermViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.term_list_item, parent, false);
+        View itemView = inflater.inflate(R.layout.term_list_item, parent, false);
         return new TermViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(TermViewHolder holder, int position) {
-        if (mTerms != null) {
-            TermEntity current = mTerms.get(position);
+        if (terms != null) {
+            TermEntity current = terms.get(position);
             termId = current.getTermId();
             holder.termItemView.setText(current.getTermName());
             holder.termItemView2.setText(current.getTermStart());
@@ -83,37 +83,37 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         });
     }
 
+    @Override
+    public int getItemCount() {
+        if (terms != null)
+            return terms.size();
+        else return 0;
+    }
+
     public void deleteItem(int position) {
-        mRecentlyDeletedItem = mTerms.get(position);
-        mRecentlyDeletedItemPosition = position;
-        mTerms.remove(position);
+        recentlyDeletedItem = terms.get(position);
+        recentlyDeletedItemPosition = position;
+        terms.remove(position);
         notifyItemRemoved(position);
         showUndoSnackBar();
     }
 
     private void showUndoSnackBar() {
-        // TODO  figure out this line mActivity returns null
-        View view = mActivity.findViewById(R.id.terms_recyclerview);
+        // TODO  figure out this line activity returns null
+        View view = activity.findViewById(R.id.terms_recyclerview);
         Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
         snackbar.show();
     }
 
     private void undoDelete() {
-        mTerms.add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        terms.add(recentlyDeletedItemPosition, recentlyDeletedItem);
+        notifyItemInserted(recentlyDeletedItemPosition);
     }
 
     public void setTerms(List<TermEntity> terms) {
-        mTerms = terms;
+        this.terms = terms;
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mTerms != null)
-            return mTerms.size();
-        else return 0;
     }
 
 

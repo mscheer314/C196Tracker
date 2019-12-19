@@ -25,7 +25,7 @@ public class CoursesActivity extends AppCompatActivity {
     private Button addCourseButton;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private CourseViewModel mCourseViewModel;
+    private CourseViewModel courseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class CoursesActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        mCourseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
-        mCourseViewModel.getmAllCourses().observe(this, new Observer<List<CourseEntity>>() {
+        courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+        courseViewModel.getAllCourses().observe(this, new Observer<List<CourseEntity>>() {
             @Override
             public void onChanged(@Nullable final List<CourseEntity> courses) {
                 mAdapter.setCourses(courses);

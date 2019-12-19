@@ -19,8 +19,8 @@ import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
 public class AddNoteDialog extends AppCompatDialogFragment {
     private static final String TAG = "AddNoteDialog";
-    private EditText mNoteContent;
-    private NoteViewModel mNoteViewModel;
+    private EditText noteContent;
+    private NoteViewModel noteViewModel;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class AddNoteDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_note, null);
-        mNoteContent = view.findViewById(R.id.note_content);
-        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        noteContent = view.findViewById(R.id.note_content);
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
         builder.setView(view)
                 .setTitle("Add Note")
@@ -44,15 +44,15 @@ public class AddNoteDialog extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent replyIntent = new Intent();
 
-                        if (TextUtils.isEmpty(mNoteContent.getText())) {
+                        if (TextUtils.isEmpty(noteContent.getText())) {
                             //setResult(RESULT_CANCELED, replyIntent);
                         } else {
-                            String noteContent = mNoteContent.getText().toString();
+                            String noteContent = AddNoteDialog.this.noteContent.getText().toString();
 
                             replyIntent.putExtra("noteContent", noteContent);
 
                             NoteEntity note = new NoteEntity(noteContent);
-                            mNoteViewModel.insert(note);
+                            noteViewModel.insert(note);
                         }
                     }
                 });
