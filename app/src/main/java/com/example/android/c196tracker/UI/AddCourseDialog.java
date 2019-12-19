@@ -56,6 +56,7 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     private int spinnerIndex;
     private int termId;
     private String errorMessage;
+    private Button addCourseMentorButton;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -104,12 +105,10 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
             }
         });
         setupDateSelectButtons(view);
-        termSpinner = view.findViewById(R.id.term_spinner);
-        termSpinner.setOnItemSelectedListener(this);
-        loadTermSpinnerData();
-        courseMentorSpinner = view.findViewById(R.id.course_mentor_spinner);
-        courseMentorSpinner.setOnItemSelectedListener(this);
-        loadCourseMentorSpinnerData();
+        loadTermSpinnerData(view);
+        loadCourseMentorSpinnerData(view);
+        loadAddCourseMentorButton(view);
+        loadAddCourseMentorButton(view);
         return dialog;
     }
 
@@ -175,7 +174,9 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
         };
     }
 
-    private void loadTermSpinnerData() {
+    private void loadTermSpinnerData(View view) {
+        termSpinner = view.findViewById(R.id.term_spinner);
+        termSpinner.setOnItemSelectedListener(this);
         termsList = new ArrayList<>();
         termIdList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, termsList);
@@ -195,7 +196,9 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     }
 
     // TODO CHECK THAT THIS COURSE MENTOR SPINNER WORKS
-    private void loadCourseMentorSpinnerData() {
+    private void loadCourseMentorSpinnerData(View view) {
+        courseMentorSpinner = view.findViewById(R.id.course_mentor_spinner);
+        courseMentorSpinner.setOnItemSelectedListener(this);
         courseMentorList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, courseMentorList);
         courseMentorViewModel = new ViewModelProvider(this).get(CourseMentorViewModel.class);
@@ -215,6 +218,20 @@ public class AddCourseDialog extends AppCompatDialogFragment implements AdapterV
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         spinnerIndex = parent.getSelectedItemPosition();
         termId = termIdList.get(spinnerIndex);
+
+    }
+
+    private void loadAddCourseMentorButton(View view) {
+        addCourseMentorButton = view.findViewById(R.id.new_course_mentor_button);
+        addCourseMentorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewCourseMentorDialog();
+            }
+        });
+    }
+
+    private void openNewCourseMentorDialog() {
 
     }
 

@@ -19,4 +19,11 @@
     <string name="spinner_term_prompt">Please select a term.</string>
     <string name="ok">OK</string>
     <string name="no_term_start_date">Please select a start date.</string>
+    <string name="new_course_mentor">New Course Mentor</string>
+    <string name="course_mentor_name">Mentor name</string>
+    <string name="course_mentor_email">Mentor email</string>
+    <string name="course_mentor_phone">Mentor phone</string>
+    <string name="course_mentor_phone_hint">Course mentor phone</string>
+    <string name="course_mentor_email_hint">Course mentor email</string>
+    <string name="course_mentor_name_hint">Course mentor name</string>
 </resources>
