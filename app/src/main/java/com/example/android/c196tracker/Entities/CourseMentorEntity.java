@@ -21,11 +21,10 @@ public class CourseMentorEntity {
     private int courseId;
 
     public CourseMentorEntity(String courseMentorName, String courseMentorPhoneNumber,
-                              String courseMentorEmail, int courseId) {
+                              String courseMentorEmail) {
         this.courseMentorName = courseMentorName;
         this.courseMentorPhoneNumber = courseMentorPhoneNumber;
         this.courseMentorEmail = courseMentorEmail;
-        this.courseId = courseId;
     }
 
     @Override
@@ -35,7 +34,6 @@ public class CourseMentorEntity {
                 ", courseMentorName='" + courseMentorName + '\'' +
                 ", courseMentorPhoneNumber='" + courseMentorPhoneNumber + '\'' +
                 ", courseMentorEmail='" + courseMentorEmail + '\'' +
-                ", courseId=" + courseId +
                 '}';
     }
 

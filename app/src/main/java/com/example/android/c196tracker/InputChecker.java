@@ -39,5 +39,11 @@ public class InputChecker {
         }
         return false;
     }
+
+    // TODO implement this method
+    public static String isValidCourseMentor(String mentorName, String mentorEmail, String mentorPhone) {
+        String errorMessage = "";
+        return errorMessage;
+    }
 }
 

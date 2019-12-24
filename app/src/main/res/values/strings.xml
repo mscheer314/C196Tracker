@@ -26,4 +26,10 @@
     <string name="course_mentor_phone_hint">Course mentor phone</string>
     <string name="course_mentor_email_hint">Course mentor email</string>
     <string name="course_mentor_name_hint">Course mentor name</string>
+    <string name="add_mentor">ADD COURSE MENTOR</string>
+    <string name="action_settings">action_settings</string>
+    <string name="add_course_mentor">Add Course Mentor</string>
+    <string name="go_to_courses">Go To Courses</string>
+    <string name="go_to_assignments">Go To Assignments</string>
+    <string name="go_to_notes">Go To Notes</string>
 </resources>

@@ -7,29 +7,44 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.android.c196tracker.Entities.CourseMentorEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.InputChecker;
 import com.example.android.c196tracker.R;
+import com.example.android.c196tracker.ViewModel.CourseMentorViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 public class AddCourseMentorDialog extends AppCompatDialogFragment {
     private static final String TAG = "AddCourseMentorDialog";
+    private EditText mentorName;
+    private EditText mentorEmail;
+    private EditText mentorPhone;
+    private CourseMentorViewModel mentorViewModel;
+    private String errorMessage;
+    private String mentorNameString;
+    private String mentorEmailString;
+    private String mentorPhoneString;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_course_mentor, null);
-        termName = view.findViewById(R.id.term_name_editText);
-        termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
+        mentorName = view.findViewById(R.id.course_mentor_name_editText);
+        mentorEmail = view.findViewById(R.id.course_mentor_email_editText);
+        mentorPhone = view.findViewById(R.id.course_mentor_phone_editText);
+        mentorViewModel = new ViewModelProvider(this).get(CourseMentorViewModel.class);
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
-                .setTitle(R.string.add_term)
+                .setTitle(R.string.add_mentor)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
@@ -40,24 +55,23 @@ public class AddCourseMentorDialog extends AppCompatDialogFragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        errorMessage = InputChecker.checkNewItemInput(true,
-                                termName.getText().toString(),
-                                termStart.getText().toString(),
-                                termEnd.getText().toString());
+                        mentorNameString = mentorName.getText().toString();
+                        mentorEmailString = mentorEmail.getText().toString();
+                        mentorPhoneString = mentorPhone.getText().toString();
+                        errorMessage = InputChecker.isValidCourseMentor(mentorNameString,
+                                mentorEmailString, mentorPhoneString);
                         if (errorMessage.length() > 0) {
                             showToast(errorMessage);
                         } else {
                             Intent replyIntent = new Intent();
-                            String termName = AddTermDialog.this.termName.getText().toString();
-                            String termStart = (String) AddTermDialog.this.termStart.getText();
-                            String termEnd = (String) AddTermDialog.this.termEnd.getText();
 
-                            replyIntent.putExtra("termName", termName);
-                            replyIntent.putExtra("termStart", termStart);
-                            replyIntent.putExtra("termEnd", termEnd);
+                            replyIntent.putExtra("mentorName", mentorNameString);
+                            replyIntent.putExtra("mentorEmail", mentorEmailString);
+                            replyIntent.putExtra("mentorPhone", mentorPhoneString);
 
-                            TermEntity term = new TermEntity(termName, termStart, termEnd);
-                            termViewModel.insert(term);
+                            CourseMentorEntity mentor = new CourseMentorEntity(mentorNameString,
+                                    mentorEmailString, mentorPhoneString);
+                            mentorViewModel.insert(mentor);
 
                             dialog.dismiss();
                         }
@@ -65,7 +79,10 @@ public class AddCourseMentorDialog extends AppCompatDialogFragment {
                 });
             }
         });
-        setupDateSelectButtons(view);
         return dialog;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
