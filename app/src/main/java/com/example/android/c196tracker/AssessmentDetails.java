@@ -1,10 +1,8 @@
 package com.example.android.c196tracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class AssessmentDetails extends AppCompatActivity {
+public class AssessmentDetails extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

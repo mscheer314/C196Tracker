@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,7 +19,7 @@ import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
 
-public class CoursesActivity extends AppCompatActivity {
+public class CoursesActivity extends BaseActivity {
 
     private Button addCourseButton;
     private RecyclerView.LayoutManager layoutManager;
@@ -37,7 +36,9 @@ public class CoursesActivity extends AppCompatActivity {
         addCourseButton = findViewById(R.id.courses_add_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { openDialog(); }
+            public void onClick(View v) {
+                openDialog();
+            }
         });
     }
 
@@ -65,6 +66,6 @@ public class CoursesActivity extends AppCompatActivity {
 
     public void openDialog() {
         AddCourseDialog addCourseDialog = new AddCourseDialog();
-        addCourseDialog.show(getSupportFragmentManager(),"add_course_dialog");
+        addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
     }
 }

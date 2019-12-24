@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -22,7 +21,7 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
-public class TermDetails extends AppCompatActivity {
+public class TermDetails extends BaseActivity {
 
     private String termName;
     private String termStartString;
@@ -49,7 +48,9 @@ public class TermDetails extends AppCompatActivity {
         addCourseButton = findViewById(R.id.term_details_course_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { openDialog(); }
+            public void onClick(View v) {
+                openDialog();
+            }
         });
     }
 

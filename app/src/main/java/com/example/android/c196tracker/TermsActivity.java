@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -25,7 +24,7 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
-public class TermsActivity extends AppCompatActivity {
+public class TermsActivity extends BaseActivity {
 
     private Button addTermButton;
     private RecyclerView recyclerView;
@@ -73,31 +72,5 @@ public class TermsActivity extends AppCompatActivity {
     public void openDialog() {
         AddTermDialog addTermDialog = new AddTermDialog();
         addTermDialog.show(getSupportFragmentManager(), "add_term_dialog");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.terms_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_mentor_menu:
-                AddCourseMentorDialog addCourseMentorDialog = new AddCourseMentorDialog();
-                addCourseMentorDialog.show(getSupportFragmentManager(), "add_course_mentor_dialog");
-                return true;
-            case R.id.all_courses:
-                Intent coursesIntent = new Intent(TermsActivity.this, CoursesActivity.class);
-                startActivity(coursesIntent);
-                return true;
-            case R.id.all_notes:
-                Intent NotesIntent = new Intent(TermsActivity.this, NotesActivity.class);
-                startActivity(NotesIntent);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,7 @@ import com.example.android.c196tracker.UI.AssessmentAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
-public class CourseDetails extends AppCompatActivity {
+public class CourseDetails extends BaseActivity {
 
     private String courseNameString;
     private String courseStartString;

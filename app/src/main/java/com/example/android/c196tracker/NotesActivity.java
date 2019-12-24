@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
 import java.util.List;
 
-public class NotesActivity extends AppCompatActivity {
+public class NotesActivity extends BaseActivity {
 
     private Button addNoteButton;
     private RecyclerView recyclerView;
@@ -34,7 +33,9 @@ public class NotesActivity extends AppCompatActivity {
         addNoteButton = findViewById(R.id.notes_add_button);
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {openDialog();}
+            public void onClick(View v) {
+                openDialog();
+            }
         });
     }
 
