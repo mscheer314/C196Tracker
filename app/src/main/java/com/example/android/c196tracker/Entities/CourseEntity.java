@@ -18,16 +18,23 @@ public class CourseEntity {
     private String courseStart;
     private String courseEnd;
     private String courseStatus;
+    private String courseMentorName;
+    private String courseMentorEmail;
+    private String courseMentorPhone;
 
     private int termId;
 
     public CourseEntity(String courseName, String courseStart, String courseEnd,
-                        String courseStatus, int termId) {
+                        String courseStatus, String courseMentorName, String courseMentorEmail,
+                        String courseMentorPhone, int termId) {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
         this.courseStatus = courseStatus;
         this.termId = termId;
+        this.courseMentorName = courseMentorName;
+        this.courseMentorEmail = courseMentorEmail;
+        this.courseMentorPhone = courseMentorPhone;
     }
 
     @Override
@@ -38,6 +45,9 @@ public class CourseEntity {
                 ", courseStart='" + courseStart + '\'' +
                 ", courseEnd='" + courseEnd + '\'' +
                 ", courseStatus='" + courseStatus + '\'' +
+                ", courseMentorName='" + courseMentorName + '\'' +
+                ", courseMentorEmail='" + courseMentorEmail +'\'' +
+                ", courseMentorPhone='" + courseMentorPhone + '\'' +
                 ", termId='" + termId + '\'' +
                 '}';
 
@@ -82,4 +92,28 @@ public class CourseEntity {
     public String getCourseStatus() { return courseStatus; }
 
     public void setCourseStatus(String courseStatus) { this.courseStatus = courseStatus; }
+
+    public String getCourseMentorName() {
+        return courseMentorName;
+    }
+
+    public void setCourseMentorName(String courseMentorName) {
+        this.courseMentorName = courseMentorName;
+    }
+
+    public String getCourseMentorEmail() {
+        return courseMentorEmail;
+    }
+
+    public void setCourseMentorEmail(String courseMentorEmail) {
+        this.courseMentorEmail = courseMentorEmail;
+    }
+
+    public String getCourseMentorPhone() {
+        return courseMentorPhone;
+    }
+
+    public void setCourseMentorPhone(String courseMentorPhone) {
+        this.courseMentorPhone = courseMentorPhone;
+    }
 }

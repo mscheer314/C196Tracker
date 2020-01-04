@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".CourseDetails">
+
+    <TextView
+        android:id="@+id/assessment_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/assessment_name"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/assessment_name_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/assessment_name"
+        android:inputType="textNoSuggestions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/assessment_name_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/assessment_due_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
+        android:text="@string/due_date"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="@+id/assessment_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_name_label" />
+
+    <TextView
+        android:id="@+id/assessment_due_date"
+        android:layout_width="155dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="26dp"
+        android:clickable="true"
+        android:ems="10"
+        android:focusable="true"
+        android:text="@string/select_date"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toEndOf="@+id/assessment_due_date_label"
+        app:layout_constraintStart_toStartOf="@+id/assessment_name_editText"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_name_editText" />
+
+    <Spinner
+        android:id="@+id/assessment_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_due_date" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

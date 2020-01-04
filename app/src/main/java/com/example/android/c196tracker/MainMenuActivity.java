@@ -1,5 +1,6 @@
 package com.example.android.c196tracker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //Find the 3 image views for the main page
         ImageView terms = findViewById(R.id.imageView);
         ImageView courses = findViewById(R.id.imageView2);
-        ImageView notes = findViewById(R.id.imageView3);
+        ImageView assessments = findViewById(R.id.imageView3);
 
         // set up listeners for the three ImageViews
         terms.setOnClickListener(new View.OnClickListener() {
@@ -42,14 +43,14 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-        notes.setOnClickListener(new View.OnClickListener() {
+        assessments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // create a new intent to open the {@link NotesActivity}
-                Intent NotesIntent = new Intent(MainMenuActivity.this, NotesActivity.class);
+                Intent AssessmentIntent = new Intent(MainMenuActivity.this, AssessmentActivity.class);
 
                 //start new activity
-                startActivity(NotesIntent);
+                startActivity(AssessmentIntent);
             }
         });
     }

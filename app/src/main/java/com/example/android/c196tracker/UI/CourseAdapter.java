@@ -25,11 +25,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private final Context context;
     private List<CourseEntity> courses;
     private CoursesActivity activity;
+    private int courseId;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseItemView;
         private final TextView courseItemView2;
         private final TextView courseItemView3;
+        private String courseStatus;
+        private String courseMentorName;
+        private String courseMentorEmail;
+        private String courseMentorPhone;
 
         private CourseViewHolder(View itemView) {
             super(itemView);
@@ -54,9 +59,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(CourseViewHolder holder, int position) {
         if (courses != null) {
             CourseEntity current = courses.get(position);
+            courseId = current.getCourseId();
             holder.courseItemView.setText(current.getCourseName());
             holder.courseItemView2.setText(current.getCourseStart());
             holder.courseItemView3.setText(current.getCourseEnd());
+            holder.courseStatus = current.getCourseStatus();
+            holder.courseMentorName = current.getCourseMentorName();
+            holder.courseMentorEmail = current.getCourseMentorEmail();
+            holder.courseMentorPhone = current.getCourseMentorPhone();
         } else {
             holder.courseItemView.setText("nothing");
             holder.courseItemView2.setText("nothing");
@@ -68,12 +78,22 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 String courseName = holder.courseItemView.getText().toString();
                 String courseStart = holder.courseItemView2.getText().toString();
                 String courseEnd = holder.courseItemView3.getText().toString();
+                String courseStatus = holder.courseStatus;
+                String mName = holder.courseMentorName;
+                String mEmail = holder.courseMentorEmail;
+                String mPhone = holder.courseMentorPhone;
+
 
                 Intent intent = new Intent(context, CourseDetails.class);
 
+                intent.putExtra("courseId", courseId);
                 intent.putExtra("courseName", courseName);
                 intent.putExtra("courseStart", courseStart);
                 intent.putExtra("courseEnd", courseEnd);
+                intent.putExtra("courseStatus", courseStatus);
+                intent.putExtra("courseMentorName", mName);
+                intent.putExtra("courseMentorEmail", mEmail);
+                intent.putExtra("courseMentorPhone", mPhone);
 
                 context.startActivity(intent);
             }

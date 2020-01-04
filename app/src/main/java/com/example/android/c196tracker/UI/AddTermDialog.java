@@ -57,8 +57,9 @@ public class AddTermDialog extends AppCompatDialogFragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        errorMessage = InputChecker.checkNewItemInput(true,
-                                termName.getText().toString(),
+                        errorMessage = InputChecker.checkItemName(1,
+                                termName.getText().toString());
+                        errorMessage += InputChecker.checkStartAndEndDates(
                                 termStart.getText().toString(),
                                 termEnd.getText().toString());
                         if (errorMessage.length() > 0) {

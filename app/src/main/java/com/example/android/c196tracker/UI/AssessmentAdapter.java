@@ -25,11 +25,14 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     private AssessmentActivity activity;
 
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
-        private final TextView assessmentItemView;
+        private final TextView assessmentName;
+        private final TextView assessmentDate;
+
 
         private AssessmentViewHolder(View itemView) {
             super(itemView);
-            assessmentItemView = itemView.findViewById(R.id.assessment_details_title);
+            assessmentName = itemView.findViewById(R.id.assessment_name);
+            assessmentDate = itemView.findViewById(R.id.assessment_date);
         }
     }
 
@@ -48,11 +51,13 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int postion) {
         if (assessments != null) {
             AssessmentEntity current = assessments.get(postion);
-            holder.assessmentItemView.setText(current.getAssessmentName());
+            holder.assessmentName.setText(current.getAssessmentName());
+            holder.assessmentDate.setText(current.getAssessmentDate());
         } else {
-            holder.assessmentItemView.setText("nothing");
+            holder.assessmentName.setText("nothing");
+            holder.assessmentDate.setText("nothing");
         }
-        holder.assessmentItemView.setOnClickListener(new View.OnClickListener() {
+        holder.assessmentName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Intent intent = new Intent(context, AssessmentDetails.class);

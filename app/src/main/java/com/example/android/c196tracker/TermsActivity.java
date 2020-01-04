@@ -1,10 +1,6 @@
 package com.example.android.c196tracker;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.TermEntity;
-import com.example.android.c196tracker.UI.AddCourseMentorDialog;
 import com.example.android.c196tracker.UI.AddTermDialog;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.UI.TermAdapter;

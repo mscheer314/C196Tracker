@@ -7,16 +7,10 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android.c196tracker.UI.AddCourseMentorDialog;
-
 public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_mentor_menu:
-                AddCourseMentorDialog addCourseMentorDialog = new AddCourseMentorDialog();
-                addCourseMentorDialog.show(getSupportFragmentManager(), "add_course_mentor_dialog");
-                return true;
             case R.id.all_courses:
                 Intent coursesIntent = new Intent(this, CoursesActivity.class);
                 startActivity(coursesIntent);

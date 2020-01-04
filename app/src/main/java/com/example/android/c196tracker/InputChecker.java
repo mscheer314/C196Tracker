@@ -6,15 +6,27 @@ import java.util.Locale;
 
 public class InputChecker {
 
-    public static String checkNewItemInput(boolean isTerm, String name, String start, String end) {
+    // input type will be 1 for Term, 2 for Course, 3 for Assessment
+    public static String checkItemName(int inputType, String name) {
         String errorMessage = "";
         if (name.length() == 0) {
-            if (isTerm) {
-                errorMessage += "Please enter a term name.\n";
-            } else {
-                errorMessage += "Please enter a course name.\n";
+            switch (inputType) {
+                case 1:
+                    errorMessage += "Please enter a term name.\n";
+                    break;
+                case 2:
+                    errorMessage += "Please enter a course name.\n";
+                    break;
+                case 3:
+                    errorMessage += "Please enter an assessment name.\n";
+                    break;
             }
         }
+        return errorMessage;
+    }
+
+    public static String checkStartAndEndDates(String start, String end) {
+        String errorMessage = "";
         if (start.equals("select date")) {
             errorMessage += "Please select a start date.\n";
         }
@@ -24,6 +36,13 @@ public class InputChecker {
         if (!isValidCompareStartAndEndDates(start, end)) {
             errorMessage += "The start date must be before the end date.\n";
         }
+        return errorMessage;
+    }
+
+    public static String checkAssessmentDate(String assessmentDate) {
+        // TODO implement this method
+        String errorMessage = "";
+
         return errorMessage;
     }
 
@@ -39,6 +58,7 @@ public class InputChecker {
         }
         return false;
     }
+
 
     // TODO implement this method
     public static String isValidCourseMentor(String mentorName, String mentorEmail, String mentorPhone) {
