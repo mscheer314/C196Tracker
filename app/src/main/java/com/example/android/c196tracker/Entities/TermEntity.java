@@ -1,6 +1,7 @@
 package com.example.android.c196tracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "terms")
@@ -14,6 +15,14 @@ public class TermEntity {
     private String termEnd;
 
     public TermEntity(String termName, String termStart, String termEnd) {
+        this.termName = termName;
+        this.termStart = termStart;
+        this.termEnd = termEnd;
+    }
+
+    @Ignore
+    public TermEntity(int termId, String termName, String termStart, String termEnd) {
+        this.termId = termId;
         this.termName = termName;
         this.termStart = termStart;
         this.termEnd = termEnd;

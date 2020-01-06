@@ -2,6 +2,9 @@ package com.example.android.c196tracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.UI.AddCourseDialog;
+import com.example.android.c196tracker.UI.AddTermDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
-import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
@@ -33,7 +36,6 @@ public class TermDetails extends BaseActivity {
     private TextView termTitle;
     private TextView termStart;
     private TextView termEnd;
-    private TermViewModel termViewModel;
     private CourseViewModel courseViewModel;
     private int termId;
 
@@ -52,6 +54,13 @@ public class TermDetails extends BaseActivity {
                 openDialog();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.term_details_menu, menu);
+        return true;
     }
 
     private void openDialog() {
@@ -95,5 +104,14 @@ public class TermDetails extends BaseActivity {
         termTitle.setText(termName);
         termStart.setText(termStartString);
         termEnd.setText(termEndString);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.edit_term) {
+            AddTermDialog addTermDialog = new AddTermDialog(false, termId);
+            addTermDialog.show(getSupportFragmentManager(), "add_term_dialog");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

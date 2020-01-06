@@ -29,6 +29,8 @@ import java.util.Calendar;
 
 public class AddTermDialog extends AppCompatDialogFragment {
     private static final String TAG = "AddTermDialog";
+    private boolean isNewTerm;
+    private int termId;
     private EditText termName;
     private TextView termStart;
     private TextView termEnd;
@@ -36,6 +38,15 @@ public class AddTermDialog extends AppCompatDialogFragment {
     private DatePickerDialog.OnDateSetListener endSetListener;
     private TermViewModel termViewModel;
     private String errorMessage;
+
+    public AddTermDialog(){
+        this.isNewTerm = true;
+    }
+
+    public AddTermDialog(boolean isNewTerm, int termId) {
+        this.isNewTerm = isNewTerm;
+        this.termId = termId;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,10 +57,15 @@ public class AddTermDialog extends AppCompatDialogFragment {
         termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
-                .setTitle(R.string.add_term)
+                // .setTitle(R.string.add_term)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        if (isNewTerm)
+            dialog.setTitle(R.string.add_term);
+        else
+            dialog.setTitle(getString(R.string.edit_term));
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -74,9 +90,13 @@ public class AddTermDialog extends AppCompatDialogFragment {
                             replyIntent.putExtra("termStart", termStart);
                             replyIntent.putExtra("termEnd", termEnd);
 
-                            TermEntity term = new TermEntity(termName, termStart, termEnd);
-                            termViewModel.insert(term);
-
+                            if (isNewTerm) {
+                                TermEntity term = new TermEntity(termName, termStart, termEnd);
+                                termViewModel.insert(term);
+                            } else {
+                                TermEntity term = new TermEntity(termId, termName, termStart, termEnd);
+                                termViewModel.update(term);
+                            }
                             dialog.dismiss();
                         }
                     }

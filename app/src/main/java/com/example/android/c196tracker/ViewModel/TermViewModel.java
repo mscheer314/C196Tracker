@@ -29,6 +29,8 @@ public class TermViewModel extends AndroidViewModel {
         repository.insert(termEntity);
     }
 
+    public void update(TermEntity termEntity) { repository.update(termEntity); }
+
     public int lastId() {
         return allTerms.getValue().size();
     }
