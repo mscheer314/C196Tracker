@@ -184,6 +184,7 @@ public class AddCourseDialog extends AppCompatDialogFragment
         termSpinner = view.findViewById(R.id.term_spinner);
         termSpinner.setOnItemSelectedListener(this);
         termsList = new ArrayList<>();
+        termsList.add("SELECT A TERM");
         termIdList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, termsList);
@@ -205,6 +206,7 @@ public class AddCourseDialog extends AppCompatDialogFragment
         courseStatusSpinner = view.findViewById(R.id.course_status_spinner);
         courseStatusSpinner.setOnItemSelectedListener(this);
         ArrayList<String> statusOptions = new ArrayList<>();
+        statusOptions.add("SELECT A STATUS");
         statusOptions.add("IN PROGRESS");
         statusOptions.add("COMPLETED");
         statusOptions.add("DROPPED");
@@ -220,15 +222,15 @@ public class AddCourseDialog extends AppCompatDialogFragment
         switch (parent.getId()) {
             case R.id.term_spinner:
                 spinnerIndex = parent.getSelectedItemPosition();
-                termId = termIdList.get(spinnerIndex);
+                if (spinnerIndex != 0)
+                    termId = termIdList.get(spinnerIndex - 1);
             case R.id.course_status_spinner:
-                courseStatus = parent.getSelectedItem().toString();
+                if (!parent.getSelectedItem().toString().equals("SELECT A STATUS"))
+                    courseStatus = parent.getSelectedItem().toString();
         }
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

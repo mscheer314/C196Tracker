@@ -38,4 +38,7 @@
     <string name="assessment_name">Assessment name</string>
     <string name="due_date">due date</string>
     <string name="assessments">ASSESSMENTS</string>
+    <string name="go_to_terms">Go To Terms</string>
+    <string name="edit">Edit</string>
+    <string name="edit_term">EDIT TERM</string>
 </resources>
