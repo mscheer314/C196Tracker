@@ -2,6 +2,7 @@ package com.example.android.c196tracker.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -27,6 +28,21 @@ public class CourseEntity {
     public CourseEntity(String courseName, String courseStart, String courseEnd,
                         String courseStatus, String courseMentorName, String courseMentorEmail,
                         String courseMentorPhone, int termId) {
+        this.courseName = courseName;
+        this.courseStart = courseStart;
+        this.courseEnd = courseEnd;
+        this.courseStatus = courseStatus;
+        this.termId = termId;
+        this.courseMentorName = courseMentorName;
+        this.courseMentorEmail = courseMentorEmail;
+        this.courseMentorPhone = courseMentorPhone;
+    }
+
+    @Ignore
+    public CourseEntity(int courseId, String courseName, String courseStart, String courseEnd,
+                        String courseStatus, String courseMentorName, String courseMentorEmail,
+                        String courseMentorPhone, int termId) {
+        this.courseId = courseId;
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;

@@ -9,18 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AssessmentDetails"></activity>
+        <activity android:name=".AddTermDialog" />
+        <activity android:name=".AssessmentDetails" />
         <activity android:name=".AssessmentActivity" />
         <activity android:name=".TermDetails" />
         <activity android:name=".CourseDetails" />
         <activity android:name=".NotesActivity" />
         <activity android:name=".CoursesActivity" />
-        <activity android:name=".TermsActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".TermsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

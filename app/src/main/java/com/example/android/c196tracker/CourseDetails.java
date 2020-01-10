@@ -2,11 +2,16 @@ package com.example.android.c196tracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.UI.AddAssessmentDialog;
+import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.AssessmentAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
@@ -42,7 +48,6 @@ public class CourseDetails extends BaseActivity {
     private TextView courseMentorName;
     private TextView courseMentorPhone;
     private TextView courseMentorEmail;
-    private CourseViewModel courseViewModel;
     private AssessmentViewModel assessmentViewModel;
 
     @Override
@@ -60,6 +65,13 @@ public class CourseDetails extends BaseActivity {
                 openDialog();
             }
         });
+    }
+
+    // todo figure out how to get the courseId for this method.
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void setUpdatedCourseDetails() {
+        CourseViewModel courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+       // courseViewModel.getCourseById();
     }
 
     private void openDialog() {
@@ -118,5 +130,21 @@ public class CourseDetails extends BaseActivity {
         courseMentorName.setText(courseMentorNameString);
         courseMentorPhone.setText(courseMentorPhoneString);
         courseMentorEmail.setText(courseMentorEmailString);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.course_details_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.edit_course) {
+            AddCourseDialog addCourseDialog = new AddCourseDialog(false, courseId);
+            addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

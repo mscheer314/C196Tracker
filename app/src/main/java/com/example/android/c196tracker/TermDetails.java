@@ -17,12 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.UI.AddCourseDialog;
-import com.example.android.c196tracker.UI.AddTermDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
+
+import static com.example.android.c196tracker.TermsActivity.NEW_TERM_ACTIVITY_REQUEST_CODE;
 
 public class TermDetails extends BaseActivity {
 
@@ -54,13 +55,6 @@ public class TermDetails extends BaseActivity {
                 openDialog();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.term_details_menu, menu);
-        return true;
     }
 
     private void openDialog() {
@@ -107,10 +101,21 @@ public class TermDetails extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.term_details_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.edit_term) {
-            AddTermDialog addTermDialog = new AddTermDialog(false, termId);
-            addTermDialog.show(getSupportFragmentManager(), "add_term_dialog");
+            Intent intent = new Intent(TermDetails.this, AddTermDialog.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isNewTerm", false);
+            bundle.putInt("termId", termId);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, NEW_TERM_ACTIVITY_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
     }

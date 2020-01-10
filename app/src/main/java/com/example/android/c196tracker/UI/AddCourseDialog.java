@@ -57,6 +57,17 @@ public class AddCourseDialog extends AppCompatDialogFragment
     private int spinnerIndex;
     private int termId;
     private String errorMessage;
+    private boolean isNewCourse;
+    private int courseId;
+
+    public AddCourseDialog(){
+        this.isNewCourse = true;
+    }
+
+    public AddCourseDialog(boolean isNewCourse, int courseId) {
+        this.isNewCourse = isNewCourse;
+        this.courseId = courseId;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -71,10 +82,13 @@ public class AddCourseDialog extends AppCompatDialogFragment
 
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
-                .setTitle(R.string.add_course)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        if (isNewCourse)
+            dialog.setTitle(R.string.add_course);
+        else
+            dialog.setTitle(R.string.edit_course);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -102,10 +116,16 @@ public class AddCourseDialog extends AppCompatDialogFragment
                             replyIntent.putExtra("courseName", courseName);
                             replyIntent.putExtra("courseStart", courseStart);
                             replyIntent.putExtra("courseEnd", courseEnd);
-                            CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, courseStatus,
-                                    mentorNameString, mentorEmailString, mentorPhoneString, termId);
-                            courseViewModel.insert(course);
 
+                            if (isNewCourse) {
+                                CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, courseStatus,
+                                        mentorNameString, mentorEmailString, mentorPhoneString, termId);
+                                courseViewModel.insert(course);
+                            } else {
+                                CourseEntity course = new CourseEntity(courseId, courseName, courseStart, courseEnd, courseStatus,
+                                        mentorNameString, mentorEmailString, mentorPhoneString, termId);
+                                courseViewModel.update(course);
+                            }
                             dialog.dismiss();
                         }
                     }

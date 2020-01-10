@@ -12,7 +12,9 @@ import java.util.List;
 
 public class CourseViewModel extends AndroidViewModel {
     int termId;
+    int courseId;
     private SchoolTrackerRepository repository;
+    private LiveData<List<CourseEntity>> course;
     private LiveData<List<CourseEntity>> allCourses;
     private LiveData<List<CourseEntity>> associatedCourses;
 
@@ -20,9 +22,12 @@ public class CourseViewModel extends AndroidViewModel {
         super(application);
         repository = new SchoolTrackerRepository(application);
 
+        course = repository.getCourseById(courseId);
         allCourses = repository.getAllCourses();
         associatedCourses = repository.getAssociatedCourses(termId);
     }
+
+    public LiveData<List<CourseEntity>> getCourseById(int courseId) { return course; }
 
     public LiveData<List<CourseEntity>> getAllCourses() {
         return allCourses;
@@ -35,4 +40,8 @@ public class CourseViewModel extends AndroidViewModel {
     public void insert(CourseEntity courseEntity) {
         repository.insert(courseEntity);
     }
+
+    public void update(CourseEntity courseEntity) { repository.update(courseEntity); }
+
+    public int lastId() { return allCourses.getValue().size(); }
 }

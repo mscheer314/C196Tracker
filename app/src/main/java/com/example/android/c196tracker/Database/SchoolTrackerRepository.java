@@ -30,6 +30,8 @@ public class SchoolTrackerRepository {
     private LiveData<List<NoteEntity>> associatedNotes;
     private LiveData<List<AssessmentEntity>> associatedAssessments;
 
+    private LiveData<List<CourseEntity>> course;
+
     private int courseId;
     private int noteId;
 
@@ -72,6 +74,10 @@ public class SchoolTrackerRepository {
 
     public LiveData<List<NoteEntity>> getAssociatedNotes(int courseId) {
         return associatedNotes;
+    }
+
+    public LiveData<List<CourseEntity>> getCourseById(int courseId) {
+        return courseDAO.getCoursebyId(courseId);
     }
 
     public void insert(TermEntity termEntity) {
@@ -160,6 +166,24 @@ public class SchoolTrackerRepository {
         @Override
         protected Void doInBackground(final TermEntity... params) {
             asyncTermDAO.update(params[0]);
+            return null;
+        }
+    }
+
+    public void update(CourseEntity courseEntity) {
+        new updateCourseAsyncTask(courseDAO).execute(courseEntity);
+    }
+
+    private static class updateCourseAsyncTask extends AsyncTask<CourseEntity, Void, Void> {
+        private CourseDAO asyncCourseDAO;
+
+        updateCourseAsyncTask(CourseDAO dao) {
+            asyncCourseDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final CourseEntity... params) {
+            asyncCourseDAO.update(params[0]);
             return null;
         }
     }
