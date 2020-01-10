@@ -51,7 +51,7 @@ public class AddTermDialog extends AppCompatActivity {
         termName = findViewById(R.id.term_name_editText);
         setupDateSelectButtons();
 
-        okButton = findViewById(R.id.button_ok);
+        okButton = findViewById(R.id.term_ok_button);
         okButton.setOnClickListener((view) -> {
                 errorMessage = InputChecker.checkItemName(1,
                         termName.getText().toString());
@@ -59,7 +59,7 @@ public class AddTermDialog extends AppCompatActivity {
                         termStart.getText().toString(),
                         termEnd.getText().toString());
                 if (errorMessage.length() > 0) {
-                    Toast.makeText(AddTermDialog.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddTermDialog.this, errorMessage, Toast.LENGTH_LONG).show();
                 } else {
                     Intent replyIntent = new Intent();
                     String termName = AddTermDialog.this.termName.getText().toString();
@@ -77,7 +77,7 @@ public class AddTermDialog extends AppCompatActivity {
             }
         });
 
-        cancelButton = findViewById(R.id.button_cancel);
+        cancelButton = findViewById(R.id.term_cancel_button);
         cancelButton.setOnClickListener((view) -> {
             setResult(RESULT_CANCELED);
             finish();

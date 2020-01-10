@@ -35,12 +35,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         private String courseMentorName;
         private String courseMentorEmail;
         private String courseMentorPhone;
+        private int courseId;
 
         private CourseViewHolder(View itemView) {
             super(itemView);
             courseItemView = itemView.findViewById(R.id.course_name);
             courseItemView2 = itemView.findViewById(R.id.course_start);
             courseItemView3 = itemView.findViewById(R.id.course_end);
+            courseId = -1;
+
         }
     }
 
@@ -75,6 +78,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.courseItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                courseId = holder.courseId;
                 String courseName = holder.courseItemView.getText().toString();
                 String courseStart = holder.courseItemView2.getText().toString();
                 String courseEnd = holder.courseItemView3.getText().toString();

@@ -1,5 +1,6 @@
 package com.example.android.c196tracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,20 +8,18 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
-import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
-import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
 
 public class CoursesActivity extends BaseActivity {
 
+    private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
     private Button addCourseButton;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
@@ -52,8 +51,8 @@ public class CoursesActivity extends BaseActivity {
         final CourseAdapter mAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
+        //itemTouchHelper.attachToRecyclerView(recyclerView);
 
         courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
         courseViewModel.getAllCourses().observe(this, new Observer<List<CourseEntity>>() {
@@ -65,7 +64,11 @@ public class CoursesActivity extends BaseActivity {
     }
 
     public void openDialog() {
-        AddCourseDialog addCourseDialog = new AddCourseDialog();
-        addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
+        Intent intent = new Intent(CoursesActivity.this, AddCourseDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNewCourse", true);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
     }
 }
+

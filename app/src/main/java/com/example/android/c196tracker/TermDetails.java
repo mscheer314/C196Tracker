@@ -11,14 +11,11 @@ import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
-import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.CourseAdapter;
-import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
@@ -27,6 +24,7 @@ import static com.example.android.c196tracker.TermsActivity.NEW_TERM_ACTIVITY_RE
 
 public class TermDetails extends BaseActivity {
 
+    private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
     private String termName;
     private String termStartString;
     private String termEndString;
@@ -58,8 +56,11 @@ public class TermDetails extends BaseActivity {
     }
 
     private void openDialog() {
-        AddCourseDialog addCourseDialog = new AddCourseDialog();
-        addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
+        Intent intent = new Intent(TermDetails.this, AddCourseDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNewCourse", true);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
     }
 
     private void setRecyclerView() {
@@ -72,12 +73,13 @@ public class TermDetails extends BaseActivity {
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new SwipeToDeleteCallBack(courseAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);*/
 
         courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
-        courseViewModel.getAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
+        courseViewModel.getAssociatedCourses(termId).observe(this,
+                new Observer<List<CourseEntity>>() {
             @Override
             public void onChanged(List<CourseEntity> courseEntities) {
                 courseAdapter.setCourses(courseEntities);

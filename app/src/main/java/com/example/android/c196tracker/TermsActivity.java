@@ -6,10 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +17,7 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
-public class TermsActivity extends BaseActivity implements LifecycleObserver {
+public class TermsActivity extends BaseActivity  {
 
     public static final int NEW_TERM_ACTIVITY_REQUEST_CODE = 1;
     private Button addTermButton;
@@ -44,7 +41,6 @@ public class TermsActivity extends BaseActivity implements LifecycleObserver {
         });
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void setRecyclerView() {
         recyclerView = findViewById(R.id.terms_recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -73,15 +69,5 @@ public class TermsActivity extends BaseActivity implements LifecycleObserver {
         bundle.putBoolean("isNewTerm", true);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_TERM_ACTIVITY_REQUEST_CODE);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
-            TermEntity term = new TermEntity(data.getStringExtra("termName"),
-                    data.getStringExtra("termStart"),
-                    data.getStringExtra("termEnd"));
-            termViewModel.insert(term);
-        }
     }
 }

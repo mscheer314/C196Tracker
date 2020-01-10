@@ -9,26 +9,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.UI.AddAssessmentDialog;
-import com.example.android.c196tracker.UI.AddCourseDialog;
 import com.example.android.c196tracker.UI.AssessmentAdapter;
-import com.example.android.c196tracker.UI.SwipeToDeleteCallBack;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
-import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
 
 public class CourseDetails extends BaseActivity {
 
+    private static final int NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE = 1;
+    private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
     private int courseId;
     private String courseNameString;
     private String courseStartString;
@@ -67,17 +63,12 @@ public class CourseDetails extends BaseActivity {
         });
     }
 
-    // todo figure out how to get the courseId for this method.
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void setUpdatedCourseDetails() {
-        CourseViewModel courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
-       // courseViewModel.getCourseById();
-    }
-
     private void openDialog() {
-        AddAssessmentDialog addAssessmentDialog = new AddAssessmentDialog(
-                courseId, courseStartString, courseEndString);
-        addAssessmentDialog.show(getSupportFragmentManager(), "add_assessment_dialog");
+        Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNewAssessment", true);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
     }
 
     private void setRecyclerView() {
@@ -90,9 +81,9 @@ public class CourseDetails extends BaseActivity {
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new SwipeToDeleteCallBack(assessmentAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);*/
 
         assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
         assessmentViewModel.getAssociatedAssessments(courseId).observe(this,
@@ -142,8 +133,12 @@ public class CourseDetails extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.edit_course) {
-            AddCourseDialog addCourseDialog = new AddCourseDialog(false, courseId);
-            addCourseDialog.show(getSupportFragmentManager(), "add_course_dialog");
+            Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isNewTerm", false);
+            bundle.putInt("courseId", courseId);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
     }
