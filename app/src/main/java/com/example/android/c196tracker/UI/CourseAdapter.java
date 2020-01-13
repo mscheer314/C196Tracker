@@ -62,7 +62,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(CourseViewHolder holder, int position) {
         if (courses != null) {
             CourseEntity current = courses.get(position);
-            courseId = current.getCourseId();
+            holder.courseId = current.getCourseId();
             holder.courseItemView.setText(current.getCourseName());
             holder.courseItemView2.setText(current.getCourseStart());
             holder.courseItemView3.setText(current.getCourseEnd());

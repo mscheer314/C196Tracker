@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AddTermDialog" />
         <activity android:name=".AddCourseDialog" />
+        <activity android:name=".AddAssessmentDialog" />
         <activity android:name=".AssessmentDetails" />
         <activity android:name=".AssessmentActivity" />
         <activity android:name=".TermDetails" />

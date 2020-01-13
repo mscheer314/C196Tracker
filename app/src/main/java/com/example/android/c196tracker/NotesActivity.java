@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.NoteEntity;
-import com.example.android.c196tracker.UI.AddNoteDialog;
 import com.example.android.c196tracker.UI.NoteAdapter;
 import com.example.android.c196tracker.ViewModel.NoteViewModel;
 

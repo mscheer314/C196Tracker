@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.AssessmentEntity;
-import com.example.android.c196tracker.UI.AddAssessmentDialog;
 import com.example.android.c196tracker.UI.AssessmentAdapter;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
@@ -67,6 +66,7 @@ public class CourseDetails extends BaseActivity {
         Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
         Bundle bundle = new Bundle();
         bundle.putBoolean("isNewAssessment", true);
+        bundle.putInt("courseId", courseId);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
     }

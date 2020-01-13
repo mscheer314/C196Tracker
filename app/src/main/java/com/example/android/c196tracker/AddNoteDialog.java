@@ -1,4 +1,4 @@
-package com.example.android.c196tracker.UI;
+package com.example.android.c196tracker;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.NoteEntity;
-import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
 public class AddNoteDialog extends AppCompatDialogFragment {

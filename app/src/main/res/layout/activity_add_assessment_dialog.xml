@@ -66,4 +66,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assessment_due_date" />
 
+    <Button
+        android:id="@+id/assessment_ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@android:string/ok"
+        app:layout_constraintEnd_toStartOf="@+id/assessment_cancel_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessment_type_spinner" />
+
+    <Button
+        android:id="@+id/assessment_cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/assessment_ok_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/assessment_ok_button"
+        app:layout_constraintTop_toTopOf="@+id/assessment_ok_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
