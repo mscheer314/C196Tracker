@@ -13,7 +13,6 @@
         <activity android:name=".AddCourseDialog" />
         <activity android:name=".AddAssessmentDialog" />
         <activity android:name=".AssessmentDetails" />
-        <activity android:name=".AssessmentActivity" />
         <activity android:name=".TermDetails" />
         <activity android:name=".CourseDetails" />
         <activity android:name=".NotesActivity" />
