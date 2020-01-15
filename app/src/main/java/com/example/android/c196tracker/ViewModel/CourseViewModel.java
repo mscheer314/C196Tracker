@@ -43,5 +43,7 @@ public class CourseViewModel extends AndroidViewModel {
 
     public void update(CourseEntity courseEntity) { repository.update(courseEntity); }
 
+    public void delete(CourseEntity courseEntity) { repository.delete(courseEntity); }
+
     public int lastId() { return allCourses.getValue().size(); }
 }

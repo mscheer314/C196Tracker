@@ -1,17 +1,27 @@
 package com.example.android.c196tracker.UI;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private TermAdapter termAdapter;
+    private CourseAdapter courseAdapter;
+    private AssessmentAdapter assessmentAdapter;
 
     public SwipeToDeleteCallback(TermAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         termAdapter = adapter;
+    }
+
+    public SwipeToDeleteCallback(CourseAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        courseAdapter = adapter;
+    }
+
+    public SwipeToDeleteCallback(AssessmentAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        assessmentAdapter = adapter;
     }
 
     @Override
