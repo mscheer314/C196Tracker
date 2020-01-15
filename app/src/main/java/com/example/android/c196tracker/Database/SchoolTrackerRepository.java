@@ -187,4 +187,20 @@ public class SchoolTrackerRepository {
             return null;
         }
     }
+
+    public void delete(TermEntity termEntity) {
+        new deleteTermAsyncTask(termDAO).execute(termEntity);
+    }
+
+    private  static class deleteTermAsyncTask extends AsyncTask<TermEntity, Void, Void> {
+        private TermDAO asyncTermDAO;
+
+        deleteTermAsyncTask(TermDAO dao) { asyncTermDAO = dao; }
+
+        @Override
+        protected Void doInBackground(final TermEntity... params) {
+            asyncTermDAO.delete(params[0]);
+            return null;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.android.c196tracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,47 +8,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android.c196tracker.Database.SchoolTrackerRepository;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
 import com.example.android.c196tracker.TermsActivity;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
 
     private final LayoutInflater inflater;
-    private int recentlyDeletedItemPosition;
-    private TermEntity recentlyDeletedItem;
     private final Context context;
+    private TermEntity deletedItem;
     private List<TermEntity> terms;
     private int termId;
-    private TermsActivity activity;
-    private SchoolTrackerRepository repository;
-
-    class TermViewHolder extends RecyclerView.ViewHolder {
-        private final TextView termItemView;
-        private final TextView termItemView2;
-        private final TextView termItemView3;
-        private int termId;
-
-        private TermViewHolder(View itemView) {
-            super(itemView);
-
-            termItemView = itemView.findViewById(R.id.term_name);
-            termItemView2 = itemView.findViewById(R.id.term_details_start);
-            termItemView3 = itemView.findViewById(R.id.term_details_end);
-            termId = -1;
-        }
-    }
+    private TermViewModel termViewModel;
+    private Activity activity;
 
     public TermAdapter(Context context) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+    }
+
+    public TermAdapter(Context context, Activity activity) {
+        inflater = LayoutInflater.from(context);
+        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -95,24 +85,9 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     public void deleteItem(int position) {
-        recentlyDeletedItem = terms.get(position);
-        recentlyDeletedItemPosition = position;
-        terms.remove(position);
-        notifyItemRemoved(position);
-        showUndoSnackBar();
-    }
-
-    private void showUndoSnackBar() {
-        // TODO  figure out this line activity returns null
-        View view = activity.findViewById(R.id.terms_recyclerview);
-        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
-        snackbar.show();
-    }
-
-    private void undoDelete() {
-        terms.add(recentlyDeletedItemPosition, recentlyDeletedItem);
-        notifyItemInserted(recentlyDeletedItemPosition);
+        deletedItem = terms.get(position);
+        termViewModel = new ViewModelProvider((TermsActivity)activity).get(TermViewModel.class);
+        termViewModel.delete(deletedItem);
     }
 
     public void setTerms(List<TermEntity> terms) {
@@ -120,5 +95,19 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         notifyDataSetChanged();
     }
 
+    class TermViewHolder extends RecyclerView.ViewHolder {
+        private final TextView termItemView;
+        private final TextView termItemView2;
+        private final TextView termItemView3;
+        private int termId;
 
+        private TermViewHolder(View itemView) {
+            super(itemView);
+
+            termItemView = itemView.findViewById(R.id.term_name);
+            termItemView2 = itemView.findViewById(R.id.term_details_start);
+            termItemView3 = itemView.findViewById(R.id.term_details_end);
+            termId = -1;
+        }
+    }
 }

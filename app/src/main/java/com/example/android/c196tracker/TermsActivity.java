@@ -8,10 +8,12 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.UI.TermAdapter;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
@@ -48,17 +50,17 @@ public class TermsActivity extends BaseActivity  {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final TermAdapter mAdapter = new TermAdapter(this);
-        recyclerView.setAdapter(mAdapter);
+        final TermAdapter adapter = new TermAdapter(this, this);
+        recyclerView.setAdapter(adapter);
 
-        // ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(mAdapter));
-        // itemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
         termViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
             @Override
             public void onChanged(@Nullable final List<TermEntity> terms) {
-                mAdapter.setTerms(terms);
+                adapter.setTerms(terms);
             }
         });
     }

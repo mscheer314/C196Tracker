@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "assessments", foreignKeys = @ForeignKey(entity = CourseEntity.class,
         parentColumns = "courseId",
-        childColumns = "courseId"),
+        childColumns = "courseId",
+        onDelete = ForeignKey.RESTRICT),
         indices = {@Index("courseId")})
 
 public class AssessmentEntity {
