@@ -44,7 +44,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
                 courseAdapter.deleteItem(position);
                 break;
             case 3:
-                //assessmentAdapter.deleteItem(position);
+                assessmentAdapter.deleteItem(position);
                 break;
         }
     }

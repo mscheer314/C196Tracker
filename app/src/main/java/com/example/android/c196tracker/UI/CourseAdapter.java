@@ -116,7 +116,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public void deleteItem(int position) {
         deletedItem = courses.get(position);
-        courseViewModel = new ViewModelProvider((CoursesActivity)activity).get(CourseViewModel.class);
+        courseViewModel = new ViewModelProvider((CoursesActivity) activity).get(CourseViewModel.class);
         courseViewModel.delete(deletedItem);
     }
 

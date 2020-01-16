@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.UI.CourseAdapter;
+import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
@@ -70,21 +72,21 @@ public class TermDetails extends BaseActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final CourseAdapter courseAdapter = new CourseAdapter(this,this);
+        final CourseAdapter courseAdapter = new CourseAdapter(this, this);
         recyclerView.setAdapter(courseAdapter);
 
-        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-                new SwipeToDeleteCallBack(courseAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);*/
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new SwipeToDeleteCallback(courseAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
         courseViewModel.getAssociatedCourses(termId).observe(this,
                 new Observer<List<CourseEntity>>() {
-            @Override
-            public void onChanged(List<CourseEntity> courseEntities) {
-                courseAdapter.setCourses(courseEntities);
-            }
-        });
+                    @Override
+                    public void onChanged(List<CourseEntity> courseEntities) {
+                        courseAdapter.setCourses(courseEntities);
+                    }
+                });
     }
 
     private void setTermDetails() {

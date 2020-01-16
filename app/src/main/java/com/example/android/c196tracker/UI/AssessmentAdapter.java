@@ -1,5 +1,6 @@
 package com.example.android.c196tracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.AssessmentDetails;
+import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.R;
+import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     private final Context context;
     private List<AssessmentEntity> assessments;
     private int assessmentId;
+    private Activity activity;
+    private AssessmentEntity deletedItem;
+    private AssessmentViewModel assessmentViewModel;
 
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
         private final TextView assessmentName;
@@ -37,9 +44,10 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         }
     }
 
-    public AssessmentAdapter(Context context) {
+    public AssessmentAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -81,6 +89,12 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         if (assessments != null)
             return assessments.size();
         else return 0;
+    }
+
+    public void deleteItem(int position) {
+        deletedItem = assessments.get(position);
+        assessmentViewModel = new ViewModelProvider((CourseDetails) activity).get(AssessmentViewModel.class);
+        assessmentViewModel.delete(deletedItem);
     }
 
     public void setAssessments(List<AssessmentEntity> assessments) {

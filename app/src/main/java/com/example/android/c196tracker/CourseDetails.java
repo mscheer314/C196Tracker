@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.UI.AssessmentAdapter;
+import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
 import java.util.List;
@@ -78,12 +80,12 @@ public class CourseDetails extends BaseActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this, this);
         recyclerView.setAdapter(assessmentAdapter);
 
-        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-                new SwipeToDeleteCallBack(assessmentAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);*/
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new SwipeToDeleteCallback(assessmentAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
         assessmentViewModel.getAssociatedAssessments(courseId).observe(this,

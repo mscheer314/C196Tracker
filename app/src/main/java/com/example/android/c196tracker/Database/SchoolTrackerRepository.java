@@ -112,6 +112,10 @@ public class SchoolTrackerRepository {
         new deleteCourseAsyncTask(courseDAO).execute(courseEntity);
     }
 
+    public void delete(AssessmentEntity assessmentEntity) {
+        new deleteAssessmentAsyncTask(assessmentDAO).execute(assessmentEntity);
+    }
+
     private static class insertAsyncTask1 extends AsyncTask<TermEntity, Void, Void> {
         private TermDAO asyncTaskDAO;
 
@@ -199,7 +203,9 @@ public class SchoolTrackerRepository {
     private static class deleteTermAsyncTask extends AsyncTask<TermEntity, Void, Void> {
         private TermDAO asyncTermDAO;
 
-        deleteTermAsyncTask(TermDAO dao) { asyncTermDAO = dao; }
+        deleteTermAsyncTask(TermDAO dao) {
+            asyncTermDAO = dao;
+        }
 
         @Override
         protected Void doInBackground(final TermEntity... params) {
@@ -211,11 +217,27 @@ public class SchoolTrackerRepository {
     private static class deleteCourseAsyncTask extends AsyncTask<CourseEntity, Void, Void> {
         private CourseDAO asyncCourseDAO;
 
-        deleteCourseAsyncTask(CourseDAO dao) { asyncCourseDAO = dao; }
+        deleteCourseAsyncTask(CourseDAO dao) {
+            asyncCourseDAO = dao;
+        }
 
         @Override
         protected Void doInBackground(final CourseEntity... params) {
             asyncCourseDAO.delete(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAssessmentAsyncTask extends AsyncTask<AssessmentEntity, Void, Void> {
+        private AssessmentDAO asyncAssessmentDAO;
+
+        deleteAssessmentAsyncTask(AssessmentDAO dao) {
+            asyncAssessmentDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final AssessmentEntity... params) {
+            asyncAssessmentDAO.delete(params[0]);
             return null;
         }
     }

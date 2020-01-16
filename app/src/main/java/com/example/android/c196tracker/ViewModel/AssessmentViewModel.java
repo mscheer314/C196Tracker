@@ -22,13 +22,19 @@ public class AssessmentViewModel extends AndroidViewModel {
         allAssessments = repository.getAllAssessments();
     }
 
-    public LiveData<List<AssessmentEntity>> getAllAssessments() { return allAssessments; }
+    public LiveData<List<AssessmentEntity>> getAllAssessments() {
+        return allAssessments;
+    }
 
     public LiveData<List<AssessmentEntity>> getAssociatedAssessments(int courseId) {
         return repository.getAssociatedAssessments(courseId);
     }
 
-    public void insert (AssessmentEntity assessmentEntity) {
+    public void insert(AssessmentEntity assessmentEntity) {
         repository.insert(assessmentEntity);
+    }
+
+    public void delete(AssessmentEntity assessmentEntity) {
+        repository.delete(assessmentEntity);
     }
 }

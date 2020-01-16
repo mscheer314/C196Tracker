@@ -86,7 +86,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     public void deleteItem(int position) {
         deletedItem = terms.get(position);
-        termViewModel = new ViewModelProvider((TermsActivity)activity).get(TermViewModel.class);
+        termViewModel = new ViewModelProvider((TermsActivity) activity).get(TermViewModel.class);
         termViewModel.delete(deletedItem);
     }
 
