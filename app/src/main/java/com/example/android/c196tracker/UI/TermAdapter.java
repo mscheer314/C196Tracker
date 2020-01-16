@@ -29,10 +29,10 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     private TermViewModel termViewModel;
     private Activity activity;
 
-    public TermAdapter(Context context) {
+    /*public TermAdapter(Context context) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-    }
+    }*/
 
     public TermAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);

@@ -70,7 +70,7 @@ public class TermDetails extends BaseActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        final CourseAdapter courseAdapter = new CourseAdapter(this,this);
         recyclerView.setAdapter(courseAdapter);
 
         /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(

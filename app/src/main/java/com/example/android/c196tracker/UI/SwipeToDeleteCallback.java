@@ -8,20 +8,24 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private TermAdapter termAdapter;
     private CourseAdapter courseAdapter;
     private AssessmentAdapter assessmentAdapter;
+    private int type;
 
     public SwipeToDeleteCallback(TermAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         termAdapter = adapter;
+        type = 1;
     }
 
     public SwipeToDeleteCallback(CourseAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         courseAdapter = adapter;
+        type = 2;
     }
 
     public SwipeToDeleteCallback(AssessmentAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         assessmentAdapter = adapter;
+        type = 3;
     }
 
     @Override
@@ -32,6 +36,16 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        termAdapter.deleteItem(position);
+        switch (type) {
+            case 1:
+                termAdapter.deleteItem(position);
+                break;
+            case 2:
+                courseAdapter.deleteItem(position);
+                break;
+            case 3:
+                //assessmentAdapter.deleteItem(position);
+                break;
+        }
     }
 }

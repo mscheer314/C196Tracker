@@ -1,5 +1,6 @@
 package com.example.android.c196tracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,25 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private final LayoutInflater inflater;
-    private CourseEntity recentlyDeletedItem;
-    private int recentlyDeletedItemPosition;
+    private CourseEntity deletedItem;
     private final Context context;
     private List<CourseEntity> courses;
-    private CoursesActivity activity;
+    private Activity activity;
     private int courseId;
+    private CourseViewModel courseViewModel;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseItemView;
@@ -47,9 +49,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    public CourseAdapter(Context context) {
+    public CourseAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -112,22 +115,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     public void deleteItem(int position) {
-        recentlyDeletedItem = courses.get(position);
-        recentlyDeletedItemPosition = position;
-        courses.remove(position);
-        notifyItemRemoved(position);
-        showUndoSnackBar();
-    }
-
-    private void showUndoSnackBar() {
-        View view = activity.findViewById(R.id.courses_recyclerview);
-        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
-    }
-
-    private void undoDelete() {
-        courses.add(recentlyDeletedItemPosition, recentlyDeletedItem);
-        notifyItemInserted(recentlyDeletedItemPosition);
+        deletedItem = courses.get(position);
+        courseViewModel = new ViewModelProvider((CoursesActivity)activity).get(CourseViewModel.class);
+        courseViewModel.delete(deletedItem);
     }
 
     public void setCourses(List<CourseEntity> courses) {
