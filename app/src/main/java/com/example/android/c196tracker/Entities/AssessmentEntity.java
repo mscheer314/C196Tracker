@@ -44,7 +44,9 @@ public class AssessmentEntity {
         return assessmentId;
     }
 
-    public void setAssessmentId(int assessmentId) { this.assessmentId = assessmentId; }
+    public void setAssessmentId(int assessmentId) {
+        this.assessmentId = assessmentId;
+    }
 
     public String getAssessmentName() {
         return assessmentName;
@@ -70,7 +72,11 @@ public class AssessmentEntity {
         this.assessmentDate = assessmentDate;
     }
 
-    public int getCourseId() { return courseId; }
+    public int getCourseId() {
+        return courseId;
+    }
 
-    public void setCourseId(int courseId) { this.courseId = courseId; }
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 }

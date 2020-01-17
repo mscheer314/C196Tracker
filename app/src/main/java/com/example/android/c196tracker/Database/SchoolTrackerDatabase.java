@@ -19,7 +19,7 @@ import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
 @Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class, AssessmentEntity.class},
-        version = 3, exportSchema = false)
+        version = 4, exportSchema = false)
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {
     private static volatile SchoolTrackerDatabase INSTANCE;

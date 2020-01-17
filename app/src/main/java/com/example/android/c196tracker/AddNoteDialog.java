@@ -1,60 +1,74 @@
 package com.example.android.c196tracker;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
-public class AddNoteDialog extends AppCompatDialogFragment {
+public class AddNoteDialog extends AppCompatActivity {
     private static final String TAG = "AddNoteDialog";
     private EditText noteContent;
+    private Button noteOkButton;
+    private Button noteCancelButton;
     private NoteViewModel noteViewModel;
+    private int courseId;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            courseId = bundle.getInt("courseId");
+        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_new_note, null);
-        noteContent = view.findViewById(R.id.note_content);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_note_dialog);
+
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        setViews();
+        setNoteOkButtonListener();
+        setNoteCancelButton();
+    }
 
-        builder.setView(view)
-                .setTitle("Add Note")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+    private void setViews() {
+        noteContent = findViewById(R.id.note_content);
+        noteOkButton = findViewById(R.id.note_ok_button);
+        noteCancelButton = findViewById(R.id.note_cancel_button);
+    }
 
-                    }
-                })
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent replyIntent = new Intent();
+    private void setNoteOkButtonListener() {
+        noteOkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent replyIntent = new Intent();
+                if (TextUtils.isEmpty(noteContent.getText())) {
+                    Toast.makeText(AddNoteDialog.this, "Enter a note", Toast.LENGTH_LONG).show();
+                } else {
+                    String noteContent = AddNoteDialog.this.noteContent.getText().toString();
 
-                        if (TextUtils.isEmpty(noteContent.getText())) {
-                            //setResult(RESULT_CANCELED, replyIntent);
-                        } else {
-                            String noteContent = AddNoteDialog.this.noteContent.getText().toString();
+                    replyIntent.putExtra("noteContent", noteContent);
 
-                            replyIntent.putExtra("noteContent", noteContent);
+                    NoteEntity note = new NoteEntity(noteContent, courseId);
+                    noteViewModel.insert(note);
+                }
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+    }
 
-                            NoteEntity note = new NoteEntity(noteContent);
-                            noteViewModel.insert(note);
-                        }
-                    }
-                });
-        return builder.create();
+    private void setNoteCancelButton() {
+        noteCancelButton.setOnClickListener((view) -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
     }
 }

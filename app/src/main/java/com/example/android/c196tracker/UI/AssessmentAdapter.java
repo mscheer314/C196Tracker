@@ -34,6 +34,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         private final TextView assessmentDueDate;
 
         private int assessmentId;
+        private int courseId;
 
 
         private AssessmentViewHolder(View itemView) {
@@ -41,6 +42,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             assessmentName = itemView.findViewById(R.id.assessment_name);
             assessmentDueDate = itemView.findViewById(R.id.assessment_date);
             assessmentId = -1;
+            courseId = -1;
         }
     }
 
@@ -60,6 +62,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int postion) {
         if (assessments != null) {
             AssessmentEntity current = assessments.get(postion);
+            holder.courseId = current.getCourseId();
             holder.assessmentId = current.getAssessmentId();
             holder.assessmentName.setText(current.getAssessmentName());
             holder.assessmentDueDate.setText(current.getAssessmentDate());
@@ -73,11 +76,14 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 assessmentId = holder.assessmentId;
                 String assessmentName = holder.assessmentName.getText().toString();
                 String assessmentDate = holder.assessmentDueDate.getText().toString();
+                int assessmentCourseId = holder.courseId;
 
                 Intent intent = new Intent(context, AssessmentDetails.class);
                 intent.putExtra("assessmentId", assessmentId);
                 intent.putExtra("assessmentName", assessmentName);
                 intent.putExtra("assessmentDueDate", assessmentDate);
+                intent.putExtra("courseId", assessmentCourseId);
+
 
                 context.startActivity(intent);
             }

@@ -6,12 +6,14 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "notes")
 
 public class NoteEntity {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int noteId;
     private String noteContent;
+    private int courseId;
 
-    public NoteEntity(String noteContent) {
+    public NoteEntity(String noteContent, int courseId) {
         this.noteContent = noteContent;
+        this.courseId = courseId;
     }
 
     @Override
@@ -20,6 +22,14 @@ public class NoteEntity {
                 "noteId=" + noteId +
                 ", noteContent'" + noteContent + '\'' +
                 '}';
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public int getNoteId() {

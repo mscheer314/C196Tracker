@@ -52,12 +52,12 @@ public class TermDetails extends BaseActivity {
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openAddCourseDialog();
             }
         });
     }
 
-    private void openDialog() {
+    private void openAddCourseDialog() {
         Intent intent = new Intent(TermDetails.this, AddCourseDialog.class);
         Bundle bundle = new Bundle();
         bundle.putBoolean("isNewCourse", true);

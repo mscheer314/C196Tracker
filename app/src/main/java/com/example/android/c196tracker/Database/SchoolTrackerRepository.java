@@ -27,9 +27,6 @@ public class SchoolTrackerRepository {
     private LiveData<List<NoteEntity>> allNotes;
     private LiveData<List<AssessmentEntity>> allAssessments;
 
-    private LiveData<List<NoteEntity>> associatedNotes;
-    private LiveData<List<AssessmentEntity>> associatedAssessments;
-
     private LiveData<List<CourseEntity>> course;
 
     private int courseId;
@@ -73,7 +70,7 @@ public class SchoolTrackerRepository {
     }
 
     public LiveData<List<NoteEntity>> getAssociatedNotes(int courseId) {
-        return associatedNotes;
+        return noteDAO.getAssociatedNotes(courseId);
     }
 
     public LiveData<List<CourseEntity>> getCourseById(int courseId) {

@@ -26,6 +26,7 @@ public class CourseDetails extends BaseActivity {
 
     private static final int NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
+    private static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
     private int courseId;
     private String courseNameString;
     private String courseStartString;
@@ -36,6 +37,7 @@ public class CourseDetails extends BaseActivity {
     private String courseMentorEmailString;
 
     private Button addAssessmentButton;
+    private Button addNoteButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TextView courseName;
@@ -55,16 +57,31 @@ public class CourseDetails extends BaseActivity {
         setCourseDetails();
         setRecyclerView();
 
-        addAssessmentButton = findViewById(R.id.add_assessment);
+        addAssessmentButton = findViewById(R.id.add_assessment_button);
         addAssessmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openAssessmentDialog();
+            }
+        });
+        addNoteButton = findViewById(R.id.add_note_button);
+        addNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddNoteDialog();
             }
         });
     }
 
-    private void openDialog() {
+    private void openAddNoteDialog() {
+        Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("courseId", courseId);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
+    }
+
+    private void openAssessmentDialog() {
         Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
         Bundle bundle = new Bundle();
         bundle.putBoolean("isNewAssessment", true);

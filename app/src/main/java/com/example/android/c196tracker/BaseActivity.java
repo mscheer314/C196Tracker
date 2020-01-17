@@ -19,10 +19,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Intent coursesIntent = new Intent(this, CoursesActivity.class);
                 startActivity(coursesIntent);
                 return true;
-            case R.id.all_notes:
+            /*case R.id.all_notes:
                 Intent NotesIntent = new Intent(this, NotesActivity.class);
                 startActivity(NotesIntent);
-                return true;
+
+                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }

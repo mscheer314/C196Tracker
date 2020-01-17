@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/assessment_details_title" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/assessment_detail_notes_recyclerview"
+        android:id="@+id/assessment_details_note_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

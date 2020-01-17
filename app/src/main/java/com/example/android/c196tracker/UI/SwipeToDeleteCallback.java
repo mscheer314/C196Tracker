@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+    private NoteAdapter noteAdapter;
     private TermAdapter termAdapter;
     private CourseAdapter courseAdapter;
     private AssessmentAdapter assessmentAdapter;
@@ -28,6 +29,12 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         type = 3;
     }
 
+    public SwipeToDeleteCallback(NoteAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        noteAdapter = adapter;
+        type = 4;
+    }
+
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         return false;
@@ -46,6 +53,8 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
             case 3:
                 assessmentAdapter.deleteItem(position);
                 break;
+            case 4:
+                noteAdapter.deleteItem(position);
         }
     }
 }

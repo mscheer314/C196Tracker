@@ -1,41 +1,36 @@
 package com.example.android.c196tracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.Entities.NoteEntity;
-import com.example.android.c196tracker.NotesActivity;
 import com.example.android.c196tracker.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     private final LayoutInflater inflater;
-    private int recentlyDeletedItemPosition;
-    private NoteEntity recentlyDeletedItem;
     private final Context context;
+    private int recentlyDeletedItemPosition;
+    private NoteEntity deletedItem;
     private List<NoteEntity> notes;
-    private NotesActivity activity;
+    private NoteViewModel noteViewModel;
+    private Activity activity;
 
-    class NoteViewHolder extends RecyclerView.ViewHolder {
-        private final TextView noteItemView;
-
-        private NoteViewHolder(View itemView) {
-            super(itemView);
-            noteItemView = itemView.findViewById(R.id.note_content);
-        }
-    }
-
-    public NoteAdapter(Context context) {
+    public NoteAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -69,28 +64,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     protected void deleteItem(int position) {
-        recentlyDeletedItem = notes.get(position);
-        recentlyDeletedItemPosition = position;
-        notes.remove(position);
-        notifyItemRemoved(position);
-        showUndoSnackBar();
+        deletedItem = notes.get(position);
+        noteViewModel = new ViewModelProvider((CourseDetails) activity).get(NoteViewModel.class);
+        //noteViewModel.delete(deletedItem);
     }
 
-    private void showUndoSnackBar() {
-        // TODO figure out this line. activity returns null
-        View view = activity.findViewById(R.id.notes_recyclerview);
-        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
-        snackbar.show();
-    }
 
-    private void undoDelete() {
-        notes.add(recentlyDeletedItemPosition, recentlyDeletedItem);
-        notifyItemInserted(recentlyDeletedItemPosition);
-    }
+
 
     public void setNotes(List<NoteEntity> notes) {
         this.notes = notes;
         notifyDataSetChanged();
+    }
+
+    class NoteViewHolder extends RecyclerView.ViewHolder {
+        private final TextView noteItemView;
+
+        private NoteViewHolder(View itemView) {
+            super(itemView);
+            noteItemView = itemView.findViewById(R.id.note_content);
+        }
     }
 }

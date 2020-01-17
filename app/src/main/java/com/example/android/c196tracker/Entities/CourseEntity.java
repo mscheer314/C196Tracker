@@ -63,7 +63,7 @@ public class CourseEntity {
                 ", courseEnd='" + courseEnd + '\'' +
                 ", courseStatus='" + courseStatus + '\'' +
                 ", courseMentorName='" + courseMentorName + '\'' +
-                ", courseMentorEmail='" + courseMentorEmail +'\'' +
+                ", courseMentorEmail='" + courseMentorEmail + '\'' +
                 ", courseMentorPhone='" + courseMentorPhone + '\'' +
                 ", termId='" + termId + '\'' +
                 '}';
@@ -102,13 +102,21 @@ public class CourseEntity {
         this.courseEnd = courseEnd;
     }
 
-    public int getTermId() { return termId; }
+    public int getTermId() {
+        return termId;
+    }
 
-    public void setTermId(int termId) { this.termId = termId; }
+    public void setTermId(int termId) {
+        this.termId = termId;
+    }
 
-    public String getCourseStatus() { return courseStatus; }
+    public String getCourseStatus() {
+        return courseStatus;
+    }
 
-    public void setCourseStatus(String courseStatus) { this.courseStatus = courseStatus; }
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
+    }
 
     public String getCourseMentorName() {
         return courseMentorName;
