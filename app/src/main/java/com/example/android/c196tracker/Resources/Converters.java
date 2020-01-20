@@ -1,4 +1,4 @@
-package com.example.android.c196tracker;
+package com.example.android.c196tracker.Resources;
 
 import androidx.room.TypeConverter;
 

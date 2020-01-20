@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.android.c196tracker.Converters;
+import com.example.android.c196tracker.Resources.Converters;
 import com.example.android.c196tracker.DAO.AssessmentDAO;
 import com.example.android.c196tracker.DAO.CourseDAO;
 import com.example.android.c196tracker.DAO.NoteDAO;

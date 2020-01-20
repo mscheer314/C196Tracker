@@ -1,9 +1,5 @@
 package com.example.android.c196tracker;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -33,11 +28,9 @@ import java.util.List;
 
 public class CourseDetails extends BaseActivity {
 
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private static final int NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
-    private final static String default_notification_channel_id = "default";
     private int courseId;
     private String courseNameString;
     private String courseStartString;
@@ -192,7 +185,6 @@ public class CourseDetails extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             scheduleNotification(getNotification("Course Starting"), startDate.getTime());
         }
         if (item.getItemId() == R.id.add_end_notficiation) {
@@ -214,25 +206,5 @@ public class CourseDetails extends BaseActivity {
             startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private Notification getNotification(String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_channel_id);
-        builder.setContentTitle("Scheduled Notification");
-        builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
-        builder.setAutoCancel(true);
-        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
-        return builder.build();
-    }
-
-    private void scheduleNotification(Notification notification, long delay) {
-        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, 1);
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        assert alarmManager != null;
-        alarmManager.set(AlarmManager.RTC_WAKEUP, delay, pendingIntent);
     }
 }

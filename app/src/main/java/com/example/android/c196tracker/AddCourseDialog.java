@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.Resources.InputChecker;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 

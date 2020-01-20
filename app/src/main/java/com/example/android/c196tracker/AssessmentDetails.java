@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.lifecycle.Observer;
@@ -20,6 +18,9 @@ import com.example.android.c196tracker.UI.NoteAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AssessmentDetails extends BaseActivity {
@@ -29,7 +30,6 @@ public class AssessmentDetails extends BaseActivity {
     private String assessmentDueDate;
     private TextView assessmentNameTextView;
     private TextView assessmentDueDateTextView;
-    private Button addNotificationButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private NoteViewModel noteViewModel;
@@ -43,11 +43,9 @@ public class AssessmentDetails extends BaseActivity {
 
         assessmentNameTextView = findViewById(R.id.assessment_details_title);
         assessmentDueDateTextView = findViewById(R.id.assessment_details_due_date);
-        addNotificationButton = findViewById(R.id.assessment_notification_button);
 
         setAssessmentDetails();
         setCourseDetails();
-        setNotificationButton();
         setRecyclerView();
     }
 
@@ -64,23 +62,15 @@ public class AssessmentDetails extends BaseActivity {
             }
         }
     }
+
     private void setAssessmentDetails() {
         Intent intent = getIntent();
         assessmentName = intent.getStringExtra("assessmentName");
         assessmentDueDate = intent.getStringExtra("assessmentDueDate");
-        assessmentId = intent.getIntExtra("assessmentId",0);
+        assessmentId = intent.getIntExtra("assessmentId", 0);
 
         assessmentNameTextView.setText(assessmentName);
         assessmentDueDateTextView.setText(assessmentDueDate);
-    }
-
-    private void setNotificationButton() {
-        addNotificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-// todo implement this method
-            }
-        });
     }
 
     private void setRecyclerView() {
@@ -120,6 +110,8 @@ public class AssessmentDetails extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+
         if (item.getItemId() == R.id.edit_assessment) {
             Intent intent = new Intent(AssessmentDetails.this, AddAssessmentDialog.class);
             Bundle bundle = new Bundle();
@@ -137,6 +129,17 @@ public class AssessmentDetails extends BaseActivity {
 
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
+        }
+        if (item.getItemId() == R.id.add_assessment_notification) {
+            Date assessmentDate = new Date();
+            try {
+                assessmentDate = formatter.parse(assessmentDueDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            scheduleNotification(getNotification("Assessment upcoming"), assessmentDate.getTime());
+            //Snackbar.make(findViewById(R.id.assessment_coordinator_layout), R.string.notification_scheduled, Snackbar.LENGTH_SHORT)
+               //     .show();
         }
         return super.onOptionsItemSelected(item);
     }

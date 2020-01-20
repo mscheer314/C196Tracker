@@ -46,4 +46,6 @@
     <string name="add_start_notification">Add Start Notification</string>
     <string name="add_end_notification">Add End Notification</string>
     <string name="share_note">Share Note</string>
+    <string name="notification_scheduled">Notification scheduled.</string>
+
 </resources>

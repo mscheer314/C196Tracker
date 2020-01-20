@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.android.c196tracker.Entities.TermEntity;
+import com.example.android.c196tracker.Resources.InputChecker;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.text.ParseException;
