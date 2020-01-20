@@ -5,6 +5,12 @@
         android:id="@+id/edit_course"
         android:title="@string/edit"/>
     <item
+        android:id="@+id/add_start_notification"
+        android:title="@string/add_start_notification"/>
+    <item
+        android:id="@+id/add_end_notficiation"
+        android:title="@string/add_end_notification"/>
+    <item
         android:id="@+id/all_courses"
         android:title="@string/go_to_courses" />
     <item

@@ -65,6 +65,8 @@ public class TermsActivity extends BaseActivity  {
         });
     }
 
+    //TODO add options Menu with dots
+
     public void openDialog() {
         Intent intent = new Intent(TermsActivity.this, AddTermDialog.class);
         Bundle bundle = new Bundle();

@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,29 +21,30 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddAssessmentDialog extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddAssessmentDialog";
-    ArrayList<String> assessmentList;
-    private TextView assessmentName;
-    private TextView assessmentDueDate;
+    private TextView assessmentNameTextView;
+    private TextView assessmentDueDateTextView;
     private DatePickerDialog.OnDateSetListener dueDateSetListener;
     private Button okButton;
     private Button cancelButton;
     private AssessmentViewModel assessmentViewModel;
     private String errorMessage;
     private int courseId;
+    private int assessmentId;
     private String courseStart;
     private String courseEnd;
     private Spinner assessmentTypeSpinner;
     private String assessmentType;
     private boolean isNewAssessment;
-    private String activeState;
-    private Switch activeSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,45 +52,72 @@ public class AddAssessmentDialog extends AppCompatActivity
         if (bundle != null) {
             isNewAssessment = bundle.getBoolean("isNewAssessment");
             courseId = bundle.getInt("courseId");
+            assessmentId = bundle.getInt("assessmentId");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assessment_dialog);
 
         assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
 
-        assessmentName = findViewById(R.id.assessment_name_editText);
+        assessmentNameTextView = findViewById(R.id.assessment_name_editText);
 
         loadDatePicker();
         loadSpinnerData();
+        loadCancelButton();
 
         okButton = findViewById(R.id.assessment_ok_button);
         okButton.setOnClickListener((view) -> {
             errorMessage = InputChecker.checkItemName(3,
-                    assessmentName.getText().toString());
+                    assessmentNameTextView.getText().toString());
             errorMessage += InputChecker.checkAssessmentDate(
-                    assessmentDueDate.getText().toString());
+                    assessmentDueDateTextView.getText().toString());
             if (errorMessage.length() > 0) {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
             } else {
                 Intent replyIntent = new Intent();
 
-                String assessmentName = AddAssessmentDialog.this.assessmentName.getText().toString();
-                String assessmentType = AddAssessmentDialog.this.assessmentType;
-                String assessmentDueDate = AddAssessmentDialog.this.assessmentDueDate.getText()
+                String assessmentNameString = AddAssessmentDialog.this.assessmentNameTextView.getText().toString();
+                String assessmentTypeString = AddAssessmentDialog.this.assessmentType;
+                String assessmentDueDateString = AddAssessmentDialog.this.assessmentDueDateTextView.getText()
                         .toString();
-                AssessmentEntity assessment = new AssessmentEntity(
-                        assessmentName, assessmentType, assessmentDueDate, courseId);
-                assessmentViewModel.insert(assessment);
 
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                Date assessmentDueDate = new Date();
+                try {
+                    assessmentDueDate = formatter.parse(assessmentDueDateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (isNewAssessment) {
+                    AssessmentEntity assessment = new AssessmentEntity(
+                            assessmentNameString, assessmentTypeString, assessmentDueDate, courseId);
+                    assessmentViewModel.insert(assessment);
+
+                } else {
+                    AssessmentEntity assessment = new AssessmentEntity(assessmentId,
+                            assessmentNameString, assessmentTypeString, assessmentDueDate, courseId);
+                    assessmentViewModel.insert(assessment);
+                }
+
+                replyIntent.putExtra("assessmentName", assessmentNameString);
+                replyIntent.putExtra("assessmentDueDate", assessmentDueDateString);
                 setResult(RESULT_OK, replyIntent);
                 finish();
             }
         });
     }
 
+    private void loadCancelButton() {
+        cancelButton = findViewById(R.id.assessment_cancel_button);
+        cancelButton.setOnClickListener((view) -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
+    }
+
     private void loadDatePicker() {
-        assessmentDueDate = findViewById(R.id.assessment_due_date);
-        assessmentDueDate.setOnClickListener(new View.OnClickListener() {
+        assessmentDueDateTextView = findViewById(R.id.assessment_due_date);
+        assessmentDueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -111,9 +138,9 @@ public class AddAssessmentDialog extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
-                assessmentDueDate.setText(date);
+                Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
+                String date = month + "-" + dayOfMonth + "-" + year;
+                assessmentDueDateTextView.setText(date);
             }
         };
     }

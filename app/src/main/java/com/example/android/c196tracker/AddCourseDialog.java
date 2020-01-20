@@ -27,20 +27,23 @@ import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddCourseDialog extends AppCompatActivity implements OnItemSelectedListener {
     private static final String TAG = "AddCourseDialog";
     ArrayList<String> termsList;
     ArrayList<Integer> termIdList;
-    private EditText courseName;
-    private TextView courseStart;
-    private TextView courseEnd;
-    private EditText mentorName;
-    private EditText mentorEmail;
-    private EditText mentorPhone;
+    private EditText courseNameEditText;
+    private TextView courseStartTextView;
+    private TextView courseEndTextView;
+    private EditText mentorNameEditText;
+    private EditText mentorEmailEditText;
+    private EditText mentorPhoneEditText;
     private DatePickerDialog.OnDateSetListener startSetListener;
     private DatePickerDialog.OnDateSetListener endSetListener;
     private CourseViewModel courseViewModel;
@@ -69,10 +72,10 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
 
         courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
 
-        courseName = findViewById(R.id.course_name_editText);
-        mentorName = findViewById(R.id.course_mentor_name_editText);
-        mentorEmail = findViewById(R.id.course_mentor_email_editText);
-        mentorPhone = findViewById(R.id.course_mentor_phone_editText);
+        courseNameEditText = findViewById(R.id.course_name_editText);
+        mentorNameEditText = findViewById(R.id.course_mentor_name_editText);
+        mentorEmailEditText = findViewById(R.id.course_mentor_email_editText);
+        mentorPhoneEditText = findViewById(R.id.course_mentor_phone_editText);
 
         loadTermSpinnerData();
         loadCourseStatusSpinner();
@@ -81,32 +84,46 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
         okButton = findViewById(R.id.course_ok_button);
         okButton.setOnClickListener((view) -> {
             errorMessage = InputChecker.checkItemName(2,
-                    courseName.getText().toString());
+                    courseNameEditText.getText().toString());
             errorMessage += InputChecker.checkStartAndEndDates(
-                    courseStart.getText().toString(),
-                    courseEnd.getText().toString());
+                    courseStartTextView.getText().toString(),
+                    courseEndTextView.getText().toString());
             if (errorMessage.length() > 0) {
                 Toast.makeText(AddCourseDialog.this, errorMessage, Toast.LENGTH_LONG).show();
             } else {
                 Intent replyIntent = new Intent();
-                String courseName = AddCourseDialog.this.courseName.getText().toString();
-                String courseStart = AddCourseDialog.this.courseStart.getText().toString();
-                String courseEnd = AddCourseDialog.this.courseEnd.getText().toString();
-                String mentorNameString = AddCourseDialog.this.mentorName.getText().toString();
-                String mentorEmailString = AddCourseDialog.this.mentorEmail.getText().toString();
-                String mentorPhoneString = AddCourseDialog.this.mentorPhone.getText().toString();
+                String courseName = AddCourseDialog.this.courseNameEditText.getText().toString();
+                String courseStart = AddCourseDialog.this.courseStartTextView.getText().toString();
+                String courseEnd = AddCourseDialog.this.courseEndTextView.getText().toString();
+                String mentorNameString = AddCourseDialog.this.mentorNameEditText.getText().toString();
+                String mentorEmailString = AddCourseDialog.this.mentorEmailEditText.getText().toString();
+                String mentorPhoneString = AddCourseDialog.this.mentorPhoneEditText.getText().toString();
 
 
                 replyIntent.putExtra("courseName", courseName);
                 replyIntent.putExtra("courseStart", courseStart);
                 replyIntent.putExtra("courseEnd", courseEnd);
+                replyIntent.putExtra("courseStatus", courseStatus);
+                replyIntent.putExtra("mentorName", mentorNameString);
+                replyIntent.putExtra("mentorEmail", mentorEmailString);
+                replyIntent.putExtra("mentorPhone", mentorPhoneString);
+
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                Date startDate = new Date();
+                Date endDate = new Date();
+                try {
+                    startDate = formatter.parse(courseStart);
+                    endDate = formatter.parse(courseEnd);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 if (isNewCourse) {
-                    CourseEntity course = new CourseEntity(courseName, courseStart, courseEnd, courseStatus,
+                    CourseEntity course = new CourseEntity(courseName, startDate, endDate, courseStatus,
                             mentorNameString, mentorEmailString, mentorPhoneString, termId);
                     courseViewModel.insert(course);
                 } else {
-                    CourseEntity course = new CourseEntity(courseId, courseName, courseStart, courseEnd, courseStatus,
+                    CourseEntity course = new CourseEntity(courseId, courseName, startDate, endDate, courseStatus,
                             mentorNameString, mentorEmailString, mentorPhoneString, termId);
                     courseViewModel.update(course);
                 }
@@ -123,10 +140,10 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
     }
 
     private void setupDateSelectButtons() {
-        courseStart = findViewById(R.id.course_start_datepicker);
-        courseEnd = findViewById(R.id.course_end_datepicker);
+        courseStartTextView = findViewById(R.id.course_start_datepicker);
+        courseEndTextView = findViewById(R.id.course_end_datepicker);
 
-        courseStart.setOnClickListener(new View.OnClickListener() {
+        courseStartTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -147,12 +164,12 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
-                courseStart.setText(date);
+                Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
+                String date = month + "-" + dayOfMonth + "-" + year;
+                courseStartTextView.setText(date);
             }
         };
-        courseEnd.setOnClickListener(new View.OnClickListener() {
+        courseEndTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -173,9 +190,9 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
-                courseEnd.setText(date);
+                Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
+                String date = month + "-" + dayOfMonth + "-" + year;
+                courseEndTextView.setText(date);
             }
         };
     }

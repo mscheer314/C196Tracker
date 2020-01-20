@@ -17,34 +17,20 @@ import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.AssessmentViewHolder> {
 
     private final LayoutInflater inflater;
     private final Context context;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-YYYY");
     private List<AssessmentEntity> assessments;
     private int assessmentId;
     private Activity activity;
     private AssessmentEntity deletedItem;
     private AssessmentViewModel assessmentViewModel;
 
-    class AssessmentViewHolder extends RecyclerView.ViewHolder {
-        private final TextView assessmentName;
-        private final TextView assessmentDueDate;
-
-        private int assessmentId;
-        private int courseId;
-
-
-        private AssessmentViewHolder(View itemView) {
-            super(itemView);
-            assessmentName = itemView.findViewById(R.id.assessment_name);
-            assessmentDueDate = itemView.findViewById(R.id.assessment_date);
-            assessmentId = -1;
-            courseId = -1;
-        }
-    }
 
     public AssessmentAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
@@ -65,7 +51,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             holder.courseId = current.getCourseId();
             holder.assessmentId = current.getAssessmentId();
             holder.assessmentName.setText(current.getAssessmentName());
-            holder.assessmentDueDate.setText(current.getAssessmentDate());
+            holder.assessmentDueDate.setText(dateFormatter.format(current.getAssessmentDate()));
         } else {
             holder.assessmentName.setText("nothing");
             holder.assessmentDueDate.setText("nothing");
@@ -106,6 +92,23 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void setAssessments(List<AssessmentEntity> assessments) {
         this.assessments = assessments;
         notifyDataSetChanged();
+    }
+
+    class AssessmentViewHolder extends RecyclerView.ViewHolder {
+        private final TextView assessmentName;
+        private final TextView assessmentDueDate;
+
+        private int assessmentId;
+        private int courseId;
+
+
+        private AssessmentViewHolder(View itemView) {
+            super(itemView);
+            assessmentName = itemView.findViewById(R.id.assessment_name);
+            assessmentDueDate = itemView.findViewById(R.id.assessment_date);
+            assessmentId = -1;
+            courseId = -1;
+        }
     }
 }
 

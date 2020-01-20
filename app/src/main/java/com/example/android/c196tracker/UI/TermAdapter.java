@@ -17,22 +17,20 @@ import com.example.android.c196tracker.TermDetails;
 import com.example.android.c196tracker.TermsActivity;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
 
     private final LayoutInflater inflater;
     private final Context context;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-YYYY");
     private TermEntity deletedItem;
     private List<TermEntity> terms;
     private int termId;
     private TermViewModel termViewModel;
     private Activity activity;
 
-    /*public TermAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
-        this.context = context;
-    }*/
 
     public TermAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
@@ -51,21 +49,21 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         if (terms != null) {
             TermEntity current = terms.get(position);
             holder.termId = current.getTermId();
-            holder.termItemView.setText(current.getTermName());
-            holder.termItemView2.setText(current.getTermStart());
-            holder.termItemView3.setText(current.getTermEnd());
+            holder.termNameTextView.setText(current.getTermName());
+            holder.termStartTextView.setText(dateFormatter.format(current.getTermStart()));
+            holder.termEndTextView.setText(dateFormatter.format(current.getTermEnd()));
         } else {
-            holder.termItemView.setText("nothing");
-            holder.termItemView2.setText("nothing");
-            holder.termItemView3.setText("nothing");
+            holder.termNameTextView.setText("nothing");
+            holder.termStartTextView.setText("nothing");
+            holder.termEndTextView.setText("nothing");
         }
-        holder.termItemView.setOnClickListener(new View.OnClickListener() {
+        holder.termNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 termId = holder.termId;
-                String termName = holder.termItemView.getText().toString();
-                String termStart = holder.termItemView2.getText().toString();
-                String termEnd = holder.termItemView3.getText().toString();
+                String termName = holder.termNameTextView.getText().toString();
+                String termStart = holder.termStartTextView.getText().toString();
+                String termEnd = holder.termEndTextView.getText().toString();
                 Intent intent = new Intent(context, TermDetails.class);
                 intent.putExtra("termId", termId);
                 intent.putExtra("termName", termName);
@@ -96,17 +94,17 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     class TermViewHolder extends RecyclerView.ViewHolder {
-        private final TextView termItemView;
-        private final TextView termItemView2;
-        private final TextView termItemView3;
+        private final TextView termNameTextView;
+        private final TextView termStartTextView;
+        private final TextView termEndTextView;
         private int termId;
 
         private TermViewHolder(View itemView) {
             super(itemView);
 
-            termItemView = itemView.findViewById(R.id.term_name);
-            termItemView2 = itemView.findViewById(R.id.term_details_start);
-            termItemView3 = itemView.findViewById(R.id.term_details_end);
+            termNameTextView = itemView.findViewById(R.id.term_name);
+            termStartTextView = itemView.findViewById(R.id.term_details_start);
+            termEndTextView = itemView.findViewById(R.id.term_details_end);
             termId = -1;
         }
     }

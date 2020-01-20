@@ -6,6 +6,8 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "courses", foreignKeys = @ForeignKey(entity = TermEntity.class,
         parentColumns = "termId",
         childColumns = "termId",
@@ -17,8 +19,8 @@ public class CourseEntity {
     private int courseId;
 
     private String courseName;
-    private String courseStart;
-    private String courseEnd;
+    private Date courseStart;
+    private Date courseEnd;
     private String courseStatus;
     private String courseMentorName;
     private String courseMentorEmail;
@@ -26,7 +28,7 @@ public class CourseEntity {
 
     private int termId;
 
-    public CourseEntity(String courseName, String courseStart, String courseEnd,
+    public CourseEntity(String courseName, Date courseStart, Date courseEnd,
                         String courseStatus, String courseMentorName, String courseMentorEmail,
                         String courseMentorPhone, int termId) {
         this.courseName = courseName;
@@ -40,7 +42,7 @@ public class CourseEntity {
     }
 
     @Ignore
-    public CourseEntity(int courseId, String courseName, String courseStart, String courseEnd,
+    public CourseEntity(int courseId, String courseName, Date courseStart, Date courseEnd,
                         String courseStatus, String courseMentorName, String courseMentorEmail,
                         String courseMentorPhone, int termId) {
         this.courseId = courseId;
@@ -86,19 +88,19 @@ public class CourseEntity {
         this.courseName = courseName;
     }
 
-    public String getCourseStart() {
+    public Date getCourseStart() {
         return courseStart;
     }
 
-    public void setCourseStart(String courseStart) {
+    public void setCourseStart(Date courseStart) {
         this.courseStart = courseStart;
     }
 
-    public String getCourseEnd() {
+    public Date getCourseEnd() {
         return courseEnd;
     }
 
-    public void setCourseEnd(String courseEnd) {
+    public void setCourseEnd(Date courseEnd) {
         this.courseEnd = courseEnd;
     }
 

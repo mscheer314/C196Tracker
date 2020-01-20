@@ -17,37 +17,19 @@ import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private final LayoutInflater inflater;
-    private CourseEntity deletedItem;
     private final Context context;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-YYYY");
+    private CourseEntity deletedItem;
     private List<CourseEntity> courses;
     private Activity activity;
     private int courseId;
     private CourseViewModel courseViewModel;
-
-    class CourseViewHolder extends RecyclerView.ViewHolder {
-        private final TextView courseItemView;
-        private final TextView courseItemView2;
-        private final TextView courseItemView3;
-        private String courseStatus;
-        private String courseMentorName;
-        private String courseMentorEmail;
-        private String courseMentorPhone;
-        private int courseId;
-
-        private CourseViewHolder(View itemView) {
-            super(itemView);
-            courseItemView = itemView.findViewById(R.id.course_name);
-            courseItemView2 = itemView.findViewById(R.id.course_start);
-            courseItemView3 = itemView.findViewById(R.id.course_end);
-            courseId = -1;
-
-        }
-    }
 
     public CourseAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
@@ -66,25 +48,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (courses != null) {
             CourseEntity current = courses.get(position);
             holder.courseId = current.getCourseId();
-            holder.courseItemView.setText(current.getCourseName());
-            holder.courseItemView2.setText(current.getCourseStart());
-            holder.courseItemView3.setText(current.getCourseEnd());
+            holder.courseNameTextView.setText(current.getCourseName());
+            holder.courseStartTextView.setText(dateFormatter.format(current.getCourseStart()));
+            holder.courseEndTextView.setText(dateFormatter.format(current.getCourseEnd()));
             holder.courseStatus = current.getCourseStatus();
             holder.courseMentorName = current.getCourseMentorName();
             holder.courseMentorEmail = current.getCourseMentorEmail();
             holder.courseMentorPhone = current.getCourseMentorPhone();
         } else {
-            holder.courseItemView.setText("nothing");
-            holder.courseItemView2.setText("nothing");
-            holder.courseItemView3.setText("nothing");
+            holder.courseNameTextView.setText("nothing");
+            holder.courseStartTextView.setText("nothing");
+            holder.courseEndTextView.setText("nothing");
         }
-        holder.courseItemView.setOnClickListener(new View.OnClickListener() {
+        holder.courseNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 courseId = holder.courseId;
-                String courseName = holder.courseItemView.getText().toString();
-                String courseStart = holder.courseItemView2.getText().toString();
-                String courseEnd = holder.courseItemView3.getText().toString();
+                String courseName = holder.courseNameTextView.getText().toString();
+                String courseStart = holder.courseStartTextView.getText().toString();
+                String courseEnd = holder.courseEndTextView.getText().toString();
                 String courseStatus = holder.courseStatus;
                 String mName = holder.courseMentorName;
                 String mEmail = holder.courseMentorEmail;
@@ -123,5 +105,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void setCourses(List<CourseEntity> courses) {
         this.courses = courses;
         notifyDataSetChanged();
+    }
+
+    class CourseViewHolder extends RecyclerView.ViewHolder {
+        private final TextView courseNameTextView;
+        private final TextView courseStartTextView;
+        private final TextView courseEndTextView;
+        private String courseStatus;
+        private String courseMentorName;
+        private String courseMentorEmail;
+        private String courseMentorPhone;
+        private int courseId;
+
+        private CourseViewHolder(View itemView) {
+            super(itemView);
+            courseNameTextView = itemView.findViewById(R.id.course_name);
+            courseStartTextView = itemView.findViewById(R.id.course_start);
+            courseEndTextView = itemView.findViewById(R.id.course_end);
+            courseId = -1;
+
+        }
     }
 }

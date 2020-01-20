@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.android.c196tracker.Converters;
 import com.example.android.c196tracker.DAO.AssessmentDAO;
 import com.example.android.c196tracker.DAO.CourseDAO;
 import com.example.android.c196tracker.DAO.NoteDAO;
@@ -19,7 +21,8 @@ import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
 @Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class, AssessmentEntity.class},
-        version = 4, exportSchema = false)
+        version = 5, exportSchema = false)
+@TypeConverters({Converters.class})
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {
     private static volatile SchoolTrackerDatabase INSTANCE;

@@ -1,5 +1,9 @@
 package com.example.android.c196tracker;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,13 +25,19 @@ import com.example.android.c196tracker.UI.AssessmentAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CourseDetails extends BaseActivity {
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private static final int NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
+    private final static String default_notification_channel_id = "default";
     private int courseId;
     private String courseNameString;
     private String courseStartString;
@@ -35,19 +46,19 @@ public class CourseDetails extends BaseActivity {
     private String courseMentorNameString;
     private String courseMentorPhoneString;
     private String courseMentorEmailString;
-
     private Button addAssessmentButton;
     private Button addNoteButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private TextView courseName;
-    private TextView courseStart;
-    private TextView courseEnd;
-    private TextView courseStatus;
-    private TextView courseMentorName;
-    private TextView courseMentorPhone;
-    private TextView courseMentorEmail;
+    private TextView courseNameTextView;
+    private TextView courseStartTextView;
+    private TextView courseEndTextView;
+    private TextView courseStatusTextView;
+    private TextView courseMentorNameTextView;
+    private TextView courseMentorPhoneTextView;
+    private TextView courseMentorEmailTextView;
     private AssessmentViewModel assessmentViewModel;
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +66,7 @@ public class CourseDetails extends BaseActivity {
         setContentView(R.layout.activity_course_details);
 
         setCourseDetails();
-        setRecyclerView();
+        setAssessmentRecyclerView();
 
         addAssessmentButton = findViewById(R.id.add_assessment_button);
         addAssessmentButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +84,27 @@ public class CourseDetails extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_COURSE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                courseNameString = data.getStringExtra("courseName");
+                courseStartString = data.getStringExtra("courseStart");
+                courseEndString = data.getStringExtra("courseEnd");
+                courseMentorNameString = data.getStringExtra("mentorName");
+                courseMentorEmailString = data.getStringExtra("mentorEmail");
+                courseMentorPhoneString = data.getStringExtra("mentorPhone");
+
+                courseNameTextView.setText(courseNameString);
+                courseStartTextView.setText(courseStartString);
+                courseEndTextView.setText(courseEndString);
+                courseMentorNameTextView.setText(courseMentorNameString);
+                courseMentorEmailTextView.setText(courseMentorEmailString);
+                courseMentorPhoneTextView.setText(courseMentorPhoneString);
+            }
+        }
+    }
     private void openAddNoteDialog() {
         Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
         Bundle bundle = new Bundle();
@@ -90,7 +122,7 @@ public class CourseDetails extends BaseActivity {
         startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
     }
 
-    private void setRecyclerView() {
+    private void setAssessmentRecyclerView() {
         recyclerView = findViewById(R.id.course_detail_assessment_recyclerview);
         recyclerView.setHasFixedSize(true);
 
@@ -115,13 +147,13 @@ public class CourseDetails extends BaseActivity {
     }
 
     private void setCourseDetails() {
-        courseName = findViewById(R.id.course_detail_title);
-        courseStart = findViewById(R.id.course_detail_start);
-        courseEnd = findViewById(R.id.course_detail_end);
-        courseStatus = findViewById(R.id.course_detail_status);
-        courseMentorName = findViewById(R.id.course_details_mentor_name);
-        courseMentorPhone = findViewById(R.id.course_detail_phone);
-        courseMentorEmail = findViewById(R.id.course_detail_email);
+        courseNameTextView = findViewById(R.id.course_detail_title);
+        courseStartTextView = findViewById(R.id.course_detail_start);
+        courseEndTextView = findViewById(R.id.course_detail_end);
+        courseStatusTextView = findViewById(R.id.course_detail_status);
+        courseMentorNameTextView = findViewById(R.id.course_details_mentor_name);
+        courseMentorPhoneTextView = findViewById(R.id.course_detail_phone);
+        courseMentorEmailTextView = findViewById(R.id.course_detail_email);
 
         Intent intent = getIntent();
         courseId = intent.getIntExtra("courseId", 0);
@@ -133,13 +165,13 @@ public class CourseDetails extends BaseActivity {
         courseMentorPhoneString = intent.getStringExtra("courseMentorPhone");
         courseMentorEmailString = intent.getStringExtra("courseMentorEmail");
 
-        courseName.setText(courseNameString);
-        courseStart.setText(courseStartString);
-        courseEnd.setText(courseEndString);
-        courseStatus.setText(courseStatusString);
-        courseMentorName.setText(courseMentorNameString);
-        courseMentorPhone.setText(courseMentorPhoneString);
-        courseMentorEmail.setText(courseMentorEmailString);
+        courseNameTextView.setText(courseNameString);
+        courseStartTextView.setText(courseStartString);
+        courseEndTextView.setText(courseEndString);
+        courseStatusTextView.setText(courseStatusString);
+        courseMentorNameTextView.setText(courseMentorNameString);
+        courseMentorPhoneTextView.setText(courseMentorPhoneString);
+        courseMentorEmailTextView.setText(courseMentorEmailString);
     }
 
     @Override
@@ -151,6 +183,28 @@ public class CourseDetails extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+
+        if (item.getItemId() == R.id.add_start_notification) {
+            Date startDate = new Date();
+            try {
+                startDate = formatter.parse(courseStartString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            scheduleNotification(getNotification("Course Starting"), startDate.getTime());
+        }
+        if (item.getItemId() == R.id.add_end_notficiation) {
+            Date endDate = new Date();
+            try {
+                endDate = formatter.parse(courseStartString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            scheduleNotification(getNotification("Course Ending"), endDate.getTime());
+        }
         if (item.getItemId() == R.id.edit_course) {
             Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);
             Bundle bundle = new Bundle();
@@ -160,5 +214,25 @@ public class CourseDetails extends BaseActivity {
             startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private Notification getNotification(String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_channel_id);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+        builder.setAutoCancel(true);
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        return builder.build();
+    }
+
+    private void scheduleNotification(Notification notification, long delay) {
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, delay, pendingIntent);
     }
 }

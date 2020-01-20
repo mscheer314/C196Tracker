@@ -48,7 +48,7 @@ public class InputChecker {
 
     public static boolean isValidCompareStartAndEndDates(String startString, String endString) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
             Date startDate = simpleDateFormat.parse(startString);
             Date endDate = simpleDateFormat.parse(endString);
 

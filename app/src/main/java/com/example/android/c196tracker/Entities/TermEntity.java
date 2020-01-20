@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "terms")
 
 public class TermEntity {
@@ -11,17 +13,17 @@ public class TermEntity {
     private int termId;
 
     private String termName;
-    private String termStart;
-    private String termEnd;
+    private Date termStart;
+    private Date termEnd;
 
-    public TermEntity(String termName, String termStart, String termEnd) {
+    public TermEntity(String termName, Date termStart, Date termEnd) {
         this.termName = termName;
         this.termStart = termStart;
         this.termEnd = termEnd;
     }
 
     @Ignore
-    public TermEntity(int termId, String termName, String termStart, String termEnd) {
+    public TermEntity(int termId, String termName, Date termStart, Date termEnd) {
         this.termId = termId;
         this.termName = termName;
         this.termStart = termStart;
@@ -54,19 +56,19 @@ public class TermEntity {
         this.termName = termName;
     }
 
-    public String getTermStart() {
+    public Date getTermStart() {
         return termStart;
     }
 
-    public void setTermStart(String termStart) {
+    public void setTermStart(Date termStart) {
         this.termStart = termStart;
     }
 
-    public String getTermEnd() {
+    public Date getTermEnd() {
         return termEnd;
     }
 
-    public void setTermEnd(String termEnd) {
+    public void setTermEnd(Date termEnd) {
         this.termEnd = termEnd;
     }
 }

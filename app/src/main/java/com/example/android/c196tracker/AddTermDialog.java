@@ -19,7 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTermDialog extends AppCompatActivity {
 
@@ -65,11 +68,21 @@ public class AddTermDialog extends AppCompatActivity {
                     String termName = AddTermDialog.this.termName.getText().toString();
                     String termStart = (String) AddTermDialog.this.termStart.getText();
                     String termEnd = (String) AddTermDialog.this.termEnd.getText();
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                    Date startDate = new Date();
+                    Date endDate = new Date();
+                    try {
+                        startDate = formatter.parse(termStart);
+                        endDate = formatter.parse(termEnd);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     if (isNewTerm) {
-                        TermEntity term = new TermEntity(termName, termStart, termEnd);
+
+                        TermEntity term = new TermEntity(termName, startDate, endDate);
                         termViewModel.insert(term);
                     } else {
-                        TermEntity term = new TermEntity(termId, termName, termStart, termEnd);
+                        TermEntity term = new TermEntity(termId, termName, startDate, endDate);
                         termViewModel.update(term);
                     }
                     setResult(RESULT_OK, replyIntent);
@@ -109,8 +122,8 @@ public class AddTermDialog extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
+                Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
+                String date = month + "-" + dayOfMonth + "-" + year;
                 termStart.setText(date);
             }
         };
@@ -136,8 +149,8 @@ public class AddTermDialog extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + month + "/" + dayOfMonth + "/" + year);
-                String date = month + "/" + dayOfMonth + "/" + year;
+                Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
+                String date = month + "-" + dayOfMonth + "-" + year;
                 termEnd.setText(date);
             }
         };
