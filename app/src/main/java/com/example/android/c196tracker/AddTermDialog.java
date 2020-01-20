@@ -30,9 +30,9 @@ public class AddTermDialog extends AppCompatActivity {
     private static final String TAG = "AddTermDialog";
     private boolean isNewTerm;
     private int termId;
-    private EditText termName;
-    private TextView termStart;
-    private TextView termEnd;
+    private EditText termNameEditText;
+    private TextView termStartTextEdit;
+    private TextView termEndTextEdit;
     private DatePickerDialog.OnDateSetListener startSetListener;
     private DatePickerDialog.OnDateSetListener endSetListener;
     private Button okButton;
@@ -52,23 +52,28 @@ public class AddTermDialog extends AppCompatActivity {
         setContentView(R.layout.activity_add_term_dialog);
 
         termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
-        termName = findViewById(R.id.term_name_editText);
+        termNameEditText = findViewById(R.id.term_name_editText);
         setupDateSelectButtons();
 
         okButton = findViewById(R.id.term_ok_button);
         okButton.setOnClickListener((view) -> {
                 errorMessage = InputChecker.checkItemName(1,
-                        termName.getText().toString());
+                        termNameEditText.getText().toString());
                 errorMessage += InputChecker.checkStartAndEndDates(
-                        termStart.getText().toString(),
-                        termEnd.getText().toString());
+                        termStartTextEdit.getText().toString(),
+                        termEndTextEdit.getText().toString());
                 if (errorMessage.length() > 0) {
                     Toast.makeText(AddTermDialog.this, errorMessage, Toast.LENGTH_LONG).show();
                 } else {
                     Intent replyIntent = new Intent();
-                    String termName = AddTermDialog.this.termName.getText().toString();
-                    String termStart = (String) AddTermDialog.this.termStart.getText();
-                    String termEnd = (String) AddTermDialog.this.termEnd.getText();
+                    String termName = AddTermDialog.this.termNameEditText.getText().toString();
+                    String termStart = AddTermDialog.this.termStartTextEdit.getText().toString();
+                    String termEnd = AddTermDialog.this.termEndTextEdit.getText().toString();
+
+                    replyIntent.putExtra("termName", termName);
+                    replyIntent.putExtra("termStart", termStart);
+                    replyIntent.putExtra("termEnd", termEnd);
+
                     SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
                     Date startDate = new Date();
                     Date endDate = new Date();
@@ -99,10 +104,10 @@ public class AddTermDialog extends AppCompatActivity {
     }
 
     private void setupDateSelectButtons() {
-        termStart = findViewById(R.id.term_start_datepicker);
-        termEnd = findViewById(R.id.term_end_datepicker);
+        termStartTextEdit = findViewById(R.id.term_start_datepicker);
+        termEndTextEdit = findViewById(R.id.term_end_datepicker);
 
-        termStart.setOnClickListener(new View.OnClickListener() {
+        termStartTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -125,11 +130,11 @@ public class AddTermDialog extends AppCompatActivity {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
                 String date = month + "-" + dayOfMonth + "-" + year;
-                termStart.setText(date);
+                termStartTextEdit.setText(date);
             }
         };
 
-        termEnd.setOnClickListener(new View.OnClickListener() {
+        termEndTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -152,7 +157,7 @@ public class AddTermDialog extends AppCompatActivity {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm-dd-yyyy: " + month + "-" + dayOfMonth + "-" + year);
                 String date = month + "-" + dayOfMonth + "-" + year;
-                termEnd.setText(date);
+                termEndTextEdit.setText(date);
             }
         };
     }

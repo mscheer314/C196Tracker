@@ -68,6 +68,7 @@ public class CourseDetails extends BaseActivity {
                 openAssessmentDialog();
             }
         });
+
         addNoteButton = findViewById(R.id.add_note_button);
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +99,7 @@ public class CourseDetails extends BaseActivity {
             }
         }
     }
+
     private void openAddNoteDialog() {
         Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
         Bundle bundle = new Bundle();

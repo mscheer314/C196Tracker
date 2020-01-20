@@ -27,16 +27,16 @@ import static com.example.android.c196tracker.TermsActivity.NEW_TERM_ACTIVITY_RE
 public class TermDetails extends BaseActivity {
 
     private static final int NEW_COURSE_ACTIVITY_REQUEST_CODE = 1;
-    private String termName;
+    private String termNameString;
     private String termStartString;
     private String termEndString;
 
     private Button addCourseButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private TextView termTitle;
-    private TextView termStart;
-    private TextView termEnd;
+    private TextView termNameTextView;
+    private TextView termStartTextView;
+    private TextView termEndTextView;
     private CourseViewModel courseViewModel;
     private int termId;
 
@@ -55,6 +55,22 @@ public class TermDetails extends BaseActivity {
                 openAddCourseDialog();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_TERM_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                termNameString = data.getStringExtra("termName");
+                termStartString = data.getStringExtra("termStart");
+                termEndString = data.getStringExtra("termEnd");
+
+                termNameTextView.setText(termNameString);
+                termStartTextView.setText(termStartString);
+                termEndTextView.setText(termEndString);
+            }
+        }
     }
 
     private void openAddCourseDialog() {
@@ -90,18 +106,18 @@ public class TermDetails extends BaseActivity {
     }
 
     private void setTermDetails() {
-        termTitle = findViewById(R.id.term_details_title);
-        termStart = findViewById(R.id.term_details_start);
-        termEnd = findViewById(R.id.term_details_end);
+        termNameTextView = findViewById(R.id.term_details_title);
+        termStartTextView = findViewById(R.id.term_details_start);
+        termEndTextView = findViewById(R.id.term_details_end);
 
         Intent intent = getIntent();
-        termName = intent.getStringExtra("termName");
+        termNameString = intent.getStringExtra("termName");
         termStartString = intent.getStringExtra("termStart");
         termEndString = intent.getStringExtra("termEnd");
         termId = intent.getIntExtra("termId", 0);
-        termTitle.setText(termName);
-        termStart.setText(termStartString);
-        termEnd.setText(termEndString);
+        termNameTextView.setText(termNameString);
+        termStartTextView.setText(termStartString);
+        termEndTextView.setText(termEndString);
     }
 
     @Override
