@@ -86,7 +86,7 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
         okButton.setOnClickListener((view) -> {
             errorMessage = InputChecker.checkItemName(2,
                     courseNameEditText.getText().toString());
-            errorMessage += InputChecker.checkStartAndEndDates(
+            errorMessage += InputChecker.checkStartIsBeforeEnd(
                     courseStartTextView.getText().toString(),
                     courseEndTextView.getText().toString());
             if (errorMessage.length() > 0) {

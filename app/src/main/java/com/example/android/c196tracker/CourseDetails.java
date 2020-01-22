@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -198,6 +199,7 @@ public class CourseDetails extends BaseActivity {
             }
 
             scheduleNotification(getNotification("Course Ending"), endDate.getTime());
+            Toast.makeText(this,R.string.notification_scheduled,Toast.LENGTH_LONG).show();
         }
         if (item.getItemId() == R.id.edit_course) {
             Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);

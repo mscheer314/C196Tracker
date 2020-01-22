@@ -25,7 +25,7 @@ public class InputChecker {
         return errorMessage;
     }
 
-    public static String checkStartAndEndDates(String start, String end) {
+    public static String checkStartIsBeforeEnd(String start, String end) {
         String errorMessage = "";
         if (start.equals("select date")) {
             errorMessage += "Please select a start date.\n";

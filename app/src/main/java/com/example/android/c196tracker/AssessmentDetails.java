@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -138,8 +139,11 @@ public class AssessmentDetails extends BaseActivity {
                 e.printStackTrace();
             }
             scheduleNotification(getNotification("Assessment upcoming"), assessmentDate.getTime());
-            //Snackbar.make(findViewById(R.id.assessment_coordinator_layout), R.string.notification_scheduled, Snackbar.LENGTH_SHORT)
-               //     .show();
+            Toast.makeText(this,R.string.notification_scheduled,Toast.LENGTH_LONG).show();
+        }
+
+        if (item.getItemId() == R.id.add_goal_alert) {
+            
         }
         return super.onOptionsItemSelected(item);
     }

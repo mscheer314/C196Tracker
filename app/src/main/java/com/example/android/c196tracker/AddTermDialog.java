@@ -59,7 +59,7 @@ public class AddTermDialog extends AppCompatActivity {
         okButton.setOnClickListener((view) -> {
                 errorMessage = InputChecker.checkItemName(1,
                         termNameEditText.getText().toString());
-                errorMessage += InputChecker.checkStartAndEndDates(
+                errorMessage += InputChecker.checkStartIsBeforeEnd(
                         termStartTextEdit.getText().toString(),
                         termEndTextEdit.getText().toString());
                 if (errorMessage.length() > 0) {
