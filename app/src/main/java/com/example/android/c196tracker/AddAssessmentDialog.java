@@ -70,7 +70,7 @@ public class AddAssessmentDialog extends AppCompatActivity
 
         okButton = findViewById(R.id.assessment_ok_button);
         okButton.setOnClickListener((view) -> {
-            errorMessage = InputChecker.checkItemNameExists(3,
+            errorMessage += InputChecker.checkItemNameExists(3,
                     assessmentNameTextView.getText().toString());
             if (!InputChecker.isDateWithinParentDates(assessmentDueDateTextView.getText().toString(),
                     courseStart, courseEnd)) {

@@ -7,6 +7,13 @@ import java.util.Locale;
 
 public class InputChecker {
 
+    private static final String emailRegex = "^[-a-z0-9~!$%^&*_=+}{\\'?]+(\\.[-a-z0-9~!$%^&*_=+}{\\'?]+)" +
+            "*@([a-z0-9_][-a-z0-9_]*(\\.[-a-z0-9_]+)*\\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil" +
+            "|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}" +
+            "\\.[0-9]{1,3}))(:[0-9]{1,5})?$ ";
+    private static final String phoneRegex = "^(\\d{10})|(([\\(]?([0-9]{3})[\\)]?)?[ \\.\\-]?([0-9]{3})" +
+            "[ \\.\\-]([0-9]{4}))$";
+
     // input type will be 1 for Term, 2 for Course, 3 for Assessment
     public static String checkItemNameExists(int inputType, String name) {
         String errorMessage = "";
@@ -72,9 +79,25 @@ public class InputChecker {
 
 
     // TODO implement this method
-    public static String isValidCourseMentor(String mentorName, String mentorEmail, String mentorPhone) {
+    public static String checkCourseMentorFields(String mentorName, String mentorEmail, String mentorPhone) {
         String errorMessage = "";
 
+        if (mentorName.length() == 0) {
+            errorMessage += "Enter a mentor name.\n";
+        }
+        if (mentorEmail.length() == 0) {
+            errorMessage += "Enter a mentor email.\n";
+        }
+        if (mentorPhone.length() == 0) {
+            errorMessage += "Enter a mentor phone number.\n";
+        }
+
+        if (!mentorEmail.matches(emailRegex)) {
+            errorMessage += "Enter a valid email address.\n";
+        }
+        if (!mentorPhone.matches(phoneRegex)) {
+            errorMessage += "Enter a valid phone number.\n";
+        }
 
         return errorMessage;
     }

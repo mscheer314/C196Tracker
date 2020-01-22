@@ -84,26 +84,28 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
 
         okButton = findViewById(R.id.course_ok_button);
         okButton.setOnClickListener((view) -> {
+            String courseNameString = AddCourseDialog.this.courseNameEditText.getText().toString();
+            String courseStartString = AddCourseDialog.this.courseStartTextView.getText().toString();
+            String courseEndString = AddCourseDialog.this.courseEndTextView.getText().toString();
+            String mentorNameString = AddCourseDialog.this.mentorNameEditText.getText().toString();
+            String mentorEmailString = AddCourseDialog.this.mentorEmailEditText.getText().toString();
+            String mentorPhoneString = AddCourseDialog.this.mentorPhoneEditText.getText().toString();
+
             errorMessage = InputChecker.checkItemNameExists(2,
                     courseNameEditText.getText().toString());
             errorMessage += InputChecker.getDateErrorMessage(
                     courseStartTextView.getText().toString(),
                     courseEndTextView.getText().toString());
+            errorMessage += InputChecker.checkCourseMentorFields(mentorNameString,
+                    mentorEmailString, mentorPhoneString);
             if (errorMessage.length() > 0) {
                 Toast.makeText(AddCourseDialog.this, errorMessage, Toast.LENGTH_LONG).show();
             } else {
                 Intent replyIntent = new Intent();
-                String courseName = AddCourseDialog.this.courseNameEditText.getText().toString();
-                String courseStart = AddCourseDialog.this.courseStartTextView.getText().toString();
-                String courseEnd = AddCourseDialog.this.courseEndTextView.getText().toString();
-                String mentorNameString = AddCourseDialog.this.mentorNameEditText.getText().toString();
-                String mentorEmailString = AddCourseDialog.this.mentorEmailEditText.getText().toString();
-                String mentorPhoneString = AddCourseDialog.this.mentorPhoneEditText.getText().toString();
 
-
-                replyIntent.putExtra("courseName", courseName);
-                replyIntent.putExtra("courseStart", courseStart);
-                replyIntent.putExtra("courseEnd", courseEnd);
+                replyIntent.putExtra("courseName", courseNameString);
+                replyIntent.putExtra("courseStart", courseStartString);
+                replyIntent.putExtra("courseEnd", courseEndString);
                 replyIntent.putExtra("courseStatus", courseStatus);
                 replyIntent.putExtra("mentorName", mentorNameString);
                 replyIntent.putExtra("mentorEmail", mentorEmailString);
@@ -113,18 +115,18 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
                 Date startDate = new Date();
                 Date endDate = new Date();
                 try {
-                    startDate = formatter.parse(courseStart);
-                    endDate = formatter.parse(courseEnd);
+                    startDate = formatter.parse(courseStartString);
+                    endDate = formatter.parse(courseEndString);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
                 if (isNewCourse) {
-                    CourseEntity course = new CourseEntity(courseName, startDate, endDate, courseStatus,
+                    CourseEntity course = new CourseEntity(courseNameString, startDate, endDate, courseStatus,
                             mentorNameString, mentorEmailString, mentorPhoneString, termId);
                     courseViewModel.insert(course);
                 } else {
-                    CourseEntity course = new CourseEntity(courseId, courseName, startDate, endDate, courseStatus,
+                    CourseEntity course = new CourseEntity(courseId, courseNameString, startDate, endDate, courseStatus,
                             mentorNameString, mentorEmailString, mentorPhoneString, termId);
                     courseViewModel.update(course);
                 }
