@@ -57,9 +57,9 @@ public class AddTermDialog extends AppCompatActivity {
 
         okButton = findViewById(R.id.term_ok_button);
         okButton.setOnClickListener((view) -> {
-                errorMessage = InputChecker.checkItemName(1,
+                errorMessage = InputChecker.checkItemNameExists(1,
                         termNameEditText.getText().toString());
-                errorMessage += InputChecker.checkStartIsBeforeEnd(
+                errorMessage += InputChecker.getDateErrorMessage(
                         termStartTextEdit.getText().toString(),
                         termEndTextEdit.getText().toString());
                 if (errorMessage.length() > 0) {

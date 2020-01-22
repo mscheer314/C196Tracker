@@ -54,6 +54,8 @@ public class AddAssessmentDialog extends AppCompatActivity
             isNewAssessment = bundle.getBoolean("isNewAssessment");
             courseId = bundle.getInt("courseId");
             assessmentId = bundle.getInt("assessmentId");
+            courseStart = bundle.getString("courseStart");
+            courseEnd = bundle.getString("courseEnd");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assessment_dialog);
@@ -68,10 +70,12 @@ public class AddAssessmentDialog extends AppCompatActivity
 
         okButton = findViewById(R.id.assessment_ok_button);
         okButton.setOnClickListener((view) -> {
-            errorMessage = InputChecker.checkItemName(3,
+            errorMessage = InputChecker.checkItemNameExists(3,
                     assessmentNameTextView.getText().toString());
-            errorMessage += InputChecker.checkAssessmentDate(
-                    assessmentDueDateTextView.getText().toString());
+            if (!InputChecker.isDateWithinParentDates(assessmentDueDateTextView.getText().toString(),
+                    courseStart, courseEnd)) {
+                errorMessage += "The assessment is not in the course date range.";
+            }
             if (errorMessage.length() > 0) {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
             } else {
@@ -122,6 +126,14 @@ public class AddAssessmentDialog extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                Date courseEndDate = new Date();
+                try {
+                    courseEndDate = formatter.parse(courseEnd);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cal.setTime(courseEndDate);
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);

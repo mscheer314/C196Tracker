@@ -84,9 +84,9 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
 
         okButton = findViewById(R.id.course_ok_button);
         okButton.setOnClickListener((view) -> {
-            errorMessage = InputChecker.checkItemName(2,
+            errorMessage = InputChecker.checkItemNameExists(2,
                     courseNameEditText.getText().toString());
-            errorMessage += InputChecker.checkStartIsBeforeEnd(
+            errorMessage += InputChecker.getDateErrorMessage(
                     courseStartTextView.getText().toString(),
                     courseEndTextView.getText().toString());
             if (errorMessage.length() > 0) {

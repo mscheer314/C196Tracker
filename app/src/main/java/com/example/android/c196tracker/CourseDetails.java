@@ -66,7 +66,7 @@ public class CourseDetails extends BaseActivity {
         addAssessmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAssessmentDialog();
+                openAddAssessmentDialog();
             }
         });
 
@@ -109,11 +109,13 @@ public class CourseDetails extends BaseActivity {
         startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
     }
 
-    private void openAssessmentDialog() {
+    private void openAddAssessmentDialog() {
         Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
         Bundle bundle = new Bundle();
         bundle.putBoolean("isNewAssessment", true);
         bundle.putInt("courseId", courseId);
+        bundle.putString("courseStart", courseStartString);
+        bundle.putString("courseEnd", courseEndString);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
     }
