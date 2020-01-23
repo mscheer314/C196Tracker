@@ -8,10 +8,12 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+import static androidx.room.ForeignKey.RESTRICT;
+
 @Entity(tableName = "assessments", foreignKeys = @ForeignKey(entity = CourseEntity.class,
         parentColumns = "courseId",
         childColumns = "courseId",
-        onDelete = ForeignKey.RESTRICT),
+        onDelete = RESTRICT),
         indices = {@Index("courseId")})
 
 public class AssessmentEntity {

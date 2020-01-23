@@ -7,14 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.DAO.CourseDAO;
+import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
 import com.example.android.c196tracker.TermsActivity;
+import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +36,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     private int termId;
     private TermViewModel termViewModel;
     private Activity activity;
-
+    private CourseViewModel courseViewModel;
 
     public TermAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
@@ -85,7 +91,26 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public void deleteItem(int position) {
         deletedItem = terms.get(position);
         termViewModel = new ViewModelProvider((TermsActivity) activity).get(TermViewModel.class);
-        termViewModel.delete(deletedItem);
+        if (!hasCourses(deletedItem.getTermId()))
+            termViewModel.delete(deletedItem);
+        notifyDataSetChanged();
+        Toast.makeText(context, "Cannot delete term that has classes in it.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private boolean hasCourses(int termId) {
+        /*courseViewModel = new ViewModelProvider((TermsActivity) activity).get(CourseViewModel.class);
+        courseViewModel.getAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<CourseEntity> courses) {
+                adapter.setTerms(terms);
+            }
+        });*/
+
+        if (courseViewModel.getAssociatedCoursesList(termId).size() == 0) {
+            return false;
+        }
+        return true;
     }
 
     public void setTerms(List<TermEntity> terms) {

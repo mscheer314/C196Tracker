@@ -1,6 +1,7 @@
 package com.example.android.c196tracker.Database;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -26,6 +27,8 @@ public class SchoolTrackerRepository {
     private LiveData<List<CourseEntity>> allCourses;
     private LiveData<List<NoteEntity>> allNotes;
     private LiveData<List<AssessmentEntity>> allAssessments;
+    private LiveData<List<CourseEntity>> associatedCourses;
+    private List<CourseEntity> associatedCoursesList;
 
     private LiveData<List<CourseEntity>> course;
 
@@ -62,7 +65,12 @@ public class SchoolTrackerRepository {
     }
 
     public LiveData<List<CourseEntity>> getAssociatedCourses(int termId) {
-        return courseDAO.getAssociatedCourses(termId);
+        associatedCourses =  courseDAO.getAssociatedCourses(termId);
+        return associatedCourses;
+    }
+
+    public List<CourseEntity> getAssociatedCoursesList(int termId) {
+        associatedCoursesList = courseDAO.getAssociatedCoursesList(termId);
     }
 
     public LiveData<List<AssessmentEntity>> getAssociatedAssessments(int courseId) {
@@ -74,7 +82,7 @@ public class SchoolTrackerRepository {
     }
 
     public LiveData<List<CourseEntity>> getCourseById(int courseId) {
-        return courseDAO.getCoursebyId(courseId);
+        return courseDAO.getCourseById(courseId);
     }
 
     public void insert(TermEntity termEntity) {
@@ -206,7 +214,11 @@ public class SchoolTrackerRepository {
 
         @Override
         protected Void doInBackground(final TermEntity... params) {
-            asyncTermDAO.delete(params[0]);
+            try {
+                asyncTermDAO.delete(params[0]);
+            } catch (SQLiteConstraintException e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }

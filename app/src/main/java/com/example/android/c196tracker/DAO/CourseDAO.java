@@ -27,11 +27,14 @@ public interface CourseDAO {
     void deleteAllCourses();
 
     @Query("SELECT * FROM courses WHERE courseId= :courseId ORDER BY courseId ASC")
-    LiveData<List<CourseEntity>> getCoursebyId(int courseId);
+    LiveData<List<CourseEntity>> getCourseById(int courseId);
 
     @Query("SELECT * FROM courses ORDER BY courseId ASC")
     LiveData<List<CourseEntity>> getAllCourses();
 
     @Query("SELECT * FROM courses WHERE termId= :termId ORDER BY courseId ASC")
     LiveData<List<CourseEntity>> getAssociatedCourses(int termId);
+
+    @Query("SELECT * FROM courses WHERE termId= :termId ORDER BY courseId ASC")
+    List<CourseEntity> getAssociatedCoursesList(int termId);
 }
