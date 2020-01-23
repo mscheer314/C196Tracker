@@ -21,6 +21,6 @@ public interface NoteDAO {
     @Query("SELECT * FROM notes ORDER BY noteId ASC")
     LiveData<List<NoteEntity>> getAllNotes();
 
-    @Query("SELECT * FROM notes WHERE noteId= :noteId ORDER BY noteId ASC")
-    LiveData<List<NoteEntity>> getAllAssociatedNotes(int noteId);
+    @Query("SELECT * FROM notes WHERE courseId= :courseId ORDER BY courseId ASC")
+    LiveData<List<NoteEntity>> getAssociatedNotes(int courseId);
 }

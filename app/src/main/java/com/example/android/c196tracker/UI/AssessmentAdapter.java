@@ -1,41 +1,41 @@
 package com.example.android.c196tracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android.c196tracker.AssessmentActivity;
+import com.example.android.c196tracker.AssessmentDetails;
+import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.Entities.AssessmentEntity;
 import com.example.android.c196tracker.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.AssessmentViewHolder> {
 
     private final LayoutInflater inflater;
-    private int recentlyDeletedItemPosition;
-    private AssessmentEntity recentlyDeletedItem;
     private final Context context;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-YYYY");
     private List<AssessmentEntity> assessments;
-    private AssessmentActivity activity;
+    private int assessmentId;
+    private Activity activity;
+    private AssessmentEntity deletedItem;
+    private AssessmentViewModel assessmentViewModel;
 
-    class AssessmentViewHolder extends RecyclerView.ViewHolder {
-        private final TextView assessmentItemView;
 
-        private AssessmentViewHolder(View itemView) {
-            super(itemView);
-            assessmentItemView = itemView.findViewById(R.id.assessment_details_title);
-        }
-    }
-
-    public AssessmentAdapter(Context context) {
+    public AssessmentAdapter(Context context, Activity activity) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -48,15 +48,30 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int postion) {
         if (assessments != null) {
             AssessmentEntity current = assessments.get(postion);
-            holder.assessmentItemView.setText(current.getAssessmentName());
+            holder.courseId = current.getCourseId();
+            holder.assessmentId = current.getAssessmentId();
+            holder.assessmentName.setText(current.getAssessmentName());
+            holder.assessmentDueDate.setText(dateFormatter.format(current.getAssessmentDate()));
         } else {
-            holder.assessmentItemView.setText("nothing");
+            holder.assessmentName.setText("nothing");
+            holder.assessmentDueDate.setText("nothing");
         }
-        holder.assessmentItemView.setOnClickListener(new View.OnClickListener() {
+        holder.assessmentName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(context, AssessmentDetails.class);
-                // content.setActivity(intent);
+                assessmentId = holder.assessmentId;
+                String assessmentName = holder.assessmentName.getText().toString();
+                String assessmentDate = holder.assessmentDueDate.getText().toString();
+                int assessmentCourseId = holder.courseId;
+
+                Intent intent = new Intent(context, AssessmentDetails.class);
+                intent.putExtra("assessmentId", assessmentId);
+                intent.putExtra("assessmentName", assessmentName);
+                intent.putExtra("assessmentDueDate", assessmentDate);
+                intent.putExtra("courseId", assessmentCourseId);
+
+
+                context.startActivity(intent);
             }
         });
     }
@@ -68,29 +83,32 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         else return 0;
     }
 
-    protected void deleteItem(int position) {
-        recentlyDeletedItem = assessments.get(position);
-        recentlyDeletedItemPosition = position;
-        assessments.remove(position);
-        notifyItemRemoved(position);
-        showUndoSnackBar();
-    }
-
-    private void showUndoSnackBar() {
-        // TODO figure out this line. activity returns null
-        View view = activity.findViewById(R.id.assessments_recyclerview);
-        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
-    }
-
-    private void undoDelete() {
-        assessments.add(recentlyDeletedItemPosition, recentlyDeletedItem);
-        notifyItemInserted(recentlyDeletedItemPosition);
+    public void deleteItem(int position) {
+        deletedItem = assessments.get(position);
+        assessmentViewModel = new ViewModelProvider((CourseDetails) activity).get(AssessmentViewModel.class);
+        assessmentViewModel.delete(deletedItem);
     }
 
     public void setAssessments(List<AssessmentEntity> assessments) {
         this.assessments = assessments;
         notifyDataSetChanged();
+    }
+
+    class AssessmentViewHolder extends RecyclerView.ViewHolder {
+        private final TextView assessmentName;
+        private final TextView assessmentDueDate;
+
+        private int assessmentId;
+        private int courseId;
+
+
+        private AssessmentViewHolder(View itemView) {
+            super(itemView);
+            assessmentName = itemView.findViewById(R.id.assessment_name);
+            assessmentDueDate = itemView.findViewById(R.id.assessment_date);
+            assessmentId = -1;
+            courseId = -1;
+        }
     }
 }
 

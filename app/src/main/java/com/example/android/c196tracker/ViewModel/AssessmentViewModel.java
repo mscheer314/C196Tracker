@@ -14,6 +14,7 @@ import java.util.List;
 public class AssessmentViewModel extends AndroidViewModel {
     private SchoolTrackerRepository repository;
     private LiveData<List<AssessmentEntity>> allAssessments;
+    private LiveData<List<AssessmentEntity>> associatedAssessments;
 
     public AssessmentViewModel(@NonNull Application application) {
         super(application);
@@ -21,9 +22,19 @@ public class AssessmentViewModel extends AndroidViewModel {
         allAssessments = repository.getAllAssessments();
     }
 
-    public LiveData<List<AssessmentEntity>> getAllAssessments() { return allAssessments; }
+    public LiveData<List<AssessmentEntity>> getAllAssessments() {
+        return allAssessments;
+    }
 
-    public void insert (AssessmentEntity assessmentEntity) {
+    public LiveData<List<AssessmentEntity>> getAssociatedAssessments(int courseId) {
+        return repository.getAssociatedAssessments(courseId);
+    }
+
+    public void insert(AssessmentEntity assessmentEntity) {
         repository.insert(assessmentEntity);
+    }
+
+    public void delete(AssessmentEntity assessmentEntity) {
+        repository.delete(assessmentEntity);
     }
 }

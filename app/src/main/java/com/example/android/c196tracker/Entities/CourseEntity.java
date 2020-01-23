@@ -2,12 +2,16 @@ package com.example.android.c196tracker.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "courses", foreignKeys = @ForeignKey(entity = TermEntity.class,
         parentColumns = "termId",
-        childColumns = "termId"),
+        childColumns = "termId",
+        onDelete = ForeignKey.RESTRICT),
         indices = {@Index("termId")})
 
 public class CourseEntity {
@@ -15,19 +19,41 @@ public class CourseEntity {
     private int courseId;
 
     private String courseName;
-    private String courseStart;
-    private String courseEnd;
+    private Date courseStart;
+    private Date courseEnd;
     private String courseStatus;
+    private String courseMentorName;
+    private String courseMentorEmail;
+    private String courseMentorPhone;
 
     private int termId;
 
-    public CourseEntity(String courseName, String courseStart, String courseEnd,
-                        String courseStatus, int termId) {
+    public CourseEntity(String courseName, Date courseStart, Date courseEnd,
+                        String courseStatus, String courseMentorName, String courseMentorEmail,
+                        String courseMentorPhone, int termId) {
         this.courseName = courseName;
         this.courseStart = courseStart;
         this.courseEnd = courseEnd;
         this.courseStatus = courseStatus;
         this.termId = termId;
+        this.courseMentorName = courseMentorName;
+        this.courseMentorEmail = courseMentorEmail;
+        this.courseMentorPhone = courseMentorPhone;
+    }
+
+    @Ignore
+    public CourseEntity(int courseId, String courseName, Date courseStart, Date courseEnd,
+                        String courseStatus, String courseMentorName, String courseMentorEmail,
+                        String courseMentorPhone, int termId) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseStart = courseStart;
+        this.courseEnd = courseEnd;
+        this.courseStatus = courseStatus;
+        this.termId = termId;
+        this.courseMentorName = courseMentorName;
+        this.courseMentorEmail = courseMentorEmail;
+        this.courseMentorPhone = courseMentorPhone;
     }
 
     @Override
@@ -38,6 +64,9 @@ public class CourseEntity {
                 ", courseStart='" + courseStart + '\'' +
                 ", courseEnd='" + courseEnd + '\'' +
                 ", courseStatus='" + courseStatus + '\'' +
+                ", courseMentorName='" + courseMentorName + '\'' +
+                ", courseMentorEmail='" + courseMentorEmail + '\'' +
+                ", courseMentorPhone='" + courseMentorPhone + '\'' +
                 ", termId='" + termId + '\'' +
                 '}';
 
@@ -59,27 +88,59 @@ public class CourseEntity {
         this.courseName = courseName;
     }
 
-    public String getCourseStart() {
+    public Date getCourseStart() {
         return courseStart;
     }
 
-    public void setCourseStart(String courseStart) {
+    public void setCourseStart(Date courseStart) {
         this.courseStart = courseStart;
     }
 
-    public String getCourseEnd() {
+    public Date getCourseEnd() {
         return courseEnd;
     }
 
-    public void setCourseEnd(String courseEnd) {
+    public void setCourseEnd(Date courseEnd) {
         this.courseEnd = courseEnd;
     }
 
-    public int getTermId() { return termId; }
+    public int getTermId() {
+        return termId;
+    }
 
-    public void setTermId(int termId) { this.termId = termId; }
+    public void setTermId(int termId) {
+        this.termId = termId;
+    }
 
-    public String getCourseStatus() { return courseStatus; }
+    public String getCourseStatus() {
+        return courseStatus;
+    }
 
-    public void setCourseStatus(String courseStatus) { this.courseStatus = courseStatus; }
+    public void setCourseStatus(String courseStatus) {
+        this.courseStatus = courseStatus;
+    }
+
+    public String getCourseMentorName() {
+        return courseMentorName;
+    }
+
+    public void setCourseMentorName(String courseMentorName) {
+        this.courseMentorName = courseMentorName;
+    }
+
+    public String getCourseMentorEmail() {
+        return courseMentorEmail;
+    }
+
+    public void setCourseMentorEmail(String courseMentorEmail) {
+        this.courseMentorEmail = courseMentorEmail;
+    }
+
+    public String getCourseMentorPhone() {
+        return courseMentorPhone;
+    }
+
+    public void setCourseMentorPhone(String courseMentorPhone) {
+        this.courseMentorPhone = courseMentorPhone;
+    }
 }

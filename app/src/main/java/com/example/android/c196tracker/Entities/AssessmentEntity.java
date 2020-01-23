@@ -2,12 +2,16 @@ package com.example.android.c196tracker.Entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "assessments", foreignKeys = @ForeignKey(entity = CourseEntity.class,
         parentColumns = "courseId",
-        childColumns = "courseId"),
+        childColumns = "courseId",
+        onDelete = ForeignKey.RESTRICT),
         indices = {@Index("courseId")})
 
 public class AssessmentEntity {
@@ -16,12 +20,22 @@ public class AssessmentEntity {
 
     private String assessmentName;
     private String assessmentType;
-    private String assessmentDate;
+    private Date assessmentDate;
 
     private int courseId;
 
-    public AssessmentEntity(String assessmentName, String assessmentType, String assessmentDate,
+    public AssessmentEntity(String assessmentName, String assessmentType, Date assessmentDate,
                             int courseId) {
+        this.assessmentName = assessmentName;
+        this.assessmentType = assessmentType;
+        this.assessmentDate = assessmentDate;
+        this.courseId = courseId;
+    }
+
+    @Ignore
+    public AssessmentEntity(int assessmentId, String assessmentName, String assessmentType, Date assessmentDate,
+                            int courseId) {
+        this.assessmentId = assessmentId;
         this.assessmentName = assessmentName;
         this.assessmentType = assessmentType;
         this.assessmentDate = assessmentDate;
@@ -43,7 +57,9 @@ public class AssessmentEntity {
         return assessmentId;
     }
 
-    public void setAssessmentId(int assessmentId) { this.assessmentId = assessmentId; }
+    public void setAssessmentId(int assessmentId) {
+        this.assessmentId = assessmentId;
+    }
 
     public String getAssessmentName() {
         return assessmentName;
@@ -61,15 +77,19 @@ public class AssessmentEntity {
         this.assessmentType = assessmentType;
     }
 
-    public String getAssessmentDate() {
+    public Date getAssessmentDate() {
         return assessmentDate;
     }
 
-    public void setAssessmentDate(String assessmentDate) {
+    public void setAssessmentDate(Date assessmentDate) {
         this.assessmentDate = assessmentDate;
     }
 
-    public int getCourseId() { return courseId; }
+    public int getCourseId() {
+        return courseId;
+    }
 
-    public void setCourseId(int courseId) { this.courseId = courseId; }
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 }

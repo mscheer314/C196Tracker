@@ -4,31 +4,35 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
-
+public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+    private NoteAdapter noteAdapter;
     private TermAdapter termAdapter;
     private CourseAdapter courseAdapter;
-    private NoteAdapter noteAdapter;
     private AssessmentAdapter assessmentAdapter;
+    private int type;
 
-    public SwipeToDeleteCallBack(TermAdapter adapter) {
+    public SwipeToDeleteCallback(TermAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         termAdapter = adapter;
+        type = 1;
     }
 
-    public SwipeToDeleteCallBack(CourseAdapter adapter) {
+    public SwipeToDeleteCallback(CourseAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         courseAdapter = adapter;
+        type = 2;
     }
 
-    public SwipeToDeleteCallBack(NoteAdapter adapter) {
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-        noteAdapter = adapter;
-    }
-
-    public SwipeToDeleteCallBack(AssessmentAdapter adapter) {
+    public SwipeToDeleteCallback(AssessmentAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         assessmentAdapter = adapter;
+        type = 3;
+    }
+
+    public SwipeToDeleteCallback(NoteAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        noteAdapter = adapter;
+        type = 4;
     }
 
     @Override
@@ -39,18 +43,18 @@ public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        if (termAdapter != null) {
-            termAdapter.deleteItem(position);
-        }
-        if (courseAdapter != null) {
-            courseAdapter.deleteItem(position);
-        }
-        if (noteAdapter != null) {
-            noteAdapter.deleteItem(position);
-        }
-
-        if (assessmentAdapter != null) {
-            assessmentAdapter.deleteItem(position);
+        switch (type) {
+            case 1:
+                termAdapter.deleteItem(position);
+                break;
+            case 2:
+                courseAdapter.deleteItem(position);
+                break;
+            case 3:
+                assessmentAdapter.deleteItem(position);
+                break;
+            case 4:
+                noteAdapter.deleteItem(position);
         }
     }
 }
