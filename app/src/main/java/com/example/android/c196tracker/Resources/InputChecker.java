@@ -7,12 +7,9 @@ import java.util.Locale;
 
 public class InputChecker {
 
-    private static final String emailRegex = "^[-a-z0-9~!$%^&*_=+}{\\'?]+(\\.[-a-z0-9~!$%^&*_=+}{\\'?]+)" +
-            "*@([a-z0-9_][-a-z0-9_]*(\\.[-a-z0-9_]+)*\\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil" +
-            "|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}" +
-            "\\.[0-9]{1,3}))(:[0-9]{1,5})?$ ";
-    private static final String phoneRegex = "^(\\d{10})|(([\\(]?([0-9]{3})[\\)]?)?[ \\.\\-]?([0-9]{3})" +
-            "[ \\.\\-]([0-9]{4}))$";
+    private static final String emailRegex = "^[-a-z0-9~!$%^&*_=+}{'?]+(\\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\\.[-a-z0-9_]+)*\\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,5})?$";
+    private static final String phoneRegex = "^(\\d{10})|(([(]?([0-9]{3})[)]?)?[ .\\-]?([0-9]{3})" +
+            "[ .\\-]([0-9]{4}))$";
 
     // input type will be 1 for Term, 2 for Course, 3 for Assessment
     public static String checkItemNameExists(int inputType, String name) {
@@ -77,8 +74,6 @@ public class InputChecker {
         return false;
     }
 
-
-    // TODO implement this method
     public static String checkCourseMentorFields(String mentorName, String mentorEmail, String mentorPhone) {
         String errorMessage = "";
 

@@ -59,6 +59,9 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
     private String errorMessage;
     private boolean isNewCourse;
     private int courseId;
+    private String termName;
+    private String termStart;
+    private String termEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,9 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
         if (bundle != null) {
             isNewCourse = bundle.getBoolean("isNewCourse");
             courseId = bundle.getInt("courseId");
+            termStart = bundle.getString("termStart");
+            termEnd = bundle.getString("termEnd");
+            termName = bundle.getString("termName");
         }
 
         super.onCreate(savedInstanceState);
@@ -98,6 +104,14 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
                     courseEndTextView.getText().toString());
             errorMessage += InputChecker.checkCourseMentorFields(mentorNameString,
                     mentorEmailString, mentorPhoneString);
+            if (!InputChecker.isDateWithinParentDates(courseStartString, termStart,
+                    termEnd)) {
+                errorMessage += "The start date is not in the term.";
+            }
+            if (!InputChecker.isDateWithinParentDates(courseEndString,
+                    termStart, termEnd)) {
+                errorMessage += "The end date is not in the term.";
+            }
             if (errorMessage.length() > 0) {
                 Toast.makeText(AddCourseDialog.this, errorMessage, Toast.LENGTH_LONG).show();
             } else {
@@ -110,6 +124,9 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
                 replyIntent.putExtra("mentorName", mentorNameString);
                 replyIntent.putExtra("mentorEmail", mentorEmailString);
                 replyIntent.putExtra("mentorPhone", mentorPhoneString);
+                replyIntent.putExtra("termName", termName);
+                replyIntent.putExtra("termStart", termStart);
+                replyIntent.putExtra("termEnd", termEnd);
 
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
                 Date startDate = new Date();
@@ -140,6 +157,42 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
             setResult(RESULT_CANCELED);
             finish();
         });
+    }
+
+    private void loadTermSpinnerData() {
+        termSpinner = findViewById(R.id.term_spinner);
+        termSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
+        termsList = new ArrayList<>();
+        termsList.add("SELECT A TERM");
+        termIdList = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddCourseDialog.this,
+                android.R.layout.simple_spinner_item, termsList);
+        termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
+        termViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<TermEntity> terms) {
+                for (TermEntity term : terms) {
+                    termsList.add(term.getTermName());
+                    termIdList.add(term.getTermId());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        termSpinner.setAdapter(adapter);
+    }
+
+    private void loadCourseStatusSpinner() {
+        courseStatusSpinner = findViewById(R.id.course_status_spinner);
+        courseStatusSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
+        ArrayList<String> statusOptions = new ArrayList<>();
+        statusOptions.add("SELECT A STATUS");
+        statusOptions.add("IN PROGRESS");
+        statusOptions.add("COMPLETED");
+        statusOptions.add("DROPPED");
+        statusOptions.add("PLAN TO TAKE");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddCourseDialog.this,
+                android.R.layout.simple_spinner_item, statusOptions);
+        courseStatusSpinner.setAdapter(adapter);
     }
 
     private void setupDateSelectButtons() {
@@ -198,42 +251,6 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
                 courseEndTextView.setText(date);
             }
         };
-    }
-
-    private void loadTermSpinnerData() {
-        termSpinner = findViewById(R.id.term_spinner);
-        termSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
-        termsList = new ArrayList<>();
-        termsList.add("SELECT A TERM");
-        termIdList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddCourseDialog.this,
-                android.R.layout.simple_spinner_item, termsList);
-        termViewModel = new ViewModelProvider(this).get(TermViewModel.class);
-        termViewModel.getAllTerms().observe(this, new Observer<List<TermEntity>>() {
-            @Override
-            public void onChanged(@Nullable final List<TermEntity> terms) {
-                for (TermEntity term : terms) {
-                    termsList.add(term.getTermName());
-                    termIdList.add(term.getTermId());
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
-        termSpinner.setAdapter(adapter);
-    }
-
-    private void loadCourseStatusSpinner() {
-        courseStatusSpinner = findViewById(R.id.course_status_spinner);
-        courseStatusSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
-        ArrayList<String> statusOptions = new ArrayList<>();
-        statusOptions.add("SELECT A STATUS");
-        statusOptions.add("IN PROGRESS");
-        statusOptions.add("COMPLETED");
-        statusOptions.add("DROPPED");
-        statusOptions.add("PLAN TO TAKE");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddCourseDialog.this,
-                android.R.layout.simple_spinner_item, statusOptions);
-        courseStatusSpinner.setAdapter(adapter);
     }
 
     @Override

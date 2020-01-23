@@ -57,28 +57,19 @@ public class TermDetails extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_TERM_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                termNameString = data.getStringExtra("termName");
-                termStartString = data.getStringExtra("termStart");
-                termEndString = data.getStringExtra("termEnd");
+    private void setTermDetails() {
+        termNameTextView = findViewById(R.id.term_details_title);
+        termStartTextView = findViewById(R.id.term_details_start);
+        termEndTextView = findViewById(R.id.term_details_end);
 
-                termNameTextView.setText(termNameString);
-                termStartTextView.setText(termStartString);
-                termEndTextView.setText(termEndString);
-            }
-        }
-    }
-
-    private void openAddCourseDialog() {
-        Intent intent = new Intent(TermDetails.this, AddCourseDialog.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isNewCourse", true);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
+        Intent intent = getIntent();
+        termNameString = intent.getStringExtra("termName");
+        termStartString = intent.getStringExtra("termStart");
+        termEndString = intent.getStringExtra("termEnd");
+        termId = intent.getIntExtra("termId", 0);
+        termNameTextView.setText(termNameString);
+        termStartTextView.setText(termStartString);
+        termEndTextView.setText(termEndString);
     }
 
     private void setRecyclerView() {
@@ -105,20 +96,41 @@ public class TermDetails extends BaseActivity {
                 });
     }
 
-    private void setTermDetails() {
-        termNameTextView = findViewById(R.id.term_details_title);
-        termStartTextView = findViewById(R.id.term_details_start);
-        termEndTextView = findViewById(R.id.term_details_end);
+    private void openAddCourseDialog() {
+        Intent intent = new Intent(TermDetails.this, AddCourseDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNewCourse", true);
+        bundle.putString("termStart", termStartString);
+        bundle.putString("termEnd", termEndString);
+        bundle.putString("termName", termNameString);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
+    }
 
-        Intent intent = getIntent();
-        termNameString = intent.getStringExtra("termName");
-        termStartString = intent.getStringExtra("termStart");
-        termEndString = intent.getStringExtra("termEnd");
-        termId = intent.getIntExtra("termId", 0);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_TERM_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                termNameString = data.getStringExtra("termName");
+                termStartString = data.getStringExtra("termStart");
+                termEndString = data.getStringExtra("termEnd");
+
+                termNameTextView.setText(termNameString);
+                termStartTextView.setText(termStartString);
+                termEndTextView.setText(termEndString);
+            }
+        }
+    }
+
+   /* @Override
+    public void onResume() {
+        super.onResume();
+
         termNameTextView.setText(termNameString);
         termStartTextView.setText(termStartString);
         termEndTextView.setText(termEndString);
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
