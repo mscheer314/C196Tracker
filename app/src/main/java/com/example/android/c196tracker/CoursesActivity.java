@@ -2,6 +2,8 @@ package com.example.android.c196tracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -71,6 +73,13 @@ public class CoursesActivity extends BaseActivity {
         bundle.putBoolean("isNewCourse", true);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.courses_menu, menu);
+        return true;
     }
 }
 
