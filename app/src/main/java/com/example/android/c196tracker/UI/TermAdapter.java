@@ -9,13 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android.c196tracker.DAO.CourseDAO;
-import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
@@ -99,14 +95,6 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     private boolean hasCourses(int termId) {
-        /*courseViewModel = new ViewModelProvider((TermsActivity) activity).get(CourseViewModel.class);
-        courseViewModel.getAssociatedCourses(termId).observe(this, new Observer<List<CourseEntity>>() {
-            @Override
-            public void onChanged(@Nullable final List<CourseEntity> courses) {
-                adapter.setTerms(terms);
-            }
-        });*/
-
         if (courseViewModel.getAssociatedCoursesList(termId).size() == 0) {
             return false;
         }

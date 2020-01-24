@@ -42,6 +42,7 @@ public class CourseDetails extends BaseActivity {
     private String courseMentorEmailString;
     private Button addAssessmentButton;
     private Button addNoteButton;
+    private Button addGoalButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TextView courseNameTextView;
@@ -77,71 +78,12 @@ public class CourseDetails extends BaseActivity {
                 openAddNoteDialog();
             }
         });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_COURSE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                courseNameString = data.getStringExtra("courseName");
-                courseStartString = data.getStringExtra("courseStart");
-                courseEndString = data.getStringExtra("courseEnd");
-                courseMentorNameString = data.getStringExtra("mentorName");
-                courseMentorEmailString = data.getStringExtra("mentorEmail");
-                courseMentorPhoneString = data.getStringExtra("mentorPhone");
-
-                courseNameTextView.setText(courseNameString);
-                courseStartTextView.setText(courseStartString);
-                courseEndTextView.setText(courseEndString);
-                courseMentorNameTextView.setText(courseMentorNameString);
-                courseMentorEmailTextView.setText(courseMentorEmailString);
-                courseMentorPhoneTextView.setText(courseMentorPhoneString);
-            }
-        }
-    }
-
-    private void openAddNoteDialog() {
-        Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt("courseId", courseId);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
-    }
-
-    private void openAddAssessmentDialog() {
-        Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isNewAssessment", true);
-        bundle.putInt("courseId", courseId);
-        bundle.putString("courseStart", courseStartString);
-        bundle.putString("courseEnd", courseEndString);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
-    }
-
-    private void setAssessmentRecyclerView() {
-        recyclerView = findViewById(R.id.course_detail_assessment_recyclerview);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this, this);
-        recyclerView.setAdapter(assessmentAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-                new SwipeToDeleteCallback(assessmentAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
-        assessmentViewModel.getAssociatedAssessments(courseId).observe(this,
-                new Observer<List<AssessmentEntity>>() {
-                    @Override
-                    public void onChanged(List<AssessmentEntity> assessmentEntities) {
-                        assessmentAdapter.setAssessments(assessmentEntities);
-                    }
-                });
+        addGoalButton = findViewById(R.id.goal_button);
+        addGoalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openGoalDialog(); }
+        });
     }
 
     private void setCourseDetails() {
@@ -170,6 +112,76 @@ public class CourseDetails extends BaseActivity {
         courseMentorNameTextView.setText(courseMentorNameString);
         courseMentorPhoneTextView.setText(courseMentorPhoneString);
         courseMentorEmailTextView.setText(courseMentorEmailString);
+    }
+
+    private void setAssessmentRecyclerView() {
+        recyclerView = findViewById(R.id.course_detail_assessment_recyclerview);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this, this);
+        recyclerView.setAdapter(assessmentAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new SwipeToDeleteCallback(assessmentAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
+        assessmentViewModel.getAssociatedAssessments(courseId).observe(this,
+                new Observer<List<AssessmentEntity>>() {
+                    @Override
+                    public void onChanged(List<AssessmentEntity> assessmentEntities) {
+                        assessmentAdapter.setAssessments(assessmentEntities);
+                    }
+                });
+    }
+
+    private void openAddAssessmentDialog() {
+        Intent intent = new Intent(CourseDetails.this, AddAssessmentDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNewAssessment", true);
+        bundle.putInt("courseId", courseId);
+        bundle.putString("courseStart", courseStartString);
+        bundle.putString("courseEnd", courseEndString);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
+    }
+
+    private void openAddNoteDialog() {
+        Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("courseId", courseId);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
+    }
+
+    private void openGoalDialog() {
+        Intent intent = new Intent(CourseDetails.this, AddGoalDialog.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_COURSE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                courseNameString = data.getStringExtra("courseName");
+                courseStartString = data.getStringExtra("courseStart");
+                courseEndString = data.getStringExtra("courseEnd");
+                courseMentorNameString = data.getStringExtra("mentorName");
+                courseMentorEmailString = data.getStringExtra("mentorEmail");
+                courseMentorPhoneString = data.getStringExtra("mentorPhone");
+
+                courseNameTextView.setText(courseNameString);
+                courseStartTextView.setText(courseStartString);
+                courseEndTextView.setText(courseEndString);
+                courseMentorNameTextView.setText(courseMentorNameString);
+                courseMentorEmailTextView.setText(courseMentorEmailString);
+                courseMentorPhoneTextView.setText(courseMentorPhoneString);
+            }
+        }
     }
 
     @Override
@@ -201,7 +213,7 @@ public class CourseDetails extends BaseActivity {
             }
 
             scheduleNotification(getNotification("Course Ending"), endDate.getTime());
-            Toast.makeText(this,R.string.notification_scheduled,Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.notification_scheduled, Toast.LENGTH_LONG).show();
         }
         if (item.getItemId() == R.id.edit_course) {
             Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);

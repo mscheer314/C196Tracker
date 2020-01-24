@@ -48,5 +48,7 @@
     <string name="share_note">Share Note</string>
     <string name="notification_scheduled">Notification scheduled.</string>
     <string name="set_goal_alert">Set Goal Alert</string>
+    <string name="add_goal">ADD GOAL</string>
+    <string name="goal_content">Goal content</string>
 
 </resources>

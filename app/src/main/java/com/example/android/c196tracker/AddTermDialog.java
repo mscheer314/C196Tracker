@@ -57,42 +57,42 @@ public class AddTermDialog extends AppCompatActivity {
 
         okButton = findViewById(R.id.term_ok_button);
         okButton.setOnClickListener((view) -> {
-                errorMessage = InputChecker.checkItemNameExists(1,
-                        termNameEditText.getText().toString());
-                errorMessage += InputChecker.getDateErrorMessage(
-                        termStartTextEdit.getText().toString(),
-                        termEndTextEdit.getText().toString());
-                if (errorMessage.length() > 0) {
-                    Toast.makeText(AddTermDialog.this, errorMessage, Toast.LENGTH_LONG).show();
+            errorMessage = InputChecker.checkItemNameExists(1,
+                    termNameEditText.getText().toString());
+            errorMessage += InputChecker.getDateErrorMessage(
+                    termStartTextEdit.getText().toString(),
+                    termEndTextEdit.getText().toString());
+            if (errorMessage.length() > 0) {
+                Toast.makeText(AddTermDialog.this, errorMessage, Toast.LENGTH_LONG).show();
+            } else {
+                Intent replyIntent = new Intent();
+                String termName = AddTermDialog.this.termNameEditText.getText().toString();
+                String termStart = AddTermDialog.this.termStartTextEdit.getText().toString();
+                String termEnd = AddTermDialog.this.termEndTextEdit.getText().toString();
+
+                replyIntent.putExtra("termName", termName);
+                replyIntent.putExtra("termStart", termStart);
+                replyIntent.putExtra("termEnd", termEnd);
+
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                Date startDate = new Date();
+                Date endDate = new Date();
+                try {
+                    startDate = formatter.parse(termStart);
+                    endDate = formatter.parse(termEnd);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (isNewTerm) {
+
+                    TermEntity term = new TermEntity(termName, startDate, endDate);
+                    termViewModel.insert(term);
                 } else {
-                    Intent replyIntent = new Intent();
-                    String termName = AddTermDialog.this.termNameEditText.getText().toString();
-                    String termStart = AddTermDialog.this.termStartTextEdit.getText().toString();
-                    String termEnd = AddTermDialog.this.termEndTextEdit.getText().toString();
-
-                    replyIntent.putExtra("termName", termName);
-                    replyIntent.putExtra("termStart", termStart);
-                    replyIntent.putExtra("termEnd", termEnd);
-
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-                    Date startDate = new Date();
-                    Date endDate = new Date();
-                    try {
-                        startDate = formatter.parse(termStart);
-                        endDate = formatter.parse(termEnd);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if (isNewTerm) {
-
-                        TermEntity term = new TermEntity(termName, startDate, endDate);
-                        termViewModel.insert(term);
-                    } else {
-                        TermEntity term = new TermEntity(termId, termName, startDate, endDate);
-                        termViewModel.update(term);
-                    }
-                    setResult(RESULT_OK, replyIntent);
-                    finish();
+                    TermEntity term = new TermEntity(termId, termName, startDate, endDate);
+                    termViewModel.update(term);
+                }
+                setResult(RESULT_OK, replyIntent);
+                finish();
             }
         });
 

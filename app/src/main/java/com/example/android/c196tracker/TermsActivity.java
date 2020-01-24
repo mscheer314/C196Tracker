@@ -21,7 +21,7 @@ import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
 
-public class TermsActivity extends BaseActivity  {
+public class TermsActivity extends BaseActivity {
 
     public static final int NEW_TERM_ACTIVITY_REQUEST_CODE = 1;
     private Button addTermButton;

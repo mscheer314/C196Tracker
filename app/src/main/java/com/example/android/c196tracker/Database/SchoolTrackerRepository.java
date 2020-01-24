@@ -65,12 +65,13 @@ public class SchoolTrackerRepository {
     }
 
     public LiveData<List<CourseEntity>> getAssociatedCourses(int termId) {
-        associatedCourses =  courseDAO.getAssociatedCourses(termId);
+        associatedCourses = courseDAO.getAssociatedCourses(termId);
         return associatedCourses;
     }
 
     public List<CourseEntity> getAssociatedCoursesList(int termId) {
         associatedCoursesList = courseDAO.getAssociatedCoursesList(termId);
+        return associatedCoursesList;
     }
 
     public LiveData<List<AssessmentEntity>> getAssociatedAssessments(int courseId) {

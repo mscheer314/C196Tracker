@@ -13,9 +13,9 @@ import androidx.core.app.NotificationCompat;
 import com.example.android.c196tracker.Resources.MyNotificationPublisher;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private int termId;
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private final static String default_notification_channel_id = "default";
+    private int termId;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

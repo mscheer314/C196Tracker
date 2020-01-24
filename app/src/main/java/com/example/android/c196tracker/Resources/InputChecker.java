@@ -44,6 +44,19 @@ public class InputChecker {
         return errorMessage;
     }
 
+    public static boolean isStartDateBeforeEndDate(String startString, String endString) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+            Date startDate = simpleDateFormat.parse(startString);
+            Date endDate = simpleDateFormat.parse(endString);
+
+            return startDate.compareTo(endDate) < 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static boolean isDateWithinParentDates(
             String childDateString, String parentStartString, String parentEndString) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
@@ -59,19 +72,6 @@ public class InputChecker {
         }
 
         return !(childDate.before(parentStartDate) || childDate.after(parentEndDate));
-    }
-
-    public static boolean isStartDateBeforeEndDate(String startString, String endString) {
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
-            Date startDate = simpleDateFormat.parse(startString);
-            Date endDate = simpleDateFormat.parse(endString);
-
-            return startDate.compareTo(endDate) < 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public static String checkCourseMentorFields(String mentorName, String mentorEmail, String mentorPhone) {

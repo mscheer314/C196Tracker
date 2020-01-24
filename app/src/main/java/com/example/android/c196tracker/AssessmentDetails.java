@@ -50,20 +50,6 @@ public class AssessmentDetails extends BaseActivity {
         setRecyclerView();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                assessmentName = data.getStringExtra("assessmentName");
-                assessmentDueDate = data.getStringExtra("assessmentDueDate");
-
-                assessmentNameTextView.setText(assessmentName);
-                assessmentDueDateTextView.setText(assessmentDueDate);
-            }
-        }
-    }
-
     private void setAssessmentDetails() {
         Intent intent = getIntent();
         assessmentName = intent.getStringExtra("assessmentName");
@@ -72,6 +58,11 @@ public class AssessmentDetails extends BaseActivity {
 
         assessmentNameTextView.setText(assessmentName);
         assessmentDueDateTextView.setText(assessmentDueDate);
+    }
+
+    private void setCourseDetails() {
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra("courseId", 0);
     }
 
     private void setRecyclerView() {
@@ -97,9 +88,18 @@ public class AssessmentDetails extends BaseActivity {
                 });
     }
 
-    private void setCourseDetails() {
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra("courseId", 0);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                assessmentName = data.getStringExtra("assessmentName");
+                assessmentDueDate = data.getStringExtra("assessmentDueDate");
+
+                assessmentNameTextView.setText(assessmentName);
+                assessmentDueDateTextView.setText(assessmentDueDate);
+            }
+        }
     }
 
     @Override
@@ -139,11 +139,11 @@ public class AssessmentDetails extends BaseActivity {
                 e.printStackTrace();
             }
             scheduleNotification(getNotification("Assessment upcoming"), assessmentDate.getTime());
-            Toast.makeText(this,R.string.notification_scheduled,Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.notification_scheduled, Toast.LENGTH_LONG).show();
         }
 
         if (item.getItemId() == R.id.add_goal_alert) {
-            
+
         }
         return super.onOptionsItemSelected(item);
     }

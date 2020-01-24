@@ -112,14 +112,6 @@ public class AddAssessmentDialog extends AppCompatActivity
         });
     }
 
-    private void loadCancelButton() {
-        cancelButton = findViewById(R.id.assessment_cancel_button);
-        cancelButton.setOnClickListener((view) -> {
-            setResult(RESULT_CANCELED);
-            finish();
-        });
-    }
-
     private void loadDatePicker() {
         assessmentDueDateTextView = findViewById(R.id.assessment_due_date);
         assessmentDueDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +162,14 @@ public class AddAssessmentDialog extends AppCompatActivity
                 android.R.layout.simple_spinner_item, assessmentTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         assessmentTypeSpinner.setAdapter(adapter);
+    }
+
+    private void loadCancelButton() {
+        cancelButton = findViewById(R.id.assessment_cancel_button);
+        cancelButton.setOnClickListener((view) -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
     }
 
     @Override
