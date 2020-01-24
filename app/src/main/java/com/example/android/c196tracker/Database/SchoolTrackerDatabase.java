@@ -21,7 +21,7 @@ import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
 @Database(entities = {TermEntity.class, CourseEntity.class, NoteEntity.class, AssessmentEntity.class},
-        version = 5, exportSchema = false)
+        version = 6, exportSchema = false)
 @TypeConverters({Converters.class})
 
 public abstract class SchoolTrackerDatabase extends RoomDatabase {

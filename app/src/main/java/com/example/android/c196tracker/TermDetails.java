@@ -83,7 +83,7 @@ public class TermDetails extends BaseActivity {
         recyclerView.setAdapter(courseAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-                new SwipeToDeleteCallback(courseAdapter));
+                new SwipeToDeleteCallback(courseAdapter, Boolean.TRUE));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         courseViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
@@ -122,15 +122,6 @@ public class TermDetails extends BaseActivity {
             }
         }
     }
-
-   /* @Override
-    public void onResume() {
-        super.onResume();
-
-        termNameTextView.setText(termNameString);
-        termStartTextView.setText(termStartString);
-        termEndTextView.setText(termEndString);
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

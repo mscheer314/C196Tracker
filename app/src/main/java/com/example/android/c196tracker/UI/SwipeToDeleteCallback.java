@@ -9,7 +9,15 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private TermAdapter termAdapter;
     private CourseAdapter courseAdapter;
     private AssessmentAdapter assessmentAdapter;
+    private boolean inTermsDetails;
     private int type;
+
+    public SwipeToDeleteCallback(CourseAdapter adapter, boolean inTermsDetails) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        courseAdapter = adapter;
+        type = 2;
+        this.inTermsDetails = inTermsDetails;
+    }
 
     public SwipeToDeleteCallback(TermAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
@@ -48,7 +56,11 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
                 termAdapter.deleteItem(position);
                 break;
             case 2:
-                courseAdapter.deleteItem(position);
+                if (inTermsDetails) {
+                    courseAdapter.deleteItemFromTermDetails(position);
+                } else {
+                    courseAdapter.deleteItem(position);
+                }
                 break;
             case 3:
                 assessmentAdapter.deleteItem(position);

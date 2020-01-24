@@ -15,6 +15,7 @@ import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.R;
+import com.example.android.c196tracker.TermDetails;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.text.SimpleDateFormat;
@@ -99,6 +100,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void deleteItem(int position) {
         deletedItem = courses.get(position);
         courseViewModel = new ViewModelProvider((CoursesActivity) activity).get(CourseViewModel.class);
+        courseViewModel.delete(deletedItem);
+    }
+
+    public void deleteItemFromTermDetails(int position) {
+        deletedItem = courses.get(position);
+        courseViewModel = new ViewModelProvider((TermDetails) activity).get(CourseViewModel.class);
         courseViewModel.delete(deletedItem);
     }
 
