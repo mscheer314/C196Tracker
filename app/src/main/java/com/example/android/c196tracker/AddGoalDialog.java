@@ -34,6 +34,7 @@ public class AddGoalDialog extends BaseActivity {
         goalOkButton = findViewById(R.id.goal_ok_button);
         goalCancelButton = findViewById(R.id.goal_cancel_button);
 
+        goalDate = LocalDate.now();
         goalDateCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
