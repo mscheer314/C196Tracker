@@ -52,7 +52,7 @@ public class CoursesActivity extends BaseActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final CourseAdapter mAdapter = new CourseAdapter(this, this);
+        final CourseAdapter mAdapter = new CourseAdapter(this, this, false);
         recyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));

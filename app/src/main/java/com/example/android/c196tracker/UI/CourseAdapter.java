@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.CoursesActivity;
 import com.example.android.c196tracker.Entities.CourseEntity;
+import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
 import com.example.android.c196tracker.ViewModel.CourseViewModel;
+import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -31,11 +33,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private Activity activity;
     private int courseId;
     private CourseViewModel courseViewModel;
+    private TermViewModel termViewModel;
+    private String termStart;
+    private String termEnd;
+    private boolean isInTermDetails;
 
-    public CourseAdapter(Context context, Activity activity) {
+    public CourseAdapter(Context context, Activity activity, Boolean isInTermDetails) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.activity = activity;
+        this.isInTermDetails = isInTermDetails;
     }
 
     @Override
@@ -48,6 +55,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(CourseViewHolder holder, int position) {
         if (courses != null) {
             CourseEntity current = courses.get(position);
+            holder.termId = current.getTermId();
+            int indexOfTerm = 0;
+            if (isInTermDetails) {
+                termViewModel = new ViewModelProvider((TermDetails) activity).get(TermViewModel.class);
+            } else {
+                termViewModel = new ViewModelProvider((CoursesActivity) activity).get(TermViewModel.class);
+            }
+                List<TermEntity> term = termViewModel.getTermById(holder.termId);
+            holder.termStart = dateFormatter.format(term.get(indexOfTerm).getTermStart());
+            holder.termEnd = dateFormatter.format(term.get(indexOfTerm).getTermEnd());
             holder.courseId = current.getCourseId();
             holder.courseNameTextView.setText(current.getCourseName());
             holder.courseStartTextView.setText(dateFormatter.format(current.getCourseStart()));
@@ -65,6 +82,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
                 courseId = holder.courseId;
+                termStart = holder.termStart;
+                termEnd = holder.termEnd;
                 String courseName = holder.courseNameTextView.getText().toString();
                 String courseStart = holder.courseStartTextView.getText().toString();
                 String courseEnd = holder.courseEndTextView.getText().toString();
@@ -77,6 +96,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 Intent intent = new Intent(context, CourseDetails.class);
 
                 intent.putExtra("courseId", courseId);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
                 intent.putExtra("courseName", courseName);
                 intent.putExtra("courseStart", courseStart);
                 intent.putExtra("courseEnd", courseEnd);
@@ -123,6 +144,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         private String courseMentorEmail;
         private String courseMentorPhone;
         private int courseId;
+        private int termId;
+        private String termStart;
+        private String termEnd;
 
         private CourseViewHolder(View itemView) {
             super(itemView);

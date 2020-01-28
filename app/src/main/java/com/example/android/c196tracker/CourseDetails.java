@@ -54,6 +54,8 @@ public class CourseDetails extends BaseActivity {
     private TextView courseMentorEmailTextView;
     private AssessmentViewModel assessmentViewModel;
     private Calendar calendar = Calendar.getInstance();
+    private String termEndString;
+    private String termStartString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,8 @@ public class CourseDetails extends BaseActivity {
 
         Intent intent = getIntent();
         courseId = intent.getIntExtra("courseId", 0);
+        termStartString = intent.getStringExtra("termStart");
+        termEndString = intent.getStringExtra("termEnd");
         courseNameString = intent.getStringExtra("courseName");
         courseStartString = intent.getStringExtra("courseStart");
         courseEndString = intent.getStringExtra("courseEnd");
@@ -232,6 +236,8 @@ public class CourseDetails extends BaseActivity {
             Bundle bundle = new Bundle();
             bundle.putBoolean("isNewTerm", false);
             bundle.putInt("courseId", courseId);
+            bundle.putString("termStart", termStartString);
+            bundle.putString("termEnd", termEndString);
             intent.putExtras(bundle);
             startActivityForResult(intent, NEW_COURSE_ACTIVITY_REQUEST_CODE);
         }

@@ -15,6 +15,7 @@ public class TermViewModel extends AndroidViewModel {
     private SchoolTrackerRepository repository;
     private LiveData<List<TermEntity>> allTerms;
 
+
     public TermViewModel(@NonNull Application application) {
         super(application);
         repository = new SchoolTrackerRepository(application);
@@ -23,6 +24,10 @@ public class TermViewModel extends AndroidViewModel {
 
     public LiveData<List<TermEntity>> getAllTerms() {
         return allTerms;
+    }
+
+    public List<TermEntity> getTermById(int termId) {
+        return repository.getTermById(termId);
     }
 
     public void insert(TermEntity termEntity) {

@@ -70,6 +70,17 @@ public class SchoolTrackerRepository {
         return associatedCourses;
     }
 
+    public List<TermEntity> getTermById(int termId) {
+        try {
+            return new getTermByIdTask(termDAO, termId).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<CourseEntity> getAssociatedCourseList(int termId) {
         try {
             return new getAssociatedCourseListTask(courseDAO, termId).execute().get();
@@ -127,6 +138,21 @@ public class SchoolTrackerRepository {
 
     public void delete(AssessmentEntity assessmentEntity) {
         new deleteAssessmentAsyncTask(assessmentDAO).execute(assessmentEntity);
+    }
+
+    private static class getTermByIdTask extends AsyncTask<Integer, Void, List<TermEntity>> {
+        private TermDAO asyncTermDAO;
+        private int termId;
+
+        getTermByIdTask(TermDAO dao, int termId) {
+            asyncTermDAO = dao;
+            this.termId = termId;
+        }
+
+        @Override
+        protected List<TermEntity> doInBackground(Integer... params) {
+            return asyncTermDAO.getTerm(termId);
+        }
     }
 
     private static class getAssociatedCourseListTask extends AsyncTask<Integer, Void, List<CourseEntity>> {
