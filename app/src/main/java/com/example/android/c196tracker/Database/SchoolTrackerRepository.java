@@ -16,6 +16,7 @@ import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class SchoolTrackerRepository {
     private TermDAO termDAO;
@@ -69,9 +70,15 @@ public class SchoolTrackerRepository {
         return associatedCourses;
     }
 
-    public List<CourseEntity> getAssociatedCoursesList(int termId) {
-        associatedCoursesList = courseDAO.getAssociatedCoursesList(termId);
-        return associatedCoursesList;
+    public List<CourseEntity> getAssociatedCourseList(int termId) {
+        try {
+            return new getAssociatedCourseListTask(courseDAO, termId).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public LiveData<List<AssessmentEntity>> getAssociatedAssessments(int courseId) {
@@ -120,6 +127,21 @@ public class SchoolTrackerRepository {
 
     public void delete(AssessmentEntity assessmentEntity) {
         new deleteAssessmentAsyncTask(assessmentDAO).execute(assessmentEntity);
+    }
+
+    private static class getAssociatedCourseListTask extends AsyncTask<Integer, Void, List<CourseEntity>> {
+        private CourseDAO asyncCourseDAO;
+        private int termId;
+
+        getAssociatedCourseListTask(CourseDAO dao, int termId) {
+            asyncCourseDAO = dao;
+            this.termId = termId;
+        }
+
+        @Override
+        protected List<CourseEntity> doInBackground(Integer... params) {
+            return asyncCourseDAO.getAssociatedCoursesList(termId);
+        }
     }
 
     private static class insertAsyncTask1 extends AsyncTask<TermEntity, Void, Void> {

@@ -143,8 +143,13 @@ public class CourseDetails extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean("isNewAssessment", true);
         bundle.putInt("courseId", courseId);
+        bundle.putString("courseName", courseNameString);
         bundle.putString("courseStart", courseStartString);
         bundle.putString("courseEnd", courseEndString);
+        bundle.putString("courseStatus", courseStatusString);
+        bundle.putString("mentorName", courseMentorNameString);
+        bundle.putString("mentorEmail", courseMentorEmailString);
+        bundle.putString("mentorPhone", courseMentorPhoneString);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
     }
@@ -153,6 +158,13 @@ public class CourseDetails extends BaseActivity {
         Intent intent = new Intent(CourseDetails.this, AddNoteDialog.class);
         Bundle bundle = new Bundle();
         bundle.putInt("courseId", courseId);
+        bundle.putString("courseName", courseNameString);
+        bundle.putString("courseStart", courseStartString);
+        bundle.putString("courseEnd", courseEndString);
+        bundle.putString("courseStatus", courseStatusString);
+        bundle.putString("mentorName", courseMentorNameString);
+        bundle.putString("mentorEmail", courseMentorEmailString);
+        bundle.putString("mentorPhone", courseMentorPhoneString);
         intent.putExtras(bundle);
         startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
     }

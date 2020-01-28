@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.TermDetails;
@@ -95,7 +96,9 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     private boolean hasCourses(int termId) {
-        if (courseViewModel.getAssociatedCoursesList(termId).size() == 0) {
+        courseViewModel = new ViewModelProvider((TermsActivity) activity).get(CourseViewModel.class);
+        List<CourseEntity> courses = courseViewModel.getAssociatedCourseList(termId);
+        if (courses.size() == 0) {
             return false;
         }
         return true;

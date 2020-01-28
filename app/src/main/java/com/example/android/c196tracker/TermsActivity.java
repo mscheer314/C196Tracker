@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.c196tracker.Entities.TermEntity;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.UI.TermAdapter;
+import com.example.android.c196tracker.ViewModel.CourseViewModel;
 import com.example.android.c196tracker.ViewModel.TermViewModel;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class TermsActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TermViewModel termViewModel;
+    private CourseViewModel courseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

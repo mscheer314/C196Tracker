@@ -21,12 +21,27 @@ public class AddNoteDialog extends AppCompatActivity {
     private Button noteCancelButton;
     private NoteViewModel noteViewModel;
     private int courseId;
+    private String courseName;
+    private String courseStart;
+    private String courseEnd;
+    private String courseStatus;
+    private String mentorName;
+    private String mentorEmail;
+    private String mentorPhone;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             courseId = bundle.getInt("courseId");
+            courseName = bundle.getString("courseName");
+            courseStart = bundle.getString("courseStart");
+            courseEnd = bundle.getString("courseEnd");
+            courseStatus = bundle.getString("courseStatus");
+            mentorName = bundle.getString("mentorName");
+            mentorEmail = bundle.getString("mentorEmail");
+            mentorPhone = bundle.getString("mentorPhone");
         }
 
         super.onCreate(savedInstanceState);
@@ -55,6 +70,13 @@ public class AddNoteDialog extends AppCompatActivity {
                     String noteContent = AddNoteDialog.this.noteContent.getText().toString();
 
                     replyIntent.putExtra("noteContent", noteContent);
+                    replyIntent.putExtra("courseName", courseName);
+                    replyIntent.putExtra("courseStart", courseStart);
+                    replyIntent.putExtra("courseEnd", courseEnd);
+                    replyIntent.putExtra("courseStatus", courseStatus);
+                    replyIntent.putExtra("mentorName", mentorName);
+                    replyIntent.putExtra("mentorEmail", mentorEmail);
+                    replyIntent.putExtra("mentorPhone", mentorPhone);
 
                     NoteEntity note = new NoteEntity(noteContent, courseId);
                     noteViewModel.insert(note);

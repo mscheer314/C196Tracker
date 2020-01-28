@@ -46,6 +46,10 @@ public class AddAssessmentDialog extends AppCompatActivity
     private Spinner assessmentTypeSpinner;
     private String assessmentType;
     private boolean isNewAssessment;
+    private String courseName;
+    private String mentorName;
+    private String mentorEmail;
+    private String mentorPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,12 @@ public class AddAssessmentDialog extends AppCompatActivity
             isNewAssessment = bundle.getBoolean("isNewAssessment");
             courseId = bundle.getInt("courseId");
             assessmentId = bundle.getInt("assessmentId");
+            courseName = bundle.getString("courseName");
             courseStart = bundle.getString("courseStart");
             courseEnd = bundle.getString("courseEnd");
+            mentorName = bundle.getString("mentorName");
+            mentorEmail = bundle.getString("mentorEmail");
+            mentorPhone = bundle.getString("mentorPhone");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assessment_dialog);
@@ -70,6 +78,7 @@ public class AddAssessmentDialog extends AppCompatActivity
 
         okButton = findViewById(R.id.assessment_ok_button);
         okButton.setOnClickListener((view) -> {
+            errorMessage = "";
             errorMessage += InputChecker.checkItemNameExists(3,
                     assessmentNameTextView.getText().toString());
             if (!InputChecker.isDateWithinParentDates(assessmentDueDateTextView.getText().toString(),
@@ -81,6 +90,12 @@ public class AddAssessmentDialog extends AppCompatActivity
             } else {
                 Intent replyIntent = new Intent();
 
+                replyIntent.putExtra("courseName", courseName);
+                replyIntent.putExtra("courseStart", courseStart);
+                replyIntent.putExtra("courseEnd", courseEnd);
+                replyIntent.putExtra("mentorName", mentorName);
+                replyIntent.putExtra("mentorEmail", mentorEmail);
+                replyIntent.putExtra("mentorPhone", mentorPhone);
                 String assessmentNameString = AddAssessmentDialog.this.assessmentNameTextView.getText().toString();
                 String assessmentTypeString = AddAssessmentDialog.this.assessmentType;
                 String assessmentDueDateString = AddAssessmentDialog.this.assessmentDueDateTextView.getText()
