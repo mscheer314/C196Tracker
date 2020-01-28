@@ -88,10 +88,13 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public void deleteItem(int position) {
         deletedItem = terms.get(position);
         termViewModel = new ViewModelProvider((TermsActivity) activity).get(TermViewModel.class);
-        if (!hasCourses(deletedItem.getTermId()))
+        if (!hasCourses(deletedItem.getTermId())) {
             termViewModel.delete(deletedItem);
-        notifyDataSetChanged();
-        Toast.makeText(context, "Cannot delete term that has classes in it.", Toast.LENGTH_SHORT).show();
+            notifyDataSetChanged();
+        } else {
+            notifyDataSetChanged();
+            Toast.makeText(context, "Cannot delete term that has classes in it.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
