@@ -81,7 +81,7 @@ public class AddNoteDialog extends AppCompatActivity {
                     NoteEntity note = new NoteEntity(noteContent, courseId);
                     noteViewModel.insert(note);
                 }
-                setResult(RESULT_OK);
+                setResult(RESULT_OK, replyIntent);
                 finish();
             }
         });
