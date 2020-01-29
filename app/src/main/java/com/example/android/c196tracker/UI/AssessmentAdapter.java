@@ -57,6 +57,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             holder.assessmentId = current.getAssessmentId();
             holder.assessmentName.setText(current.getAssessmentName());
             holder.assessmentDueDate.setText(dateFormatter.format(current.getAssessmentDate()));
+            holder.assessmentType.setText(current.getAssessmentType());
             if (isInCourseDetails) {
                 courseViewModel = new ViewModelProvider((CourseDetails) activity).get(CourseViewModel.class);
             } else {
@@ -115,6 +116,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
         private final TextView assessmentName;
         private final TextView assessmentDueDate;
+        private final TextView assessmentType;
         public String courseStart;
         public String courseEnd;
 
@@ -126,6 +128,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             super(itemView);
             assessmentName = itemView.findViewById(R.id.assessment_name);
             assessmentDueDate = itemView.findViewById(R.id.assessment_date);
+            assessmentType = itemView.findViewById(R.id.assessment_type);
             assessmentId = -1;
             courseId = -1;
         }
