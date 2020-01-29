@@ -50,8 +50,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.noteItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openConfirmationDialog(holder.noteItemView.getText().toString());
             }
         });
+    }
+
+    public void openConfirmationDialog(String noteContent) {
+        NoteConfirmationDialog confirmDialog = new NoteConfirmationDialog(noteContent);
+        confirmDialog.show(((CourseDetails)context).getSupportFragmentManager(), "confirmation dialog");
     }
 
     @Override
