@@ -259,15 +259,6 @@ public class CourseDetails extends BaseActivity {
             scheduleNotification(getNotification("Course Ending"), endDate.getTime());
             Toast.makeText(this, R.string.notification_scheduled, Toast.LENGTH_LONG).show();
         }
-        if (item.getItemId() == R.id.share_note) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.setType("text/plain");
-
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
-        }
         if (item.getItemId() == R.id.edit_course) {
             Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);
             Bundle bundle = new Bundle();

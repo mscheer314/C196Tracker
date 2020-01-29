@@ -11,9 +11,6 @@
         android:id="@+id/add_end_notficiation"
         android:title="@string/add_end_notification" />
     <item
-        android:id="@+id/share_note"
-        android:title="@string/share_note" />
-    <item
         android:id="@+id/all_terms"
         android:title="@string/go_to_terms" />
     <item

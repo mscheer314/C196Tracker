@@ -102,7 +102,7 @@ public class SchoolTrackerRepository {
 
     public List<CourseEntity> getCourseByCourseId(int courseId) {
         try {
-            return new getCourseByTermIdTask(courseDAO, courseId).execute().get();
+            return new getCourseByCourseIdTask(courseDAO, courseId).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -174,6 +174,21 @@ public class SchoolTrackerRepository {
         @Override
         protected List<CourseEntity> doInBackground(Integer... params) {
             return asyncCourseDAO.getAssociatedCoursesList(termId);
+        }
+    }
+
+    private static class getCourseByCourseIdTask extends AsyncTask<Integer, Void, List<CourseEntity>> {
+        private CourseDAO asyncCourseDAO;
+        private int courseId;
+
+        getCourseByCourseIdTask(CourseDAO dao, int courseId) {
+            asyncCourseDAO = dao;
+            this.courseId = courseId;
+        }
+
+        @Override
+        protected List<CourseEntity> doInBackground(Integer... params) {
+            return asyncCourseDAO.getCourseByCourseId(courseId);
         }
     }
 
