@@ -50,9 +50,9 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     }
 
     @Override
-    public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int postion) {
+    public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int position) {
         if (assessments != null) {
-            AssessmentEntity current = assessments.get(postion);
+            AssessmentEntity current = assessments.get(position);
             holder.courseId = current.getCourseId();
             holder.assessmentId = current.getAssessmentId();
             holder.assessmentName.setText(current.getAssessmentName());
@@ -77,6 +77,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 assessmentId = holder.assessmentId;
                 String assessmentName = holder.assessmentName.getText().toString();
                 String assessmentDate = holder.assessmentDueDate.getText().toString();
+                String assessmentType = holder.assessmentType.getText().toString();
                 int assessmentCourseId = holder.courseId;
                 String courseStart = holder.courseStart;
                 String courseEnd = holder.courseEnd;
@@ -85,6 +86,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 intent.putExtra("assessmentId", assessmentId);
                 intent.putExtra("assessmentName", assessmentName);
                 intent.putExtra("assessmentDueDate", assessmentDate);
+                intent.putExtra("assessmentType", assessmentType);
                 intent.putExtra("courseId", assessmentCourseId);
                 intent.putExtra("courseStart", courseStart);
                 intent.putExtra("courseEnd", courseEnd);

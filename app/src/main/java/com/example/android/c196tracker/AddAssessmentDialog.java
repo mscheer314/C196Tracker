@@ -121,6 +121,7 @@ public class AddAssessmentDialog extends AppCompatActivity
 
                 replyIntent.putExtra("assessmentName", assessmentNameString);
                 replyIntent.putExtra("assessmentDueDate", assessmentDueDateString);
+                replyIntent.putExtra("assessmentType", assessmentTypeString);
                 setResult(RESULT_OK, replyIntent);
                 finish();
             }

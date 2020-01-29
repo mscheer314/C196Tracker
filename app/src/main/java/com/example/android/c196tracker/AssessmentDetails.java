@@ -17,8 +17,10 @@ public class AssessmentDetails extends BaseActivity {
     private static final int NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE = 1;
     private String assessmentName;
     private String assessmentDueDate;
+    private String assessmentType;
     private TextView assessmentNameTextView;
     private TextView assessmentDueDateTextView;
+    private TextView assessmentTypeTextView;
     private int courseId;
     private String courseStart;
     private String courseEnd;
@@ -31,6 +33,7 @@ public class AssessmentDetails extends BaseActivity {
 
         assessmentNameTextView = findViewById(R.id.assessment_details_title);
         assessmentDueDateTextView = findViewById(R.id.assessment_details_due_date);
+        assessmentTypeTextView = findViewById(R.id.assessment_details_type);
 
         setDetails();
     }
@@ -39,6 +42,7 @@ public class AssessmentDetails extends BaseActivity {
         Intent intent = getIntent();
         assessmentName = intent.getStringExtra("assessmentName");
         assessmentDueDate = intent.getStringExtra("assessmentDueDate");
+        assessmentType = intent.getStringExtra("assessmentType");
         assessmentId = intent.getIntExtra("assessmentId", 0);
         courseId = intent.getIntExtra("courseId", 0);
         courseStart = intent.getStringExtra("courseStart");
@@ -46,6 +50,7 @@ public class AssessmentDetails extends BaseActivity {
 
         assessmentNameTextView.setText(assessmentName);
         assessmentDueDateTextView.setText(assessmentDueDate);
+        assessmentTypeTextView.setText(assessmentType);
     }
 
     @Override
@@ -55,9 +60,11 @@ public class AssessmentDetails extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 assessmentName = data.getStringExtra("assessmentName");
                 assessmentDueDate = data.getStringExtra("assessmentDueDate");
+                assessmentType = data.getStringExtra("assessmentType");
 
                 assessmentNameTextView.setText(assessmentName);
                 assessmentDueDateTextView.setText(assessmentDueDate);
+                assessmentTypeTextView.setText(assessmentType);
             }
         }
     }
