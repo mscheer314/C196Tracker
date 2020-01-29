@@ -8,21 +8,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.android.c196tracker.Entities.NoteEntity;
-import com.example.android.c196tracker.UI.NoteAdapter;
-import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
-import com.example.android.c196tracker.ViewModel.NoteViewModel;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class AssessmentDetails extends BaseActivity {
 
@@ -31,10 +19,9 @@ public class AssessmentDetails extends BaseActivity {
     private String assessmentDueDate;
     private TextView assessmentNameTextView;
     private TextView assessmentDueDateTextView;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private NoteViewModel noteViewModel;
     private int courseId;
+    private String courseStart;
+    private String courseEnd;
     private int assessmentId;
 
     @Override
@@ -45,47 +32,20 @@ public class AssessmentDetails extends BaseActivity {
         assessmentNameTextView = findViewById(R.id.assessment_details_title);
         assessmentDueDateTextView = findViewById(R.id.assessment_details_due_date);
 
-        setAssessmentDetails();
-        setCourseDetails();
-        setRecyclerView();
+        setDetails();
     }
 
-    private void setAssessmentDetails() {
+    private void setDetails() {
         Intent intent = getIntent();
         assessmentName = intent.getStringExtra("assessmentName");
         assessmentDueDate = intent.getStringExtra("assessmentDueDate");
         assessmentId = intent.getIntExtra("assessmentId", 0);
+        courseId = intent.getIntExtra("courseId", 0);
+        courseStart = intent.getStringExtra("courseStart");
+        courseEnd = intent.getStringExtra("courseEnd");
 
         assessmentNameTextView.setText(assessmentName);
         assessmentDueDateTextView.setText(assessmentDueDate);
-    }
-
-    private void setCourseDetails() {
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra("courseId", 0);
-    }
-
-    private void setRecyclerView() {
-        recyclerView = findViewById(R.id.assessment_details_note_recyclerview);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        final NoteAdapter noteAdapter = new NoteAdapter(this, this);
-        recyclerView.setAdapter(noteAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(noteAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        noteViewModel.getAssociatedNotes(courseId).observe(this,
-                new Observer<List<NoteEntity>>() {
-                    @Override
-                    public void onChanged(List<NoteEntity> noteEntities) {
-                        noteAdapter.setNotes(noteEntities);
-                    }
-                });
     }
 
     @Override
@@ -119,17 +79,11 @@ public class AssessmentDetails extends BaseActivity {
             bundle.putBoolean("isNewAssessment", false);
             bundle.putInt("courseId", courseId);
             bundle.putInt("assessmentId", assessmentId);
+            bundle.putString("courseStart", courseStart);
+            bundle.putString("courseEnd", courseEnd);
+
             intent.putExtras(bundle);
             startActivityForResult(intent, NEW_ASSESSMENT_ACTIVITY_REQUEST_CODE);
-        }
-        if (item.getItemId() == R.id.share_note) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.setType("text/plain");
-
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
         }
         if (item.getItemId() == R.id.add_assessment_notification) {
             Date assessmentDate = new Date();

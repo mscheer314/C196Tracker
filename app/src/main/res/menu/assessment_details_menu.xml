@@ -4,9 +4,6 @@
         android:id="@+id/edit_assessment"
         android:title="@string/edit" />
     <item
-        android:id="@+id/share_note"
-        android:title="@string/share_note" />
-    <item
         android:id="@+id/add_assessment_notification"
         android:title="@string/add_notification" />
     <item

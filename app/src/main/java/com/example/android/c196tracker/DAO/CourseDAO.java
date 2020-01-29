@@ -27,7 +27,7 @@ public interface CourseDAO {
     void deleteAllCourses();
 
     @Query("SELECT * FROM courses WHERE courseId= :courseId ORDER BY courseId ASC")
-    LiveData<List<CourseEntity>> getCourseById(int courseId);
+    List<CourseEntity> getCourseByCourseId(int courseId);
 
     @Query("SELECT * FROM courses ORDER BY courseId ASC")
     LiveData<List<CourseEntity>> getAllCourses();

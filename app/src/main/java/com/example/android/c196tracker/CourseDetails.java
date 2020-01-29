@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.c196tracker.Entities.AssessmentEntity;
+import com.example.android.c196tracker.Entities.NoteEntity;
 import com.example.android.c196tracker.UI.AssessmentAdapter;
+import com.example.android.c196tracker.UI.NoteAdapter;
 import com.example.android.c196tracker.UI.SwipeToDeleteCallback;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
+import com.example.android.c196tracker.ViewModel.NoteViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +46,10 @@ public class CourseDetails extends BaseActivity {
     private Button addAssessmentButton;
     private Button addNoteButton;
     private Button addGoalButton;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView assessmentRecyclerView;
+    private RecyclerView.LayoutManager assessmentLayoutManager;
+    private RecyclerView noteRecyclerView;
+    private RecyclerView.LayoutManager noteLayoutManager;
     private TextView courseNameTextView;
     private TextView courseStartTextView;
     private TextView courseEndTextView;
@@ -56,6 +61,7 @@ public class CourseDetails extends BaseActivity {
     private Calendar calendar = Calendar.getInstance();
     private String termEndString;
     private String termStartString;
+    private NoteViewModel noteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,7 @@ public class CourseDetails extends BaseActivity {
 
         setCourseDetails();
         setAssessmentRecyclerView();
+        setNoteRecyclerView();
 
         addAssessmentButton = findViewById(R.id.add_assessment_button);
         addAssessmentButton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +91,9 @@ public class CourseDetails extends BaseActivity {
         addGoalButton = findViewById(R.id.goal_button);
         addGoalButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { openGoalDialog(); }
+            public void onClick(View v) {
+                openGoalDialog();
+            }
         });
     }
 
@@ -119,18 +128,18 @@ public class CourseDetails extends BaseActivity {
     }
 
     private void setAssessmentRecyclerView() {
-        recyclerView = findViewById(R.id.course_detail_assessment_recyclerview);
-        recyclerView.setHasFixedSize(true);
+        assessmentRecyclerView = findViewById(R.id.course_detail_assessment_recyclerview);
+        assessmentRecyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        assessmentLayoutManager = new LinearLayoutManager(this);
+        assessmentRecyclerView.setLayoutManager(assessmentLayoutManager);
 
-        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this, this);
-        recyclerView.setAdapter(assessmentAdapter);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this, this, true);
+        assessmentRecyclerView.setAdapter(assessmentAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new SwipeToDeleteCallback(assessmentAdapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(assessmentRecyclerView);
 
         assessmentViewModel = new ViewModelProvider(this).get(AssessmentViewModel.class);
         assessmentViewModel.getAssociatedAssessments(courseId).observe(this,
@@ -140,6 +149,25 @@ public class CourseDetails extends BaseActivity {
                         assessmentAdapter.setAssessments(assessmentEntities);
                     }
                 });
+    }
+
+    private void setNoteRecyclerView() {
+        noteRecyclerView = findViewById(R.id.course_details_notes_recyclerView);
+        noteRecyclerView.setHasFixedSize(true);
+
+        noteLayoutManager = new LinearLayoutManager(this);
+        noteRecyclerView.setLayoutManager(noteLayoutManager);
+
+        final NoteAdapter noteAdapter = new NoteAdapter(this, this);
+        noteRecyclerView.setAdapter(noteAdapter);
+
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        noteViewModel.getAssociatedNotes(courseId).observe(this, new Observer<List<NoteEntity>>() {
+            @Override
+            public void onChanged(List<NoteEntity> noteEntities) {
+                noteAdapter.setNotes(noteEntities);
+            }
+        });
     }
 
     private void openAddAssessmentDialog() {
@@ -230,6 +258,15 @@ public class CourseDetails extends BaseActivity {
 
             scheduleNotification(getNotification("Course Ending"), endDate.getTime());
             Toast.makeText(this, R.string.notification_scheduled, Toast.LENGTH_LONG).show();
+        }
+        if (item.getItemId() == R.id.share_note) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
         }
         if (item.getItemId() == R.id.edit_course) {
             Intent intent = new Intent(CourseDetails.this, AddCourseDialog.class);

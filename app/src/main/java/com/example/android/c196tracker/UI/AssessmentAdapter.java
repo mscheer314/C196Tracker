@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.c196tracker.AssessmentDetails;
 import com.example.android.c196tracker.CourseDetails;
 import com.example.android.c196tracker.Entities.AssessmentEntity;
+import com.example.android.c196tracker.Entities.CourseEntity;
 import com.example.android.c196tracker.R;
 import com.example.android.c196tracker.ViewModel.AssessmentViewModel;
+import com.example.android.c196tracker.ViewModel.CourseViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -30,12 +32,15 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     private Activity activity;
     private AssessmentEntity deletedItem;
     private AssessmentViewModel assessmentViewModel;
+    private CourseViewModel courseViewModel;
+    private boolean isInCourseDetails;
 
 
-    public AssessmentAdapter(Context context, Activity activity) {
+    public AssessmentAdapter(Context context, Activity activity, boolean isInCourseDetails) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.activity = activity;
+        this.isInCourseDetails = isInCourseDetails;
     }
 
     @Override
@@ -52,6 +57,15 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             holder.assessmentId = current.getAssessmentId();
             holder.assessmentName.setText(current.getAssessmentName());
             holder.assessmentDueDate.setText(dateFormatter.format(current.getAssessmentDate()));
+            if (isInCourseDetails) {
+                courseViewModel = new ViewModelProvider((CourseDetails) activity).get(CourseViewModel.class);
+            } else {
+                courseViewModel = new ViewModelProvider((AssessmentDetails) activity).get(CourseViewModel.class);
+            }
+            List<CourseEntity> course = courseViewModel.getCourseByCourseId(holder.courseId);
+            int indexOfCourse = 0;
+            holder.courseStart = dateFormatter.format(course.get(indexOfCourse).getCourseStart());
+            holder.courseEnd = dateFormatter.format(course.get(indexOfCourse).getCourseEnd());
         } else {
             holder.assessmentName.setText("nothing");
             holder.assessmentDueDate.setText("nothing");
@@ -63,12 +77,16 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 String assessmentName = holder.assessmentName.getText().toString();
                 String assessmentDate = holder.assessmentDueDate.getText().toString();
                 int assessmentCourseId = holder.courseId;
+                String courseStart = holder.courseStart;
+                String courseEnd = holder.courseEnd;
 
                 Intent intent = new Intent(context, AssessmentDetails.class);
                 intent.putExtra("assessmentId", assessmentId);
                 intent.putExtra("assessmentName", assessmentName);
                 intent.putExtra("assessmentDueDate", assessmentDate);
                 intent.putExtra("courseId", assessmentCourseId);
+                intent.putExtra("courseStart", courseStart);
+                intent.putExtra("courseEnd", courseEnd);
 
 
                 context.startActivity(intent);
@@ -97,6 +115,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
         private final TextView assessmentName;
         private final TextView assessmentDueDate;
+        public String courseStart;
+        public String courseEnd;
 
         private int assessmentId;
         private int courseId;

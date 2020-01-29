@@ -50,5 +50,6 @@
     <string name="set_goal_alert">Set Goal Alert</string>
     <string name="add_goal">ADD GOAL</string>
     <string name="goal_content">Goal content</string>
+    <string name="notes">NOTES</string>
 
 </resources>

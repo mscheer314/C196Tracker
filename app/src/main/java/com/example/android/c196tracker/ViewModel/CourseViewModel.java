@@ -21,13 +21,13 @@ public class CourseViewModel extends AndroidViewModel {
     public CourseViewModel(Application application) {
         super(application);
         repository = new SchoolTrackerRepository(application);
-
-        course = repository.getCourseById(courseId);
         allCourses = repository.getAllCourses();
         associatedCourses = repository.getAssociatedCourses(termId);
     }
 
-    public LiveData<List<CourseEntity>> getCourseById(int courseId) { return course; }
+    public List<CourseEntity> getCourseByCourseId(int courseId) {
+        return repository.getCourseByCourseId(courseId);
+    }
 
     public LiveData<List<CourseEntity>> getAllCourses() {
         return allCourses;
@@ -37,8 +37,8 @@ public class CourseViewModel extends AndroidViewModel {
         return repository.getAssociatedCourses(termId);
     }
 
-    public List<CourseEntity> getAssociatedCourseList(int termId) {
-        return repository.getAssociatedCourseList(termId);
+    public List<CourseEntity> getCourseByTermId(int termId) {
+        return repository.getCourseByTermId(termId);
     }
 
     public void insert(CourseEntity courseEntity) {

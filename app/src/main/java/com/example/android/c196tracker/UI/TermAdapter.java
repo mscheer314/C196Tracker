@@ -100,7 +100,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     private boolean hasCourses(int termId) {
         courseViewModel = new ViewModelProvider((TermsActivity) activity).get(CourseViewModel.class);
-        List<CourseEntity> courses = courseViewModel.getAssociatedCourseList(termId);
+        List<CourseEntity> courses = courseViewModel.getCourseByTermId(termId);
         if (courses.size() == 0) {
             return false;
         }

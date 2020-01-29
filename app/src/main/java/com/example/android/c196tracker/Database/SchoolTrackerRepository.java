@@ -81,9 +81,9 @@ public class SchoolTrackerRepository {
         return null;
     }
 
-    public List<CourseEntity> getAssociatedCourseList(int termId) {
+    public List<CourseEntity> getCourseByTermId(int termId) {
         try {
-            return new getAssociatedCourseListTask(courseDAO, termId).execute().get();
+            return new getCourseByTermIdTask(courseDAO, termId).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -100,8 +100,15 @@ public class SchoolTrackerRepository {
         return noteDAO.getAssociatedNotes(courseId);
     }
 
-    public LiveData<List<CourseEntity>> getCourseById(int courseId) {
-        return courseDAO.getCourseById(courseId);
+    public List<CourseEntity> getCourseByCourseId(int courseId) {
+        try {
+            return new getCourseByTermIdTask(courseDAO, courseId).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void insert(TermEntity termEntity) {
@@ -155,11 +162,11 @@ public class SchoolTrackerRepository {
         }
     }
 
-    private static class getAssociatedCourseListTask extends AsyncTask<Integer, Void, List<CourseEntity>> {
+    private static class getCourseByTermIdTask extends AsyncTask<Integer, Void, List<CourseEntity>> {
         private CourseDAO asyncCourseDAO;
         private int termId;
 
-        getAssociatedCourseListTask(CourseDAO dao, int termId) {
+        getCourseByTermIdTask(CourseDAO dao, int termId) {
             asyncCourseDAO = dao;
             this.termId = termId;
         }
