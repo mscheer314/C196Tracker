@@ -91,6 +91,7 @@ public class AddCourseDialog extends AppCompatActivity implements OnItemSelected
             String mentorEmailString = AddCourseDialog.this.mentorEmailEditText.getText().toString();
             String mentorPhoneString = AddCourseDialog.this.mentorPhoneEditText.getText().toString();
 
+            // TODO troubleshoot email address input check
             errorMessage = InputChecker.checkItemNameExists(2,
                     courseNameEditText.getText().toString());
             errorMessage += InputChecker.getDateErrorMessage(
